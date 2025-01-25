@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require "railsmaker/install_generator"
+
+RailsMaker::InstallGenerator.start
