@@ -11,7 +11,22 @@ module RailsMaker
       class_option :skip_daisyui, type: :boolean, default: false,
                   desc: "Skip frontend setup (Tailwind, DaisyUI)"
 
+      REQUIRED_RAILS_VERSION = '8.0.1'
+
       def generate_app
+        begin
+          rails_version = Gem::Version.new(Rails.version)
+          required_version = Gem::Version.new(REQUIRED_RAILS_VERSION)
+
+          unless rails_version == required_version
+            say_status "error", "Rails version #{rails_version} detected. RailsMaker requires Rails #{REQUIRED_RAILS_VERSION}", :red
+            exit 1
+          end
+        rescue NameError
+          say_status "error", "Rails is not installed. Please install Rails 8.0.1 first", :red
+          exit 1
+        end
+
         self.destination_root = File.expand_path(app_name, Dir.pwd)
 
         if File.directory?(File.expand_path(app_name, Dir.pwd))
@@ -65,17 +80,17 @@ module RailsMaker
 
       def setup_frontend
         say("Adding Tailwind CSS")
-        gem "tailwindcss-rails", "4.0.0.rc4"
+        gem "tailwindcss-rails", "~> 4.0.0.rc4"
 
         say("Installing gems")
         run "bundle install"
 
         say("Setting up Tailwind")
-        run "bun add -d tailwindcss @tailwindcss/cli"
+        run "bun add -d tailwindcss^4.0.0 @tailwindcss/cli^4.0.0"
         rails_command "tailwindcss:install"
 
         say("Installing DaisyUI")
-        run "bun add -d daisyui@beta"
+        run "bun add -d daisyui@5.0.0-beta.2"
 
         validate_gsub_strings([
           {

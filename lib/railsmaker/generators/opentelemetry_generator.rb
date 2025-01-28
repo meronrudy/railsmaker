@@ -37,12 +37,12 @@ YAML
 
       def add_gems
         gem_group :default do
-          gem 'opentelemetry-sdk'
-          gem 'opentelemetry-exporter-otlp'
-          gem 'opentelemetry-instrumentation-all'
+          gem 'opentelemetry-sdk', '~> 1.6.0'
+          gem 'opentelemetry-exporter-otlp', '~> 0.29.1'
+          gem 'opentelemetry-instrumentation-all', '~> 0.72.0'
 
-          gem 'lograge'
-          gem 'logstash-event'
+          gem 'lograge', '~> 0.14.0'
+          gem 'logstash-event', '~> 1.2.02'
         end
 
         run "bundle install"
