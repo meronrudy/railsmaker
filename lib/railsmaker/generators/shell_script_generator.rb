@@ -1,5 +1,3 @@
-require_relative "server_command_generator"
-
 module RailsMaker
   module Generators
     class ShellScriptGenerator < ServerCommandGenerator

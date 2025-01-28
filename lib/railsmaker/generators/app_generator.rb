@@ -13,6 +13,11 @@ module RailsMaker
 
       def generate_app
         self.destination_root = File.expand_path(app_name, Dir.pwd)
+
+        if File.directory?(File.expand_path(app_name, Dir.pwd))
+          say_status "error", "Directory '#{app_name}' already exists", :red
+          exit 1
+        end
   
         say("Creating new Rails app")
         rails_args = [app_name]
@@ -20,7 +25,17 @@ module RailsMaker
         Rails::Generators::AppGenerator.start(rails_args)
   
         inside(destination_root) do
-          setup_frontend unless options[:skip_daisyui]
+          unless options[:skip_daisyui]
+            setup_frontend
+          end
+
+          validate_gsub_strings([
+            {
+              file: "config/deploy.yml",
+              patterns: ["your-user", "web:\n    - 192.168.0.1", "ssl: true", "app.example.com"]
+            }
+          ])
+
           setup_kamal
 
           say("Modifying ApplicationController to allow all browsers (mobile)")
@@ -34,12 +49,16 @@ module RailsMaker
             copy_file "main_index.html.erb", "app/views/main/index.html.erb"
           end
           route "root 'main#index'"
-
-          say("Committing to git")
-          git add: ".", commit: %(-m 'Initial railsmaker commit')
         end
   
         say "Successfully created Rails app with RailsMaker"
+      rescue StandardError => e
+        say_status "error", "Failed to generate app: #{e.message}, check the file in #{destination_root}", :red
+        exit 1
+      end
+
+      def git_commit
+        git add: ".", commit: %(-m 'Initial railsmaker commit')
       end
 
       private
@@ -57,6 +76,26 @@ module RailsMaker
 
         say("Installing DaisyUI")
         run "bun add -d daisyui@beta"
+
+        validate_gsub_strings([
+          {
+            file: "app/views/layouts/application.html.erb",
+            patterns: ["<main class=\"container mx-auto mt-28 px-5 flex\">", "<html>"]
+          },
+          {
+            file: "app/assets/tailwind/application.css",
+            patterns: ["@import \"tailwindcss\";"]
+          },
+          {
+            file: "Dockerfile",
+            patterns: ["bun.lockb", 'RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile', "# Precompiling assets for production"]
+          },
+          {
+            file: "app/views/layouts/application.html.erb",
+            patterns: []
+          }
+        ])
+
         inject_into_file "app/assets/tailwind/application.css", after: "@import \"tailwindcss\";" do
           <<~RUBY
 
@@ -86,9 +125,8 @@ module RailsMaker
 
       def setup_kamal
         say("Configuring Kamal")
-        run "kamal init"
+
         gsub_file "config/deploy.yml", "your-user", docker_username
-        gsub_file "config/deploy.yml", "my_app", app_name.underscore
         gsub_file "config/deploy.yml", "web:\n    - 192.168.0.1", "web:\n    hosts:\n      - #{ip_address}"
         gsub_file "config/deploy.yml", "app.example.com", hostname
         inject_into_file "config/deploy.yml", after: "ssl: true" do

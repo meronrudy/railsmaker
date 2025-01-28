@@ -2,10 +2,13 @@
 require "rails/generators"
 require "rails/generators/rails/app/app_generator"
 
+# Concerns
+require "railsmaker/generators/concerns/gsub_validation"
+
 # Local generators
 require "railsmaker/generators/base_generator"
-require "railsmaker/generators/shell_script_generator"
 require "railsmaker/generators/server_command_generator"
+require "railsmaker/generators/shell_script_generator"
 
 # App generators
 require "railsmaker/generators/app_generator"

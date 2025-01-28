@@ -6,6 +6,18 @@ module RailsMaker
       argument :service_name, desc: "Name of the service for OpenTelemetry"
 
       def add_kamal_config
+        validations = [
+          {
+            file: "config/deploy.yml",
+            patterns: [
+              "web:\n",
+              "SOLID_QUEUE_IN_PUMA: true\n"
+            ]
+          }
+        ]
+
+        validate_gsub_strings(validations)
+
         inject_into_file "config/deploy.yml", after: "web:\n" do
           <<-YAML
     options:
@@ -56,6 +68,10 @@ YAML
 
       def setup_lograge
         template "lograge.rb.erb", "config/initializers/lograge.rb"
+      end
+
+      def git_commit
+        git add: ".", commit: %(-m 'Add OpenTelemetry')
       end
     end
   end

@@ -13,6 +13,10 @@ module RailsMaker
           HTML
         end
       end
+
+      def git_commit
+        git add: ".", commit: %(-m 'Add Plausible Analytics')
+      end
     end
   end
 end 

@@ -14,6 +14,17 @@ module RailsMaker
 
       def generate_sentry_initializer
         generate "sentry"
+
+        validations = [
+          {
+            file: "config/initializers/sentry.rb",
+            patterns: [
+              "Sentry.init"
+            ]
+          }
+        ]
+
+        validate_gsub_strings(validations)
       end
 
       def configure_sentry
@@ -25,6 +36,10 @@ module RailsMaker
             end
 RUBY
         end
+      end
+
+      def git_commit
+        git add: ".", commit: %(-m 'Add Sentry')
       end
     end
   end
