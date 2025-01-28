@@ -31,21 +31,18 @@ module RailsMaker
             [app_name],
             destination_root: destination_root
           ).invoke_all
-          git add: '.', commit: %(-m 'Add OpenTelemetry')
 
           # Setup Plausible
           RailsMaker::Generators::PlausibleInstrumentationGenerator.new(
             [hostname, analytics_domain],
             destination_root: destination_root
           ).invoke_all
-          git add: '.', commit: %(-m 'Add Plausible Analytics')
 
           # Setup Sentry
           RailsMaker::Generators::SentryGenerator.new(
             [sentry_dsn],
             destination_root: destination_root
           ).invoke_all
-          git add: '.', commit: %(-m 'Add Sentry')
         end
       end
     end
