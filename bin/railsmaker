@@ -36,6 +36,11 @@ module RailsMaker
              "app:opentelemetry SERVICE_NAME",
              "Configure OpenTelemetry instrumentation for the application"
 
+    register RailsMaker::Generators::PlausibleInstrumentationGenerator,
+             "app:plausible",
+             "app:plausible APP_DOMAIN ANALYTICS_DOMAIN",
+             "Add Plausible Analytics tracking to the application"
+
     def self.exit_on_failure?
       true
     end
