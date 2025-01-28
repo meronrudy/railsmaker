@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 module RailsMaker
   module Generators
     class OpentelemetryGenerator < BaseGenerator
-      source_root File.expand_path("templates/opentelemetry", __dir__)
-      
-      argument :service_name, desc: "Name of the service for OpenTelemetry"
+      source_root File.expand_path('templates/opentelemetry', __dir__)
+
+      argument :service_name, desc: 'Name of the service for OpenTelemetry'
 
       def add_kamal_config
         validations = [
           {
-            file: "config/deploy.yml",
+            file: 'config/deploy.yml',
             patterns: [
               "web:\n",
               "SOLID_QUEUE_IN_PUMA: true\n"
@@ -18,14 +20,14 @@ module RailsMaker
 
         validate_gsub_strings(validations)
 
-        inject_into_file "config/deploy.yml", after: "web:\n" do
+        inject_into_file 'config/deploy.yml', after: "web:\n" do
           <<-YAML
     options:
       "add-host": host.docker.internal:host-gateway
-YAML
+          YAML
         end
 
-        inject_into_file "config/deploy.yml", after: "SOLID_QUEUE_IN_PUMA: true\n" do
+        inject_into_file 'config/deploy.yml', after: "SOLID_QUEUE_IN_PUMA: true\n" do
           <<-YAML
     # OpenTelemetry env vars
     OTEL_EXPORTER: otlp
@@ -45,17 +47,17 @@ YAML
           gem 'logstash-event', '~> 1.2.02'
         end
 
-        run "bundle install"
+        run 'bundle install'
       end
 
       def configure_opentelemetry
-        environment_file = "config/environment.rb"
-        
+        environment_file = 'config/environment.rb'
+
         # Add require at the top
         prepend_to_file environment_file, "require 'opentelemetry/sdk'\n"
-        
+
         # Add configuration after Rails.application.initialize!
-        inject_into_file environment_file, before: "Rails.application.initialize!" do
+        inject_into_file environment_file, before: 'Rails.application.initialize!' do
           <<~RUBY
 
             OpenTelemetry::SDK.configure do |c|
@@ -67,12 +69,12 @@ YAML
       end
 
       def setup_lograge
-        template "lograge.rb.erb", "config/initializers/lograge.rb"
+        template 'lograge.rb.erb', 'config/initializers/lograge.rb'
       end
 
       def git_commit
-        git add: ".", commit: %(-m 'Add OpenTelemetry')
+        git add: '.', commit: %(-m 'Add OpenTelemetry')
       end
     end
   end
-end 
+end

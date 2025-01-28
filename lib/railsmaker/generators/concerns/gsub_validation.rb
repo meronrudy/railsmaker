@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 module RailsMaker
   module Generators
     module GsubValidation
       def validate_gsub_strings(validations)
         validations.each do |validation|
           file_path = File.join(destination_root, validation.fetch(:file))
-          
+
           unless File.exist?(file_path)
             raise "Required file not found: #{validation.fetch(:file)}. Maybe a dependency changed?"
           end
@@ -19,4 +21,4 @@ module RailsMaker
       end
     end
   end
-end 
+end

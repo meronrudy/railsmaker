@@ -1,50 +1,52 @@
 #!/usr/bin/env ruby
-require "railsmaker"
-require "thor"
+# frozen_string_literal: true
+
+require 'railsmaker'
+require 'thor'
 
 module RailsMaker
   class CLI < Thor
     include Thor::Actions
 
     register RailsMaker::Generators::DockerGenerator,
-             "remote:init",
-             "remote:init SSH_HOST SSH_USER [--key-path=PATH]",
-             "Check and install Docker on a remote Ubuntu server"
+             'remote:init',
+             'remote:init SSH_HOST SSH_USER [--key-path=PATH]',
+             'Check and install Docker on a remote Ubuntu server'
 
-    register RailsMaker::Generators::AppGenerator, 
-             "app", 
-             "app APP_NAME DOCKER_USERNAME IP_ADDRESS HOSTNAME [--skip-daisyui]", 
-             "Generate a new Rails application"
+    register RailsMaker::Generators::AppGenerator,
+             'app',
+             'app APP_NAME DOCKER_USERNAME IP_ADDRESS HOSTNAME [--skip-daisyui]',
+             'Generate a new Rails application'
 
     register RailsMaker::Generators::SignozGenerator,
-             "remote:signoz:server",
-             "remote:signoz:server SSH_HOST SSH_USER [--key-path=PATH]",
-             "Install SigNoz on a remote server"
+             'remote:signoz:server',
+             'remote:signoz:server SSH_HOST SSH_USER [--key-path=PATH]',
+             'Install SigNoz on a remote server'
 
     register RailsMaker::Generators::SignozOpentelemetryGenerator,
-             "remote:signoz:opentelemetry",
-             "remote:signoz:opentelemetry SSH_HOST SSH_USER SIGNOZ_HOST [--key-path=PATH] [--override-hostname=HOSTNAME]",
-             "Install SigNoz OpenTelemetry client on a remote server"
+             'remote:signoz:opentelemetry',
+             'remote:signoz:opentelemetry SSH_HOST SSH_USER SIGNOZ_HOST [--key-path=PATH] [--override-hostname=HOSTNAME]',
+             'Install SigNoz OpenTelemetry client on a remote server'
 
     register RailsMaker::Generators::PlausibleGenerator,
-             "remote:plausible:server",
-             "remote:plausible:server SSH_HOST SSH_USER ANALYTICS_HOST [--key-path=PATH]",
-             "Install Plausible Analytics on a remote server"
+             'remote:plausible:server',
+             'remote:plausible:server SSH_HOST SSH_USER ANALYTICS_HOST [--key-path=PATH]',
+             'Install Plausible Analytics on a remote server'
 
     register RailsMaker::Generators::OpentelemetryGenerator,
-             "app:opentelemetry",
-             "app:opentelemetry SERVICE_NAME",
-             "Configure OpenTelemetry instrumentation for the application"
+             'app:opentelemetry',
+             'app:opentelemetry SERVICE_NAME',
+             'Configure OpenTelemetry instrumentation for the application'
 
     register RailsMaker::Generators::PlausibleInstrumentationGenerator,
-             "app:plausible",
-             "app:plausible APP_DOMAIN ANALYTICS_DOMAIN",
-             "Add Plausible Analytics tracking to the application"
+             'app:plausible',
+             'app:plausible APP_DOMAIN ANALYTICS_DOMAIN',
+             'Add Plausible Analytics tracking to the application'
 
     register RailsMaker::Generators::SentryGenerator,
-             "app:sentry",
-             "app:sentry DSN",
-             "Configure Sentry error tracking for the application"
+             'app:sentry',
+             'app:sentry DSN',
+             'Configure Sentry error tracking for the application'
 
     def self.exit_on_failure?
       true
