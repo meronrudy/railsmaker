@@ -1,0 +1,6 @@
+PreCommit:
+  BundleOutdated:
+    enabled: true
+    description: 'Check for outdated dependencies'
+    required: true
+    command: ['bundle', 'outdated', '--strict'] 
