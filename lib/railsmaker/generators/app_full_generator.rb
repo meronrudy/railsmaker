@@ -43,6 +43,8 @@ module RailsMaker
             [sentry_dsn],
             destination_root: destination_root
           ).invoke_all
+
+          say('Successfully added all integrations 🎉')
         end
       end
     end
