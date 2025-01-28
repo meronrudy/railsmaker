@@ -14,9 +14,9 @@ module RailsMaker
              'Check and install Docker on a remote Ubuntu server'
 
     register RailsMaker::Generators::AppGenerator,
-             'app',
-             'app APP_NAME DOCKER_USERNAME IP_ADDRESS HOSTNAME [--skip-daisyui]',
-             'Generate a new Rails application'
+             'app:light',
+             'app:light APP_NAME DOCKER_USERNAME IP_ADDRESS HOSTNAME [--skip-daisyui]',
+             'Generate a new Rails application with a KAMAL deployment'
 
     register RailsMaker::Generators::SignozGenerator,
              'remote:signoz:server',
@@ -47,6 +47,11 @@ module RailsMaker
              'app:sentry',
              'app:sentry DSN',
              'Configure Sentry error tracking for the application'
+
+    register RailsMaker::Generators::AppFullGenerator,
+             'app:full',
+             'app:full APP_NAME DOCKER_USERNAME IP_ADDRESS HOSTNAME ANALYTICS_DOMAIN SENTRY_DSN [--skip-daisyui]',
+             'Generate a new Rails application with all integrations (OpenTelemetry, Plausible, Sentry)'
 
     def self.exit_on_failure?
       true

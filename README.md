@@ -23,7 +23,11 @@ This gem provides Rails generators for creating new applications and installing 
 Sample usage:
 
 ```
-railsmaker app my-app johndoe 192.168.1.100 my-app.example.com
+# full app:
+railsmaker app:full my-app johndoe 192.168.1.100 my-app.example.com analytics.example.com https://sentry.dsn
+
+# light app:
+railsmaker app:light my-app johndoe 192.168.1.100 my-app.example.com
 ```
 
 For further help:
