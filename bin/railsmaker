@@ -13,7 +13,7 @@ module RailsMaker
 
     register RailsMaker::Generators::AppGenerator, 
              "app", 
-             "app APP_NAME DOCKER_USERNAME IP_ADDRESS HOSTNAME", 
+             "app APP_NAME DOCKER_USERNAME IP_ADDRESS HOSTNAME [--skip-daisyui]", 
              "Generate a new Rails application"
 
     register RailsMaker::Generators::SignozGenerator,
