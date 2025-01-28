@@ -13,6 +13,7 @@ require "railsmaker/generators/docker_generator"
 require "railsmaker/generators/plausible_generator"
 require "railsmaker/generators/signoz_generator"
 require "railsmaker/generators/signoz_opentelemetry_generator"
+require "railsmaker/generators/opentelemetry_generator"
 
 module RailsMaker
   VERSION = "0.0.1"

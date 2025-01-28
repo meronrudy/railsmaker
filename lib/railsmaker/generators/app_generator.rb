@@ -89,7 +89,7 @@ module RailsMaker
         run "kamal init"
         gsub_file "config/deploy.yml", "your-user", docker_username
         gsub_file "config/deploy.yml", "my_app", app_name.underscore
-        gsub_file "config/deploy.yml", "192.168.0.1", ip_address
+        gsub_file "config/deploy.yml", "web:\n    - 192.168.0.1", "web:\n    hosts:\n      - #{ip_address}"
         gsub_file "config/deploy.yml", "app.example.com", hostname
         inject_into_file "config/deploy.yml", after: "ssl: true" do
           "\n  forward_headers: true"
