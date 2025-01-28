@@ -7,8 +7,8 @@ module RailsMaker
     include Thor::Actions
 
     register RailsMaker::Generators::DockerGenerator,
-             "remote:setup",
-             "remote:setup SSH_HOST SSH_USER [--key-path=PATH]",
+             "remote:init",
+             "remote:init SSH_HOST SSH_USER [--key-path=PATH]",
              "Check and install Docker on a remote Ubuntu server"
 
     register RailsMaker::Generators::AppGenerator, 
@@ -20,6 +20,11 @@ module RailsMaker
              "remote:signoz:server",
              "remote:signoz:server SSH_HOST SSH_USER [--key-path=PATH]",
              "Install SigNoz on a remote server"
+
+    register RailsMaker::Generators::SignozOpentelemetryGenerator,
+             "remote:signoz:opentelemetry",
+             "remote:signoz:opentelemetry SSH_HOST SSH_USER SIGNOZ_HOST [--key-path=PATH] [--override-hostname=HOSTNAME]",
+             "Install SigNoz OpenTelemetry client on a remote server"
 
     register RailsMaker::Generators::PlausibleGenerator,
              "remote:plausible:server",

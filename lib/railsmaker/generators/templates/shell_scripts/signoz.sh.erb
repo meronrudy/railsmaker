@@ -1,0 +1,8 @@
+#!/bin/bash
+set -e
+
+git clone -b main https://github.com/SigNoz/signoz.git
+cd signoz/deploy/ && ./install.sh
+
+# stop sample app
+docker compose -f ./docker/clickhouse-setup/test-app-docker-compose.yaml down

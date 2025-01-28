@@ -1,0 +1,29 @@
+#!/bin/bash
+set -e
+
+<% if options[:override_hostname] %>
+# Set hostname
+hostnamectl set-hostname <%= options[:override_hostname] %>
+<% end %>
+
+# Download and install OpenTelemetry collector
+wget https://github.com/open-telemetry/opentelemetry-collector-releases/releases/download/v0.88.0/otelcol-contrib_0.88.0_linux_amd64.deb
+sudo dpkg -i otelcol-contrib_0.88.0_linux_amd64.deb
+
+# Create config directory if it doesn't exist
+sudo mkdir -p /etc/otelcol-contrib
+
+# Copy configuration file from temporary location
+sudo mv /tmp/otelcol_config.yaml /etc/otelcol-contrib/config.yaml
+
+# Restart OpenTelemetry collector
+sudo systemctl restart otelcol-contrib.service
+sudo systemctl status otelcol-contrib.service
+
+# Setup Docker log forwarding
+docker run --rm --name="logspout" \
+     --volume=/var/run/docker.sock:/var/run/docker.sock \
+     --add-host=host.docker.internal:host-gateway \
+     --detach \
+     gliderlabs/logspout \
+     syslog+tcp://host.docker.internal:2255 

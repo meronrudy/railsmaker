@@ -1,0 +1,25 @@
+#!/bin/bash
+set -e
+
+# Clone Plausible repository
+git clone -b v2.1.4 --single-branch https://github.com/plausible/community-edition plausible-ce
+cd plausible-ce
+
+# Configure environment
+touch .env
+echo "BASE_URL=https://<%= analytics_host %>" >> .env
+echo "SECRET_KEY_BASE=$(openssl rand -base64 48)" >> .env
+echo "HTTP_PORT=80" >> .env
+echo "HTTPS_PORT=443" >> .env
+
+# Create docker-compose override
+cat > compose.override.yml << 'EOF'
+services:
+  plausible:
+    ports:
+      - 80:80
+      - 443:443
+EOF 
+
+# Start Plausible
+docker compose up -d
