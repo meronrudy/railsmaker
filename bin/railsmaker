@@ -1,4 +1,35 @@
 #!/usr/bin/env ruby
-require "railsmaker/install_generator"
+require "railsmaker"
+require "thor"
 
-RailsMaker::InstallGenerator.start
+module RailsMaker
+  class CLI < Thor
+    include Thor::Actions
+
+    register RailsMaker::Generators::DockerGenerator,
+             "remote:setup",
+             "remote:setup SSH_HOST SSH_USER [--key-path=PATH]",
+             "Check and install Docker on a remote Ubuntu server"
+
+    register RailsMaker::Generators::AppGenerator, 
+             "app", 
+             "app APP_NAME DOCKER_USERNAME IP_ADDRESS HOSTNAME", 
+             "Generate a new Rails application"
+
+    register RailsMaker::Generators::SignozGenerator,
+             "remote:signoz:server",
+             "remote:signoz:server SSH_HOST SSH_USER [--key-path=PATH]",
+             "Install SigNoz on a remote server"
+
+    register RailsMaker::Generators::PlausibleGenerator,
+             "remote:plausible:server",
+             "remote:plausible:server SSH_HOST SSH_USER ANALYTICS_HOST [--key-path=PATH]",
+             "Install Plausible Analytics on a remote server"
+
+    def self.exit_on_failure?
+      true
+    end
+  end
+end
+
+RailsMaker::CLI.start

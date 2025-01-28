@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   # Runtime dependencies
   s.add_runtime_dependency "rails", "~> 8.0.1"
   s.add_runtime_dependency "kamal", "~> 2.4.0"
-  s.add_runtime_dependency "tailwindcss-rails", "~> 4.0.0.rc1"
+  s.add_runtime_dependency "tailwindcss-rails", "~> 4.0.0.rc4"
   
   # Development dependencies
   s.add_development_dependency "thor", "~> 1.3.2"
