@@ -87,7 +87,7 @@ module RailsMaker
         run 'bundle install'
 
         say('Setting up Tailwind')
-        run 'bun add -d tailwindcss^4.0.0 @tailwindcss/cli^4.0.0'
+        run 'bun add -d tailwindcss@4.0.0 @tailwindcss/cli@4.0.0'
         rails_command 'tailwindcss:install'
 
         say('Installing DaisyUI')
