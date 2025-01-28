@@ -41,6 +41,11 @@ module RailsMaker
              "app:plausible APP_DOMAIN ANALYTICS_DOMAIN",
              "Add Plausible Analytics tracking to the application"
 
+    register RailsMaker::Generators::SentryGenerator,
+             "app:sentry",
+             "app:sentry DSN",
+             "Configure Sentry error tracking for the application"
+
     def self.exit_on_failure?
       true
     end
