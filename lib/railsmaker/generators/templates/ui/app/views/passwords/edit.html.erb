@@ -1,0 +1,21 @@
+<% content_for :auth_header do %>
+  <h2 class="mt-6 text-3xl font-bold tracking-tight">Set new password</h2>
+  <p class="mt-2 text-sm opacity-75">
+    Please choose a strong password for your account
+  </p>
+<% end %>
+
+<%= render layout: 'shared/auth_layout' do %>
+  <%= form_for :password_reset,
+        url: [@user, :password, token: @user.confirmation_token],
+        html: { method: :put, class: "space-y-6" } do |form| %>
+    <div class="form-control">
+      <%= form.label :password, class: "label font-medium" %>
+      <%= form.password_field :password, class: "input input-bordered w-full" %>
+    </div>
+
+    <div class="form-control mt-8">
+      <%= form.submit "Update password", class: "btn btn-primary w-full" %>
+    </div>
+  <% end %>
+<% end %>

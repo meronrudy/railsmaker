@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html data-theme="cupcake" lang="en">
+  <head>
+    <title><%= meta_title %></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="<%= meta_description %>">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="<%= meta_tags[:type] %>">
+    <meta property="og:url" content="<%= meta_tags[:canonical] %>">
+    <meta property="og:title" content="<%= meta_tags[:title] %>">
+    <meta property="og:description" content="<%= meta_tags[:description] %>">
+    <meta property="og:image" content="<%= meta_tags[:image] %>">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="<%= meta_tags[:canonical] %>">
+    <meta name="twitter:title" content="<%= meta_tags[:title] %>">
+    <meta name="twitter:description" content="<%= meta_tags[:description] %>">
+    <meta name="twitter:image" content="<%= meta_tags[:image] %>">
+
+    <!-- Additional SEO -->
+    <meta name="author" content="<%= meta_tags[:author] %>">
+    <meta name="robots" content="<%= meta_tags[:robots] %>">
+    <link rel="canonical" href="<%= meta_tags[:canonical] %>">
+
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+    <%# Plausible Analytics %>
+    <script defer data-domain="test-railsmaker.gerovlabs.com" src="https://analytics.gerovlabs.com/js/script.file-downloads.outbound-links.pageview-props.revenue.tagged-events.js"></script>
+    <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
+    <%= Sentry.get_trace_propagation_meta.html_safe %>
+  </head>
+
+  <body class="min-h-screen bg-base-200 flex flex-col">
+    <%= render "layouts/navbar" unless current_page?(root_path) %>
+    <main class="flex-1 flex flex-col">
+      <%= render "shared/flash" %>
+      <%= yield %>
+      <%= render "shared/footer" %>
+    </main>
+    <%= render 'shared/structured_data' %>
+  </body>
+</html>

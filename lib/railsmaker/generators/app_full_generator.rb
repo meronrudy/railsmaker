@@ -9,6 +9,7 @@ module RailsMaker
       argument :hostname # Used for both app domain and deployment hostname
       argument :analytics_domain
       argument :sentry_dsn
+      argument :from_email
 
       class_option :skip_daisyui, type: :boolean, default: false,
                                   desc: 'Skip frontend setup (Tailwind, DaisyUI)'
@@ -41,6 +42,18 @@ module RailsMaker
           # Setup Sentry
           RailsMaker::Generators::SentryGenerator.new(
             [sentry_dsn],
+            destination_root: destination_root
+          ).invoke_all
+
+          # Setup Auth
+          RailsMaker::Generators::AuthGenerator.new(
+            [from_email, hostname],
+            destination_root: destination_root
+          ).invoke_all
+
+          # Setup UI
+          RailsMaker::Generators::UiGenerator.new(
+            [hostname],
             destination_root: destination_root
           ).invoke_all
 

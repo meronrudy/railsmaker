@@ -1,0 +1,49 @@
+<% content_for :auth_header do %>
+  <h2 class="mt-6 text-3xl font-bold tracking-tight">Create your account</h2>
+  <p class="mt-2 text-sm opacity-75">
+    Start building amazing applications today
+  </p>
+<% end %>
+
+<%= render layout: 'shared/auth_layout' do %>
+  <%= form_for @user, class: "space-y-6" do |form| %>
+    <div class="form-control">
+      <%= form.email_field :email, class: "input input-lg input-bordered w-full", placeholder: "you@example.com" %>
+    </div>
+
+    <div class="form-control mt-8">
+      <%= form.password_field :password, class: "input input-lg input-bordered w-full", placeholder: "password"  %>
+    </div>
+
+    <% if @user.errors.any? %>
+      <div role="alert" class="alert alert-error bg-error/10 text-error text-sm mt-6">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+        <span><%= @user.errors.full_messages.to_sentence %></span>
+      </div>
+    <% end %>
+
+    <div class="form-control mt-8">
+      <%= form.submit "Create account", class: "btn btn-primary w-full" %>
+    </div>
+
+    <div class="divider text-xs uppercase">or continue with</div>
+
+    <div class="form-control">
+      <%= link_to '/auth/google_oauth2', data: { turbo: false }, class: "btn btn-outline w-full" do %>
+        <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24">
+          <path fill="currentColor" d="M21.35,11.1H12.18V13.83H18.69C18.36,17.64 15.19,19.27 12.19,19.27C8.36,19.27 5,16.25 5,12C5,7.9 8.2,4.73 12.2,4.73C15.29,4.73 17.1,6.7 17.1,6.7L19,4.72C19,4.72 16.56,2 12.1,2C6.42,2 2.03,6.8 2.03,12C2.03,17.05 6.16,22 12.25,22C17.6,22 21.5,18.33 21.5,12.91C21.5,11.76 21.35,11.1 21.35,11.1V11.1Z" />
+        </svg>
+        Sign up with Google
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="mt-6 text-center">
+    <p class="text-sm">
+      Already have an account?
+      <%= link_to t(".sign_in"), sign_in_path, class: "link link-hover font-medium" %>
+    </p>
+  </div>
+<% end %>
