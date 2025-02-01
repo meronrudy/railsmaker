@@ -15,7 +15,7 @@ module RailsMaker
 
     register RailsMaker::Generators::AppGenerator,
              'app:light',
-             'app:light APP_NAME DOCKER_USERNAME IP_ADDRESS HOSTNAME [--skip-daisyui]',
+             'app:light APP_NAME DOCKER_USERNAME IP_ADDRESS DOMAIN [--skip-daisyui]',
              'Generate a new Rails application with a KAMAL deployment'
 
     register RailsMaker::Generators::SignozGenerator,
@@ -32,6 +32,11 @@ module RailsMaker
              'remote:plausible:server',
              'remote:plausible:server SSH_HOST SSH_USER ANALYTICS_HOST [--key-path=PATH]',
              'Install Plausible Analytics on a remote server'
+
+    register RailsMaker::Generators::AuthGenerator,
+             'app:auth',
+             'app:auth FROM_EMAIL HOSTNAME',
+             'Include authentication in the application'
 
     register RailsMaker::Generators::OpentelemetryGenerator,
              'app:opentelemetry',
@@ -50,18 +55,13 @@ module RailsMaker
 
     register RailsMaker::Generators::AppFullGenerator,
              'app:full',
-             'app:full APP_NAME DOCKER_USERNAME IP_ADDRESS HOSTNAME ANALYTICS_DOMAIN [--skip-daisyui]',
-             'Generate a new Rails application with all integrations (OpenTelemetry, Plausible, Sentry)'
-
-    register RailsMaker::Generators::AuthGenerator,
-             'app:auth',
-             'app:auth FROM_EMAIL HOSTNAME',
-             'Generate a new Rails application with authentication'
+             'app:full APP_NAME DOCKER_USERNAME IP_ADDRESS DOMAIN ANALYTICS_DOMAIN [--skip-daisyui]',
+             'Generate a new Rails application with all default integrations'
 
     register RailsMaker::Generators::UiGenerator,
              'app:ui',
              'app:ui HOSTNAME',
-             'Generate a new Rails application with authentication UI'
+             'Include UI in the application'
 
     def self.exit_on_failure?
       true

@@ -6,7 +6,7 @@ module RailsMaker
       argument :app_name
       argument :docker_username
       argument :ip_address
-      argument :hostname # Used for both app domain and deployment hostname
+      argument :domain
       argument :analytics_domain
       argument :from_email
 
@@ -15,7 +15,7 @@ module RailsMaker
 
       def generate_app
         RailsMaker::Generators::AppGenerator.new(
-          [app_name, docker_username, ip_address, hostname],
+          [app_name, docker_username, ip_address, domain],
           skip_daisyui: options[:skip_daisyui],
           destination_root: destination_root
         ).invoke_all
@@ -34,7 +34,7 @@ module RailsMaker
 
           # Setup Plausible
           RailsMaker::Generators::PlausibleInstrumentationGenerator.new(
-            [hostname, analytics_domain],
+            [domain, analytics_domain],
             destination_root: destination_root
           ).invoke_all
 
@@ -45,13 +45,13 @@ module RailsMaker
 
           # Setup Auth
           RailsMaker::Generators::AuthGenerator.new(
-            [from_email, hostname],
+            [from_email, domain],
             destination_root: destination_root
           ).invoke_all
 
           # Setup UI
           RailsMaker::Generators::UiGenerator.new(
-            [hostname],
+            [domain],
             destination_root: destination_root
           ).invoke_all
 

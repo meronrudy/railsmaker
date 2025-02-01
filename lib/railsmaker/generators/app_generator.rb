@@ -8,7 +8,7 @@ module RailsMaker
       argument :app_name
       argument :docker_username
       argument :ip_address
-      argument :hostname
+      argument :domain
 
       class_option :skip_daisyui, type: :boolean, default: false,
                                   desc: 'Skip frontend setup (Tailwind, DaisyUI)'
@@ -146,7 +146,7 @@ module RailsMaker
 
         gsub_file 'config/deploy.yml', 'your-user', docker_username
         gsub_file 'config/deploy.yml', "web:\n    - 192.168.0.1", "web:\n    hosts:\n      - #{ip_address}"
-        gsub_file 'config/deploy.yml', 'app.example.com', hostname
+        gsub_file 'config/deploy.yml', 'app.example.com', domain
         inject_into_file 'config/deploy.yml', after: 'ssl: true' do
           "\n  forward_headers: true"
         end
