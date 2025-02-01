@@ -81,7 +81,7 @@ module RailsMaker
 
       def setup_frontend
         say('Adding Tailwind CSS')
-        gem 'tailwindcss-rails', '~> 4.0.0.rc4'
+        gem 'tailwindcss-rails', '~> 4.0.0.rc5'
 
         say('Installing gems')
         run 'bundle install'

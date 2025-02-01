@@ -7,8 +7,8 @@ module RailsMaker
 
       def add_gems
         gem_group :default do
-          gem 'sentry-ruby', '~> 5.22.2'
-          gem 'sentry-rails', '~> 5.22.2'
+          gem 'sentry-ruby', '~> 5.22.3'
+          gem 'sentry-rails', '~> 5.22.3'
         end
 
         run 'bundle install'
