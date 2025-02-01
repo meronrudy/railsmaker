@@ -45,12 +45,12 @@ module RailsMaker
 
     register RailsMaker::Generators::SentryGenerator,
              'app:sentry',
-             'app:sentry DSN',
+             'app:sentry',
              'Configure Sentry error tracking for the application'
 
     register RailsMaker::Generators::AppFullGenerator,
              'app:full',
-             'app:full APP_NAME DOCKER_USERNAME IP_ADDRESS HOSTNAME ANALYTICS_DOMAIN SENTRY_DSN [--skip-daisyui]',
+             'app:full APP_NAME DOCKER_USERNAME IP_ADDRESS HOSTNAME ANALYTICS_DOMAIN [--skip-daisyui]',
              'Generate a new Rails application with all integrations (OpenTelemetry, Plausible, Sentry)'
 
     register RailsMaker::Generators::AuthGenerator,

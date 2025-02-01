@@ -3,8 +3,6 @@
 module RailsMaker
   module Generators
     class SentryGenerator < BaseGenerator
-      argument :dsn, desc: 'Sentry DSN for the project'
-
       def add_gems
         gem_group :default do
           gem 'sentry-ruby', '~> 5.22.3'
@@ -33,7 +31,7 @@ module RailsMaker
         gsub_file 'config/initializers/sentry.rb', /Sentry\.init.*end\n/m do
           <<~RUBY
             Sentry.init do |config|
-              config.dsn = "#{dsn}"
+              config.dsn = Rails.application.credentials.dig(:sentry_dsn)
               config.breadcrumbs_logger = [ :active_support_logger, :http_logger ]
             end
           RUBY

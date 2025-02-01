@@ -8,7 +8,6 @@ module RailsMaker
       argument :ip_address
       argument :hostname # Used for both app domain and deployment hostname
       argument :analytics_domain
-      argument :sentry_dsn
       argument :from_email
 
       class_option :skip_daisyui, type: :boolean, default: false,
@@ -41,7 +40,6 @@ module RailsMaker
 
           # Setup Sentry
           RailsMaker::Generators::SentryGenerator.new(
-            [sentry_dsn],
             destination_root: destination_root
           ).invoke_all
 

@@ -20,7 +20,7 @@ gem install railsmaker-0.0.1.gem
 
 This gem provides Rails generators for creating new applications and installing additional components.
 
-Sample usage:
+Sample installation:
 
 ```
 # full app:
@@ -29,6 +29,20 @@ railsmaker app:full my-app johndoe 192.168.1.100 my-app.example.com analytics.ex
 # light app:
 railsmaker app:light my-app johndoe 192.168.1.100 my-app.example.com
 ```
+
+Add secrets:
+
+```
+VISUAL="cursor --wait" bin/rails credentials:edit
+
+secret_key_base: <secret
+google_oauth:
+  client_id: <client>
+  client_secret: <client_secret>
+sentry_dsn: <sentry_dsn>
+```
+
+And you are ready to go!
 
 For further help:
 
