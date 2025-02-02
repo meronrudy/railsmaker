@@ -60,6 +60,18 @@ module RailsMaker
           RUBY
         end
 
+        inject_into_file 'app/models/user.rb', after: "include Clearance::User\n" do
+          <<-RUBY
+
+  def self.from_omniauth(auth)
+    where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
+      user.email = auth.info.email
+      user.password = SecureRandom.hex(10)
+    end
+  end
+          RUBY
+        end
+
         rake 'db:migrate'
       end
 
