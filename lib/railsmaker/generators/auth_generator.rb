@@ -8,7 +8,7 @@ module RailsMaker
 
       def add_gems
         gem_group :default do
-          gem 'argon2', '2.3.0'
+          gem 'argon2', '2.3.0' # TODO: delete this line, fixed version due to bug in 2.3.1
           gem 'clearance', '~> 2.9.3'
           gem 'omniauth', '~> 2.1.2'
           gem 'omniauth-google-oauth2', '~> 1.2.1'
