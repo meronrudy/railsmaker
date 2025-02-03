@@ -41,7 +41,7 @@ accessories:
     image: litestream/litestream:0.3
     host: #{ip_address}
     volumes:
-      - "#{app_name}_storage:/rails/storage"
+      - "#{app_name.underscore}_storage:/rails/storage"
     files:
       - config/litestream.yml:/etc/litestream.yml
     cmd: replicate -config /etc/litestream.yml
@@ -60,7 +60,7 @@ accessories:
   restore-db-cache: accessory exec litestream "restore -if-replica-exists -config /etc/litestream.yml /rails/storage/production_cache.sqlite3"
   restore-db-queue: accessory exec litestream "restore -if-replica-exists -config /etc/litestream.yml /rails/storage/production_queue.sqlite3"
   restore-db-cable: accessory exec litestream "restore -if-replica-exists -config /etc/litestream.yml /rails/storage/production_cable.sqlite3"
-  restore-db-ownership: server exec "sudo chown -R 1000:1000 /var/lib/docker/volumes/#{app_name}_storage/_data/"
+  restore-db-ownership: server exec "sudo chown -R 1000:1000 /var/lib/docker/volumes/#{app_name.underscore}_storage/_data/"
           YAML
         end
       end
