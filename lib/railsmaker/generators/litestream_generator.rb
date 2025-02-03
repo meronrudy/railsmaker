@@ -10,7 +10,20 @@ module RailsMaker
         template 'litestream.yml.erb', 'config/litestream.yml'
       end
 
-      def add_kamal_config
+      def add_kamal_secrets
+        inject_into_file '.kamal/secrets.yml', after: "RAILS_MASTER_KEY=$(cat config/master.key)\n" do
+          <<~YAML
+
+# Litestream credentials for S3-compatible storage
+LITESTREAM_ACCESS_KEY_ID=$LITESTREAM_ACCESS_KEY_ID
+LITESTREAM_SECRET_ACCESS_KEY=$LITESTREAM_SECRET_ACCESS_KEY
+LITESTREAM_BUCKET=$LITESTREAM_BUCKET
+LITESTREAM_REGION=$LITESTREAM_REGION
+          YAML
+        end
+      end
+
+      def add_to_deployment
         validations = [
           {
             file: 'config/deploy.yml',
