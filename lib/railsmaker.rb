@@ -24,6 +24,7 @@ require 'railsmaker/generators/sentry_generator'
 require 'railsmaker/generators/app_full_generator'
 require 'railsmaker/generators/auth_generator'
 require 'railsmaker/generators/ui_generator'
+require 'railsmaker/generators/mailjet_generator'
 
 module RailsMaker
   VERSION = '0.0.1'

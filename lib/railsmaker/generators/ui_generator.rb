@@ -7,7 +7,7 @@ module RailsMaker
 
       def add_seo_capabilities
         # Add sitemap_generator gem
-        gem 'sitemap_generator'
+        gem 'sitemap_generator', '6.3.0'
 
         # Install sitemap generator
         rails_command 'sitemap:install'

@@ -8,6 +8,7 @@ module RailsMaker
       argument :ip_address
       argument :domain
       argument :analytics_domain
+      argument :from_name
       argument :from_email
 
       class_option :skip_daisyui, type: :boolean, default: false,
@@ -43,15 +44,23 @@ module RailsMaker
             destination_root: destination_root
           ).invoke_all
 
-          # Setup Auth
-          RailsMaker::Generators::AuthGenerator.new(
-            [from_email, domain],
-            destination_root: destination_root
-          ).invoke_all
+          unless options[:skip_daisyui]
+            # Setup Auth
+            RailsMaker::Generators::AuthGenerator.new(
+              [from_email, domain],
+              destination_root: destination_root
+            ).invoke_all
 
-          # Setup UI
-          RailsMaker::Generators::UiGenerator.new(
-            [domain],
+            # Setup UI
+            RailsMaker::Generators::UiGenerator.new(
+              [domain],
+              destination_root: destination_root
+            ).invoke_all
+          end
+
+          # Setup Mailjet
+          RailsMaker::Generators::MailjetGenerator.new(
+            [from_name, from_email, domain],
             destination_root: destination_root
           ).invoke_all
 

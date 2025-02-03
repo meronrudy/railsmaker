@@ -55,13 +55,18 @@ module RailsMaker
 
     register RailsMaker::Generators::AppFullGenerator,
              'app:full',
-             'app:full APP_NAME DOCKER_USERNAME IP_ADDRESS DOMAIN ANALYTICS_DOMAIN [--skip-daisyui]',
+             'app:full APP_NAME DOCKER_USERNAME IP_ADDRESS DOMAIN ANALYTICS_DOMAIN FROM_NAME FROM_EMAIL [--skip-daisyui]',
              'Generate a new Rails application with all default integrations'
 
     register RailsMaker::Generators::UiGenerator,
              'app:ui',
              'app:ui HOSTNAME',
              'Include UI in the application'
+
+    register RailsMaker::Generators::MailjetGenerator,
+             'app:mailjet',
+             'app:mailjet FROM_NAME FROM_EMAIL HOSTNAME',
+             'Configure Mailjet for sending emails'
 
     def self.exit_on_failure?
       true
