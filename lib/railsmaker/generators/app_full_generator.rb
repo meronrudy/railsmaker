@@ -10,6 +10,7 @@ module RailsMaker
       argument :analytics_domain
       argument :from_name
       argument :from_email
+      argument :bucket_name
 
       class_option :skip_daisyui, type: :boolean, default: false,
                                   desc: 'Skip frontend setup (Tailwind, DaisyUI)'
@@ -61,6 +62,12 @@ module RailsMaker
           # Setup Mailjet
           RailsMaker::Generators::MailjetGenerator.new(
             [from_name, from_email, domain],
+            destination_root: destination_root
+          ).invoke_all
+
+          # Setup Litestream
+          RailsMaker::Generators::LitestreamGenerator.new(
+            [bucket_name, app_name, ip_address],
             destination_root: destination_root
           ).invoke_all
 

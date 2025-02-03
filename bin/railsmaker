@@ -68,6 +68,11 @@ module RailsMaker
              'app:mailjet FROM_NAME FROM_EMAIL HOSTNAME',
              'Configure Mailjet for sending emails'
 
+    register RailsMaker::Generators::LitestreamGenerator,
+             'app:litestream',
+             'app:litestream BUCKET_NAME APP_NAME IP_ADDRESS',
+             'Configure Litestream database backups to S3'
+
     def self.exit_on_failure?
       true
     end
