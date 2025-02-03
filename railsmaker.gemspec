@@ -21,6 +21,12 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'sentry-ruby', '~> 5.22.3'
   s.add_runtime_dependency 'tailwindcss-rails', '~> 4.0.0.rc5'
   s.add_runtime_dependency 'thor', '~> 1.3.2'
+  s.add_runtime_dependency "clearance", "~> 2.9.3"
+  s.add_runtime_dependency "omniauth", "~> 2.1.2"
+  s.add_runtime_dependency "omniauth-google-oauth2", "~> 1.2.1"
+  s.add_runtime_dependency "omniauth-rails_csrf_protection", "~> 1.0.2"
+  s.add_runtime_dependency "sitemap_generator", "~> 6.3.0"
+  s.add_runtime_dependency "mailjet", "~> 1.8"
 
   s.license = 'MIT'
   s.required_ruby_version = '>= 3.2.0'

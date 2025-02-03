@@ -3,8 +3,7 @@ module RailsMaker
     class LitestreamGenerator < BaseGenerator
       source_root File.expand_path('templates/litestream', __dir__)
 
-      argument :bucket_name, desc: 'S3 bucket name for database backups'
-      argument :app_name, desc: 'Application name for volume naming'
+      argument :app_name, desc: 'Application name for volume and bucket naming'
       argument :ip_address, desc: 'Server IP address'
 
       def create_litestream_config
@@ -15,7 +14,7 @@ module RailsMaker
         validations = [
           {
             file: 'config/deploy.yml',
-            patterns: ['volumes:']
+            patterns: ["bin/rails dbconsole\"\n", "arch: amd64\n"]
           }
         ]
 
