@@ -33,12 +33,6 @@ module RailsMaker
             destination_root: destination_root
           ).invoke_all
 
-          # Setup Plausible
-          RailsMaker::Generators::PlausibleInstrumentationGenerator.new(
-            [domain, analytics_domain],
-            destination_root: destination_root
-          ).invoke_all
-
           # Setup Sentry
           RailsMaker::Generators::SentryGenerator.new(
             destination_root: destination_root
@@ -53,7 +47,13 @@ module RailsMaker
 
             # Setup UI
             RailsMaker::Generators::UiGenerator.new(
-              [domain],
+              [domain, app_name],
+              destination_root: destination_root
+            ).invoke_all
+
+            # Setup Plausible
+            RailsMaker::Generators::PlausibleInstrumentationGenerator.new(
+              [domain, analytics_domain],
               destination_root: destination_root
             ).invoke_all
           end

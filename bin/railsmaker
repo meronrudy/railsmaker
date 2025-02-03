@@ -60,7 +60,7 @@ module RailsMaker
 
     register RailsMaker::Generators::UiGenerator,
              'app:ui',
-             'app:ui HOSTNAME',
+             'app:ui HOSTNAME APP_NAME',
              'Include UI in the application'
 
     register RailsMaker::Generators::MailjetGenerator,

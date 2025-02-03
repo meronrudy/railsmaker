@@ -4,6 +4,7 @@ module RailsMaker
       source_root File.expand_path('templates/ui', __dir__)
 
       argument :host, desc: 'Host domain for the application'
+      argument :app_name, desc: 'Name of the application'
 
       def add_seo_capabilities
         # Add sitemap_generator gem
@@ -26,11 +27,9 @@ module RailsMaker
         directory 'app/javascript', 'app/javascript', force: true
         directory 'public', 'public', force: true
 
-        copy_file 'config/sitemap.rb', 'config/sitemap.rb', force: true
-      end
-
-      def update_robots_txt
-        gsub_file 'public/robots.txt', 'your-host', host
+        template 'config/sitemap.rb', 'config/sitemap.rb', force: true
+        template 'public/robots.txt', 'public/robots.txt', force: true
+        template 'app/views/shared/_structured_data.html.erb', 'app/views/shared/_structured_data.html.erb', force: true
       end
 
       def add_routes

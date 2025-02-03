@@ -2,7 +2,7 @@
 
 User-agent: *
 Allow: /
-Sitemap: https://test-railsmaker.gerovlabs.com/sitemap.xml.gz
+Sitemap: https://<%= host %>/sitemap.xml.gz
 
 Disallow: /auth/
 Disallow: /rails/

@@ -1,4 +1,4 @@
-SitemapGenerator::Sitemap.default_host = "https://test-railsmaker.gerovlabs.com"
+SitemapGenerator::Sitemap.default_host = "<%= host %>"
 
 SitemapGenerator::Sitemap.create do
   add root_path, changefreq: "weekly", priority: 1.0
