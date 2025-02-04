@@ -1,0 +1,15 @@
+# frozen_string_literal: true
+
+Rails.application.configure do
+  config.lograge.enabled = true
+  config.lograge.base_controller_class = ['ActionController::Base']
+  config.lograge.custom_payload do |controller|
+    {
+      host: controller.request.host,
+      remote_ip: controller.request.remote_ip,
+      request_id: controller.request.request_id,
+      user_id: controller.try(:current_user)&.id
+    }
+  end
+  config.lograge.formatter = Lograge::Formatters::Logstash.new
+end 
