@@ -21,6 +21,7 @@ module GeneratorHelper
 
   def copy_test_fixtures
     %w[
+      .kamal
       config/initializers
       config
       config/environments
@@ -42,6 +43,9 @@ module GeneratorHelper
 
     copy_file fixture_path('Dockerfile'),
               'Dockerfile'
+
+    copy_file fixture_path('.kamal/secrets'),
+              '.kamal/secrets'
 
     copy_file fixture_path('config/environment.rb'),
               'config/environment.rb'
