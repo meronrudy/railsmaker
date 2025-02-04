@@ -1,4 +1,4 @@
-SitemapGenerator::Sitemap.default_host = "https://<%= host %>"
+SitemapGenerator::Sitemap.default_host = "https://#{Rails.application.credentials.dig(:app, :host)}"
 
 SitemapGenerator::Sitemap.create do
   add root_path, changefreq: "weekly", priority: 1.0

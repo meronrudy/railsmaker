@@ -23,7 +23,7 @@ module RailsMaker
             Mailjet.configure do |config|
               config.api_key = Rails.application.credentials.dig(:mailjet, :api_key)
               config.secret_key = Rails.application.credentials.dig(:mailjet, :secret_key)
-              config.default_from = '#{from_name} <#{from_email}>'
+              config.default_from = Rails.application.credentials.dig(:app, :mailer_sender)
               config.api_version = "v3.1"
             end
           RUBY
@@ -40,11 +40,11 @@ module RailsMaker
 
         gsub_file 'app/mailers/application_mailer.rb', 
                   /default from: .+$/, 
-                  "default from: '#{from_name} <#{from_email}>'"
+                  "default from: Rails.application.credentials.dig(:app, :mailer_sender)"
 
         gsub_file 'config/environments/production.rb',
                   /config\.action_mailer\.default_url_options = \{ host: .+\}/,
-                  "config.action_mailer.default_url_options = { host: '#{host}' }"
+                  "config.action_mailer.default_url_options = { host: Rails.application.credentials.dig(:app, :host) }"
       end
 
       def git_commit

@@ -59,11 +59,15 @@ module RailsMaker
 
           say('Generating main controller with a landing page')
           generate :controller, 'main'
+
           if options[:skip_daisyui]
             create_file 'app/views/main/index.html.erb', "<h1>Welcome to #{app_name}</h1>"
           else
             copy_file 'main_index.html.erb', 'app/views/main/index.html.erb'
           end
+
+          copy_file 'credentials.example.yml', 'config/credentials.example.yml'
+
           route "root 'main#index'"
         end
 
