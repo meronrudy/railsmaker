@@ -11,7 +11,7 @@ module RailsMaker
       end
 
       def add_kamal_secrets
-        inject_into_file '.kamal/secrets.yml', after: "RAILS_MASTER_KEY=$(cat config/master.key)\n" do
+        inject_into_file '.kamal/secrets', after: "RAILS_MASTER_KEY=$(cat config/master.key)\n" do
           <<~YAML
 
 # Litestream credentials for S3-compatible storage

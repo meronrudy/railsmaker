@@ -8,11 +8,6 @@ module RailsMaker
   class CLI < Thor
     include Thor::Actions
 
-    register RailsMaker::Generators::DockerGenerator,
-             'remote:init',
-             'remote:init SSH_HOST SSH_USER [--key-path=PATH]',
-             'Check and install Docker on a remote Ubuntu server'
-
     register RailsMaker::Generators::AppGenerator,
              'app:light',
              'app:light APP_NAME DOCKER_USERNAME IP_ADDRESS DOMAIN [--skip-daisyui]',

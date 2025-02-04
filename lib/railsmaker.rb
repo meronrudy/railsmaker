@@ -14,7 +14,6 @@ require 'railsmaker/generators/shell_script_generator'
 
 # App generators
 require 'railsmaker/generators/app_generator'
-require 'railsmaker/generators/docker_generator'
 require 'railsmaker/generators/plausible_generator'
 require 'railsmaker/generators/signoz_generator'
 require 'railsmaker/generators/signoz_opentelemetry_generator'
