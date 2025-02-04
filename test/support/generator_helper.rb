@@ -7,54 +7,56 @@ module GeneratorHelper
     prepare_destination
     copy_test_fixtures
 
-    # Force overwrite of files for all generators
     RailsMaker::Generators::BaseGenerator.any_instance
                                          .stubs(:options)
                                          .returns(force: true)
 
-    # Stub Rails application for configuration
-    Rails.stubs(:application).returns(mock)
-    Rails.application.stubs(:configure).yields(mock)
-    Rails.application.stubs(:config).returns(mock)
-    Rails.application.config.stubs(:lograge).returns(mock)
+    RailsMaker::Generators::BaseGenerator.any_instance.stubs(:git).returns(true)
 
-    # Stub git to prevent actual commits
-    RailsMaker::Generators::BaseGenerator.any_instance.stubs(:git)
-
-    # Stub rails commands since we don't have a full Rails environment
     RailsMaker::Generators::BaseGenerator.any_instance.stubs(:rails_command).returns(true)
     RailsMaker::Generators::BaseGenerator.any_instance.stubs(:rake).returns(true)
-    # RailsMaker::Generators::BaseGenerator.any_instance.stubs(:generate).returns(true)
   end
 
   private
 
   def copy_test_fixtures
-    # Create all required directories under the destination root.
     %w[
       config/initializers
       config
+      config/environments
       lib/templates/opentelemetry
+      app/assets/tailwind
+      app/controllers
+      app/mailers
       app/views/layouts
+      app/views/main
       app/models
       db/migrate
     ].each { |dir| mkdir_p(dir) }
 
-    # Copy fixture files from the test/fixtures directory.
     copy_file fixture_path('db/migrate/add_omniauth_to_users.rb'),
               'db/migrate/20240101000000_add_omniauth_to_users.rb'
 
     copy_file fixture_path('Gemfile'),
               'Gemfile'
 
+    copy_file fixture_path('Dockerfile'),
+              'Dockerfile'
+
     copy_file fixture_path('config/environment.rb'),
               'config/environment.rb'
+
+    copy_file fixture_path('config/environments/production.rb'),
+              'config/environments/production.rb'
 
     copy_file fixture_path('config/routes.rb'),
               'config/routes.rb'
 
     copy_file fixture_path('app/views/layouts/application.html.erb'),
               'app/views/layouts/application.html.erb'
+
+    copy_file fixture_path('app/controllers/application_controller.rb'),
+              'app/controllers/application_controller.rb'
 
     copy_file fixture_path('config/initializers/sentry.rb'),
               'config/initializers/sentry.rb'
@@ -76,6 +78,18 @@ module GeneratorHelper
 
     copy_file fixture_path('config/deploy.yml'),
               'config/deploy.yml'
+
+    copy_file fixture_path('app/credentials.example.yml'),
+              'config/credentials.example.yml'
+
+    copy_file fixture_path('app/views/main/index.html.erb'),
+              'app/views/main/index.html.erb'
+
+    copy_file fixture_path('app/assets/tailwind/application.css'),
+              'app/assets/tailwind/application.css'
+
+    copy_file fixture_path('app/mailers/application_mailer.rb'),
+              'app/mailers/application_mailer.rb'
   end
 
   def fixture_path(rel_path)

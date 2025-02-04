@@ -18,4 +18,10 @@ class SentryGeneratorTest < Rails::Generators::TestCase
     assert_file 'Gemfile', /gem "sentry-rails"/
     assert_file 'config/initializers/sentry.rb'
   end
+
+  def test_generator_creates_git_commit
+    assert_generator_git_commit('Add Sentry')
+
+    run_generator
+  end
 end

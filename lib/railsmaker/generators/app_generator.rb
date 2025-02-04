@@ -3,6 +3,7 @@
 module RailsMaker
   module Generators
     class AppGenerator < BaseGenerator
+      class AppGeneratorError < StandardError; end
       source_root File.expand_path('templates/app', __dir__)
 
       argument :app_name
@@ -23,18 +24,16 @@ module RailsMaker
           unless rails_version == required_version
             say_status 'error',
                        "Rails version #{rails_version} detected. RailsMaker requires Rails #{REQUIRED_RAILS_VERSION}", :red
-            exit 1
+            raise AppGeneratorError, 'Wrong rails version'
           end
         rescue NameError
           say_status 'error', 'Rails is not installed. Please install Rails 8.0.1 first', :red
-          exit 1
+          raise AppGeneratorError, 'Rails is not installed'
         end
-
-        self.destination_root = File.expand_path(app_name, Dir.pwd)
 
         if File.directory?(File.expand_path(app_name, Dir.pwd))
           say_status 'error', "Directory '#{app_name}' already exists", :red
-          exit 1
+          raise AppGeneratorError, 'Directory already exists'
         end
 
         say('Creating new Rails app')
@@ -74,7 +73,7 @@ module RailsMaker
         say 'Successfully created Rails app with RailsMaker'
       rescue StandardError => e
         say_status 'error', "Failed to generate app: #{e.message}, check the file in #{destination_root}", :red
-        exit 1
+        raise AppGeneratorError, e.message
       end
 
       def git_commit

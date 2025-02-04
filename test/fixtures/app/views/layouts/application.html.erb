@@ -15,7 +15,7 @@
   </head>
   <body class="min-h-screen bg-base-200 flex flex-col">
     <%= render "layouts/navbar" unless current_page?(root_path) %>
-    <main class="flex-1 flex flex-col">
+    <main class="container mx-auto mt-28 px-5 flex">
       <%= render "shared/flash" %>
       <%= yield %>
       <%= render "shared/footer" %>

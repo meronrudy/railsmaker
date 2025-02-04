@@ -3,11 +3,9 @@
 require 'simplecov'
 
 SimpleCov.start do
-  add_filter '/spec/'
-  add_filter '/vendor/'
+  add_filter '/test/'
 
   add_group 'Generators', 'lib/railsmaker/generators'
-  add_group 'Core', 'lib/railsmaker'
 end
 
 require 'minitest/autorun'

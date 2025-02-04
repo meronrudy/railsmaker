@@ -36,4 +36,10 @@ class OpentelemetryGeneratorTest < Rails::Generators::TestCase
     run_generator %w[my-service]
     assert_file 'config/initializers/lograge.rb'
   end
+
+  def test_generator_creates_git_commit
+    assert_generator_git_commit('Add OpenTelemetry')
+
+    run_generator %w[my-service]
+  end
 end

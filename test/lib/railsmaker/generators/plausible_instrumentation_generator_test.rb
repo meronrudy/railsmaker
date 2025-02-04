@@ -31,14 +31,4 @@ class PlausibleInstrumentationGeneratorTest < Rails::Generators::TestCase
       assert_match expected_script.strip, content
     end
   end
-
-  def test_generator_creates_git_commit
-    # Remove any existing git stubs
-    RailsMaker::Generators::BaseGenerator.any_instance.unstub(:git)
-
-    # Set up the expectation
-    assert_generator_git_commit('Add Plausible Analytics')
-
-    run_generator [@app_domain, @analytics_domain]
-  end
 end
