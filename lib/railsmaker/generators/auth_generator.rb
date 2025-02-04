@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RailsMaker
   module Generators
     class AuthGenerator < BaseGenerator
@@ -27,7 +29,7 @@ module RailsMaker
       def configure_clearance
         gsub_file 'config/initializers/clearance.rb',
                   'config.mailer_sender = "reply@example.com"',
-                  "config.mailer_sender = Rails.application.credentials.dig(:app, :mailer_sender)"
+                  'config.mailer_sender = Rails.application.credentials.dig(:app, :mailer_sender)'
 
         inject_into_file 'config/initializers/clearance.rb', after: 'Clearance.configure do |config|' do
           "\n  config.redirect_url = \"/demo\""

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RailsMaker
   module Generators
     class LitestreamGenerator < BaseGenerator
@@ -14,12 +16,12 @@ module RailsMaker
         inject_into_file '.kamal/secrets', after: "RAILS_MASTER_KEY=$(cat config/master.key)\n" do
           <<~YAML
 
-# Litestream credentials for S3-compatible storage
-LITESTREAM_ACCESS_KEY_ID=$LITESTREAM_ACCESS_KEY_ID
-LITESTREAM_SECRET_ACCESS_KEY=$LITESTREAM_SECRET_ACCESS_KEY
-LITESTREAM_BUCKET=$LITESTREAM_BUCKET
-LITESTREAM_REGION=$LITESTREAM_REGION
-LITESTREAM_BUCKET_NAME=#{app_name}
+            # Litestream credentials for S3-compatible storage
+            LITESTREAM_ACCESS_KEY_ID=$LITESTREAM_ACCESS_KEY_ID
+            LITESTREAM_SECRET_ACCESS_KEY=$LITESTREAM_SECRET_ACCESS_KEY
+            LITESTREAM_BUCKET=$LITESTREAM_BUCKET
+            LITESTREAM_REGION=$LITESTREAM_REGION
+            LITESTREAM_BUCKET_NAME=#{app_name}
           YAML
         end
       end
@@ -37,21 +39,21 @@ LITESTREAM_BUCKET_NAME=#{app_name}
         inject_into_file 'config/deploy.yml', after: "arch: amd64\n" do
           <<~YAML
 
-accessories:
-  litestream:
-    image: litestream/litestream:0.3
-    host: #{ip_address}
-    volumes:
-      - "#{app_name.underscore}_storage:/rails/storage"
-    files:
-      - config/litestream.yml:/etc/litestream.yml
-    cmd: replicate -config /etc/litestream.yml
-    env:
-      secret:
-        - LITESTREAM_ACCESS_KEY_ID
-        - LITESTREAM_SECRET_ACCESS_KEY
-        - LITESTREAM_BUCKET
-        - LITESTREAM_REGION
+            accessories:
+              litestream:
+                image: litestream/litestream:0.3
+                host: #{ip_address}
+                volumes:
+                  - "#{app_name.underscore}_storage:/rails/storage"
+                files:
+                  - config/litestream.yml:/etc/litestream.yml
+                cmd: replicate -config /etc/litestream.yml
+                env:
+                  secret:
+                    - LITESTREAM_ACCESS_KEY_ID
+                    - LITESTREAM_SECRET_ACCESS_KEY
+                    - LITESTREAM_BUCKET
+                    - LITESTREAM_REGION
           YAML
         end
 

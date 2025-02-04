@@ -8,14 +8,14 @@ module RailsMaker
 
       def add_plausible_script
         content = <<~HTML.indent(4)
-            <%# Plausible Analytics %>
-            <script defer data-domain="#{app_domain}" src="https://#{analytics_domain}/js/script.file-downloads.outbound-links.pageview-props.revenue.tagged-events.js"></script>
-            <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
+          <%# Plausible Analytics %>
+          <script defer data-domain="#{app_domain}" src="https://#{analytics_domain}/js/script.file-downloads.outbound-links.pageview-props.revenue.tagged-events.js"></script>
+          <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
         HTML
 
-        gsub_file 'app/views/layouts/application.html.erb', 
-          /<%# Plausible Analytics %>.*?<\/script>\s*<script>.*?<\/script>/m, 
-          content.strip.to_s
+        gsub_file 'app/views/layouts/application.html.erb',
+                  %r{<%# Plausible Analytics %>.*?</script>\s*<script>.*?</script>}m,
+                  content.strip.to_s
       end
 
       def git_commit
@@ -24,4 +24,3 @@ module RailsMaker
     end
   end
 end
-

@@ -10,20 +10,10 @@ class AuthGeneratorTest < Rails::Generators::TestCase
 
   def setup
     super
-    # Create migration file that would be generated
-    mkdir_p('db/migrate')
-    @migration_path = 'db/migrate/20240101000000_add_omniauth_to_users.rb'
-    create_file @migration_path, <<~RUBY
-      class AddOmniauthToUsers < ActiveRecord::Migration[7.1]
-        def change
-          add_column :users, :provider, :string
-          add_column :users, :uid, :string
-        end
-      end
-    RUBY
 
     # Stub the migration file lookup
-    Dir.stubs(:[]).with('db/migrate/*add_omniauth_to_users.rb').returns([@migration_path])
+    migration_path = 'db/migrate/20240101000000_add_omniauth_to_users.rb'
+    Dir.stubs(:[]).with('db/migrate/*add_omniauth_to_users.rb').returns([migration_path])
   end
 
   def teardown

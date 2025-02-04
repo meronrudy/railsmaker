@@ -30,74 +30,56 @@ module GeneratorHelper
   private
 
   def copy_test_fixtures
-    # Create all required directories
-    mkdir_p('config/initializers')
-    mkdir_p('lib/templates/opentelemetry')
-    mkdir_p('app/views/layouts')
-    mkdir_p('app/models')
-    mkdir_p('db/migrate')
+    # Create all required directories under the destination root.
+    %w[
+      config/initializers
+      config
+      lib/templates/opentelemetry
+      app/views/layouts
+      app/models
+      db/migrate
+    ].each { |dir| mkdir_p(dir) }
 
-    # Create migration file that would be generated
-    create_file 'db/migrate/20240101000000_add_omniauth_to_users.rb', <<~RUBY
-      class AddOmniauthToUsers < ActiveRecord::Migration[7.1]
-        def change
-          add_column :users, :provider, :string
-          add_column :users, :uid, :string
-        end
-      end
-    RUBY
+    # Copy fixture files from the test/fixtures directory.
+    copy_file fixture_path('db/migrate/add_omniauth_to_users.rb'),
+              'db/migrate/20240101000000_add_omniauth_to_users.rb'
 
-    # Copy fixture files to destination
-    copy_file(
-      File.expand_path('../fixtures/opentelemetry/deploy.yml', __dir__),
-      'config/deploy.yml'
-    )
-    copy_file(
-      File.expand_path('../fixtures/auth/user.rb', __dir__),
-      'app/models/user.rb'
-    )
+    copy_file fixture_path('Gemfile'),
+              'Gemfile'
 
-    # Copy template files
-    copy_file(
-      File.expand_path('../fixtures/opentelemetry/templates/lograge.rb.erb', __dir__),
-      'lib/templates/opentelemetry/lograge.rb.erb'
-    )
+    copy_file fixture_path('config/environment.rb'),
+              'config/environment.rb'
 
-    # Create other required files
-    create_file('Gemfile', "source 'https://rubygems.org'\n")
-    create_file('config/environment.rb', "Rails.application.initialize!\n")
-    create_file('config/routes.rb', <<~RUBY)
-      Rails.application.routes.draw do
-      end
-    RUBY
+    copy_file fixture_path('config/routes.rb'),
+              'config/routes.rb'
 
-    # Create layout with proper head section for scripts
-    create_file('app/views/layouts/application.html.erb', <<~HTML)
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>App</title>
-          <%# Plausible Analytics %>
-          <script defer data-domain="someapp" src="sample-src"></script>
-          <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
-        </head>
-        <body>
-          <%= yield %>
-        </body>
-      </html>
-    HTML
+    copy_file fixture_path('app/views/layouts/application.html.erb'),
+              'app/views/layouts/application.html.erb'
 
-    # Create initializer files
-    create_file('config/initializers/sentry.rb',
-                "Sentry.init do |config|\n  config.dsn = ENV['SENTRY_DSN']\nend")
-    create_file('config/initializers/clearance.rb',
-                "Clearance.configure do |config|\n  config.mailer_sender = \"reply@example.com\"\nend")
-    create_file('config/initializers/devise.rb',
-                "Devise.setup do |config|\n  # Configuration here\nend")
-    create_file('config/initializers/lograge.rb',
-                "Rails.application.configure do\n  config.lograge.enabled = true\nend")
-    create_file('config/initializers/omniauth.rb',
-                "Rails.application.config.middleware.use OmniAuth::Builder do\n  # Providers will be configured here\nend")
+    copy_file fixture_path('config/initializers/sentry.rb'),
+              'config/initializers/sentry.rb'
+
+    copy_file fixture_path('config/initializers/clearance.rb'),
+              'config/initializers/clearance.rb'
+
+    copy_file fixture_path('config/initializers/devise.rb'),
+              'config/initializers/devise.rb'
+
+    copy_file fixture_path('config/initializers/lograge.rb'),
+              'config/initializers/lograge.rb'
+
+    copy_file fixture_path('config/initializers/omniauth.rb'),
+              'config/initializers/omniauth.rb'
+
+    copy_file fixture_path('auth/user.rb'),
+              'app/models/user.rb'
+
+    copy_file fixture_path('config/deploy.yml'),
+              'config/deploy.yml'
+  end
+
+  def fixture_path(rel_path)
+    File.expand_path(File.join('test', 'fixtures', rel_path))
   end
 
   def mkdir_p(path)
@@ -106,10 +88,6 @@ module GeneratorHelper
 
   def copy_file(src, dest)
     FileUtils.cp(src, File.join(destination_root, dest))
-  end
-
-  def create_file(path, content)
-    File.write(File.join(destination_root, path), content)
   end
 
   def assert_generator_git_commit(message)

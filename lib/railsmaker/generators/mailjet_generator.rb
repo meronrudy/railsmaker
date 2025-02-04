@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RailsMaker
   module Generators
     class MailjetGenerator < BaseGenerator
@@ -38,13 +40,13 @@ module RailsMaker
           RUBY
         end
 
-        gsub_file 'app/mailers/application_mailer.rb', 
-                  /default from: .+$/, 
-                  "default from: Rails.application.credentials.dig(:app, :mailer_sender)"
+        gsub_file 'app/mailers/application_mailer.rb',
+                  /default from: .+$/,
+                  'default from: Rails.application.credentials.dig(:app, :mailer_sender)'
 
         gsub_file 'config/environments/production.rb',
                   /config\.action_mailer\.default_url_options = \{ host: .+\}/,
-                  "config.action_mailer.default_url_options = { host: Rails.application.credentials.dig(:app, :host) }"
+                  'config.action_mailer.default_url_options = { host: Rails.application.credentials.dig(:app, :host) }'
       end
 
       def git_commit
@@ -52,4 +54,4 @@ module RailsMaker
       end
     end
   end
-end 
+end

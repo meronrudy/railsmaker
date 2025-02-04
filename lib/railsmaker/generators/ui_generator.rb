@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RailsMaker
   module Generators
     class UiGenerator < BaseGenerator
