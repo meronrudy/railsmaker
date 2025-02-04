@@ -9,13 +9,10 @@ module RailsMaker
       argument :app_name, desc: 'Name of the application'
 
       def add_seo_capabilities
-        # Add sitemap_generator gem
         gem 'sitemap_generator', '6.3.0'
 
-        # Install sitemap generator
         rails_command 'sitemap:install'
 
-        # Modify Dockerfile to include sitemap generation
         inject_into_file 'Dockerfile', after: "./bin/rails assets:precompile\n" do
           "\n# Generate sitemap\nRUN SECRET_KEY_BASE_DUMMY=1 bundle exec rails sitemap:refresh\n"
         end
