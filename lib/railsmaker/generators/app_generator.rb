@@ -31,7 +31,9 @@ module RailsMaker
           raise AppGeneratorError, 'Rails is not installed'
         end
 
-        if File.directory?(File.expand_path(app_name, Dir.pwd))
+        self.destination_root = File.expand_path(app_name, current_dir)
+
+        if !in_minitest? && File.directory?(destination_root)
           say_status 'error', "Directory '#{app_name}' already exists", :red
           raise AppGeneratorError, 'Directory already exists'
         end
@@ -153,6 +155,14 @@ module RailsMaker
         inject_into_file 'config/deploy.yml', after: 'ssl: true' do
           "\n  forward_headers: true"
         end
+      end
+
+      def current_dir
+        Dir.pwd
+      end
+
+      def in_minitest?
+        defined?(Minitest)
       end
     end
   end

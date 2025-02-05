@@ -22,6 +22,8 @@ class AppFullGeneratorTest < Rails::Generators::TestCase
     RailsMaker::Generators::MailjetGenerator.any_instance.expects(:invoke_all)
     RailsMaker::Generators::LitestreamGenerator.any_instance.expects(:invoke_all)
 
-    run_generator %w[MyApp username 192.168.1.1 myapp.com analytics.myapp.com Company test@example.com]
+    run_generator %w[the-app username 192.168.1.1 myapp.com analytics.myapp.com Company test@example.com]
+
+    assert_directory 'the-app'
   end
 end

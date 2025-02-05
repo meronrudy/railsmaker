@@ -53,4 +53,20 @@ class UiGeneratorTest < Rails::Generators::TestCase
       assert_match(/get "terms", to: "pages#terms", as: :terms/, content)
     end
   end
+
+  def test_ui_generator_with_duplicate_files
+    run_generator ['example.com', 'MyApp']
+    run_generator ['example.com', 'MyApp']
+    # Ensure no duplicate routes
+    assert_file 'config/routes.rb' do |content|
+      assert_equal content.scan(/get "demo", to: "demo#index", as: :demo/).size, 1
+    end
+    # Ensure no duplicate asset files
+    assert_file 'public/robots.txt'
+  end
+
+  def test_ui_generator_creates_git_commit
+    assert_generator_git_commit('Add sample UI layer')
+    run_generator ['example.com', 'MyApp']
+  end
 end
