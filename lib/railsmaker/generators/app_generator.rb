@@ -14,16 +14,6 @@ module RailsMaker
 
       REQUIRED_RAILS_VERSION = '8.0.1'
 
-      attr_reader :name, :docker, :ip, :domain
-
-      def initialize(...)
-        super
-        @name = options[:name]
-        @docker = options[:docker]
-        @ip = options[:ip]
-        @domain = options[:domain]
-      end
-
       def generate_app
         begin
           rails_version = Gem::Version.new(Rails.version)
@@ -39,19 +29,19 @@ module RailsMaker
           raise AppGeneratorError, 'Rails is not installed'
         end
 
-        self.destination_root = File.expand_path(name, current_dir)
+        self.destination_root = File.expand_path(options[:name], current_dir)
 
         if !in_minitest? && File.directory?(destination_root)
-          say_status 'error', "Directory '#{name}' already exists", :red
+          say_status 'error', "Directory '#{options[:name]}' already exists", :red
           raise AppGeneratorError, 'Directory already exists'
         end
 
         say('Creating new Rails app')
-        rails_args = [name]
-        rails_args << '--javascript=bun' unless options[:skip_daisyui]
+        rails_args = [options[:name]]
+        rails_args << '--javascript=bun' if options[:ui]
         Rails::Generators::AppGenerator.start(rails_args)
 
-        setup_frontend unless options[:skip_daisyui]
+        setup_frontend if options[:ui]
 
         validate_gsub_strings([
                                 {
@@ -68,10 +58,10 @@ module RailsMaker
         say('Generating main controller with a landing page')
         generate :controller, 'main'
 
-        if options[:skip_daisyui]
-          create_file 'app/views/main/index.html.erb', "<h1>Welcome to #{name}</h1>"
-        else
+        if options[:ui]
           copy_file 'main_index.html.erb', 'app/views/main/index.html.erb'
+        else
+          create_file 'app/views/main/index.html.erb', "<h1>Welcome to #{options[:name]}</h1>"
         end
 
         copy_file 'credentials.example.yml', 'config/credentials.example.yml'
@@ -155,9 +145,9 @@ module RailsMaker
       def setup_kamal
         say('Configuring Kamal')
 
-        gsub_file 'config/deploy.yml', 'your-user', docker
-        gsub_file 'config/deploy.yml', "web:\n    - 192.168.0.1", "web:\n    hosts:\n      - #{ip}"
-        gsub_file 'config/deploy.yml', 'app.example.com', domain
+        gsub_file 'config/deploy.yml', 'your-user', options[:docker]
+        gsub_file 'config/deploy.yml', "web:\n    - 192.168.0.1", "web:\n    hosts:\n      - #{options[:ip]}"
+        gsub_file 'config/deploy.yml', 'app.example.com', options[:domain]
         inject_into_file 'config/deploy.yml', after: 'ssl: true' do
           "\n  forward_headers: true"
         end

@@ -9,7 +9,6 @@ module RailsMaker
         options[:check_path] = '~/plausible-ce'
         options[:title] = "Installing Plausible Analytics on remote server #{options[:ssh_user]}@#{options[:ssh_host]}"
 
-        # Make analytics_host available to the template
         @analytics_host = options[:analytics_host]
       end
 

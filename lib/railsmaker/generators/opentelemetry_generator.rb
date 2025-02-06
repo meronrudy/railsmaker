@@ -53,10 +53,7 @@ module RailsMaker
       def configure_opentelemetry
         environment_file = 'config/environment.rb'
 
-        # Add require at the top
         prepend_to_file environment_file, "require 'opentelemetry/sdk'\n"
-
-        # Add configuration after Rails.application.initialize!
         inject_into_file environment_file, before: 'Rails.application.initialize!' do
           <<~RUBY
 
