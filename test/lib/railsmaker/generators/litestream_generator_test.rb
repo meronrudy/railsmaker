@@ -11,7 +11,7 @@ class LitestreamGeneratorTest < Rails::Generators::TestCase
   end
 
   def test_generator_creates_litestream_config
-    run_generator ['MyApp', '192.168.1.1']
+    run_generator ['--bucketname=MyApp', '--name=MyApp', '--ip=192.168.1.1']
 
     assert_file 'config/litestream.yml' do |content|
       assert_match(/access-key-id: \${LITESTREAM_ACCESS_KEY_ID}/, content)
@@ -22,7 +22,7 @@ class LitestreamGeneratorTest < Rails::Generators::TestCase
   end
 
   def test_generator_adds_kamal_secrets
-    run_generator ['MyApp', '192.168.1.1']
+    run_generator ['--bucketname=MyApp', '--name=MyApp', '--ip=192.168.1.1']
 
     assert_file '.kamal/secrets' do |content|
       assert_match(/LITESTREAM_ACCESS_KEY_ID=/, content)
@@ -34,7 +34,7 @@ class LitestreamGeneratorTest < Rails::Generators::TestCase
   end
 
   def test_generator_adds_deployment_config
-    run_generator ['MyApp', '192.168.1.1']
+    run_generator ['--bucketname=MyApp', '--name=MyApp', '--ip=192.168.1.1']
 
     assert_file 'config/deploy.yml' do |content|
       assert_match(/accessories:/, content)
@@ -48,7 +48,6 @@ class LitestreamGeneratorTest < Rails::Generators::TestCase
 
   def test_generator_creates_git_commit
     assert_generator_git_commit('Add Litestream configuration')
-
-    run_generator ['MyApp', '192.168.1.1']
+    run_generator ['--bucketname=MyApp', '--name=MyApp', '--ip=192.168.1.1']
   end
 end

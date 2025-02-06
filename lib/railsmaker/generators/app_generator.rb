@@ -6,15 +6,23 @@ module RailsMaker
       class AppGeneratorError < StandardError; end
       source_root File.expand_path('templates/app', __dir__)
 
-      argument :app_name
-      argument :docker_username
-      argument :ip_address
-      argument :domain
-
-      class_option :skip_daisyui, type: :boolean, default: false,
-                                  desc: 'Skip frontend setup (Tailwind, DaisyUI)'
+      class_option :name, type: :string, required: true, desc: 'Name of the application'
+      class_option :docker, type: :string, required: true, desc: 'Docker username'
+      class_option :ip, type: :string, required: true, desc: 'Server IP address'
+      class_option :domain, type: :string, required: true, desc: 'Domain name'
+      class_option :ui, type: :boolean, default: false, desc: 'Include UI assets?'
 
       REQUIRED_RAILS_VERSION = '8.0.1'
+
+      attr_reader :name, :docker, :ip, :domain
+
+      def initialize(...)
+        super
+        @name = options[:name]
+        @docker = options[:docker]
+        @ip = options[:ip]
+        @domain = options[:domain]
+      end
 
       def generate_app
         begin
@@ -31,48 +39,44 @@ module RailsMaker
           raise AppGeneratorError, 'Rails is not installed'
         end
 
-        self.destination_root = File.expand_path(app_name, current_dir)
+        self.destination_root = File.expand_path(name, current_dir)
 
         if !in_minitest? && File.directory?(destination_root)
-          say_status 'error', "Directory '#{app_name}' already exists", :red
+          say_status 'error', "Directory '#{name}' already exists", :red
           raise AppGeneratorError, 'Directory already exists'
         end
 
         say('Creating new Rails app')
-        rails_args = [app_name]
+        rails_args = [name]
         rails_args << '--javascript=bun' unless options[:skip_daisyui]
         Rails::Generators::AppGenerator.start(rails_args)
 
-        inside(destination_root) do
-          setup_frontend unless options[:skip_daisyui]
+        setup_frontend unless options[:skip_daisyui]
 
-          validate_gsub_strings([
-                                  {
-                                    file: 'config/deploy.yml',
-                                    patterns: ['your-user', "web:\n    - 192.168.0.1", 'ssl: true', 'app.example.com']
-                                  }
-                                ])
+        validate_gsub_strings([
+                                {
+                                  file: 'config/deploy.yml',
+                                  patterns: ['your-user', "web:\n    - 192.168.0.1", 'ssl: true', 'app.example.com']
+                                }
+                              ])
 
-          setup_kamal
+        setup_kamal
 
-          say('Modifying ApplicationController to allow all browsers (mobile)')
-          comment_lines 'app/controllers/application_controller.rb', /allow_browser versions: :modern/
+        say('Modifying ApplicationController to allow all browsers (mobile)')
+        comment_lines 'app/controllers/application_controller.rb', /allow_browser versions: :modern/
 
-          say('Generating main controller with a landing page')
-          generate :controller, 'main'
+        say('Generating main controller with a landing page')
+        generate :controller, 'main'
 
-          if options[:skip_daisyui]
-            create_file 'app/views/main/index.html.erb', "<h1>Welcome to #{app_name}</h1>"
-          else
-            copy_file 'main_index.html.erb', 'app/views/main/index.html.erb'
-          end
-
-          copy_file 'credentials.example.yml', 'config/credentials.example.yml'
-
-          route "root 'main#index'"
+        if options[:skip_daisyui]
+          create_file 'app/views/main/index.html.erb', "<h1>Welcome to #{name}</h1>"
+        else
+          copy_file 'main_index.html.erb', 'app/views/main/index.html.erb'
         end
 
-        say 'Successfully created Rails app with RailsMaker'
+        copy_file 'credentials.example.yml', 'config/credentials.example.yml'
+
+        route "root 'main#index'"
       rescue StandardError => e
         say_status 'error', "Failed to generate app: #{e.message}, check the file in #{destination_root}", :red
         raise AppGeneratorError, e.message
@@ -80,6 +84,8 @@ module RailsMaker
 
       def git_commit
         git add: '.', commit: %(-m 'Initial railsmaker commit')
+
+        say 'Successfully created Rails app with RailsMaker', :green
       end
 
       private
@@ -149,8 +155,8 @@ module RailsMaker
       def setup_kamal
         say('Configuring Kamal')
 
-        gsub_file 'config/deploy.yml', 'your-user', docker_username
-        gsub_file 'config/deploy.yml', "web:\n    - 192.168.0.1", "web:\n    hosts:\n      - #{ip_address}"
+        gsub_file 'config/deploy.yml', 'your-user', docker
+        gsub_file 'config/deploy.yml', "web:\n    - 192.168.0.1", "web:\n    hosts:\n      - #{ip}"
         gsub_file 'config/deploy.yml', 'app.example.com', domain
         inject_into_file 'config/deploy.yml', after: 'ssl: true' do
           "\n  forward_headers: true"

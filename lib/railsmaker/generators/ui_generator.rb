@@ -5,8 +5,16 @@ module RailsMaker
     class UiGenerator < BaseGenerator
       source_root File.expand_path('templates/ui', __dir__)
 
-      argument :host, desc: 'Host domain for the application'
-      argument :app_name, desc: 'Name of the application'
+      class_option :domain, type: :string, required: true, desc: 'Host domain for the application'
+      class_option :name, type: :string, required: true, desc: 'Name of the application'
+
+      attr_reader :domain, :name, :host, :app_name
+
+      def initialize(*args)
+        super
+        @host = options[:domain]
+        @app_name = options[:name]
+      end
 
       def add_seo_capabilities
         gem 'sitemap_generator', '6.3.0'
@@ -46,6 +54,8 @@ module RailsMaker
 
       def git_commit
         git add: '.', commit: %(-m 'Add sample UI layer')
+
+        say 'Successfully added sample UI layer', :green
       end
     end
   end

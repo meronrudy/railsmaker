@@ -5,8 +5,9 @@ module RailsMaker
     class LitestreamGenerator < BaseGenerator
       source_root File.expand_path('templates/litestream', __dir__)
 
-      argument :app_name, desc: 'Application name for volume and bucket naming'
-      argument :ip_address, desc: 'Server IP address'
+      class_option :bucketname, type: :string, required: true, desc: 'Litestream bucketname'
+      class_option :name, type: :string, required: true, desc: 'Application name for volume and bucket naming'
+      class_option :ip, type: :string, required: true, desc: 'Server IP address'
 
       def create_litestream_config
         template 'litestream.yml.erb', 'config/litestream.yml'
@@ -21,7 +22,7 @@ module RailsMaker
             LITESTREAM_SECRET_ACCESS_KEY=$LITESTREAM_SECRET_ACCESS_KEY
             LITESTREAM_BUCKET=$LITESTREAM_BUCKET
             LITESTREAM_REGION=$LITESTREAM_REGION
-            LITESTREAM_BUCKET_NAME=#{app_name}
+            LITESTREAM_BUCKET_NAME=#{options[:bucketname]}
           YAML
         end
       end
@@ -42,9 +43,9 @@ module RailsMaker
             accessories:
               litestream:
                 image: litestream/litestream:0.3
-                host: #{ip_address}
+                host: #{options[:ip]}
                 volumes:
-                  - "#{app_name.underscore}_storage:/rails/storage"
+                  - "#{options[:name].underscore}_storage:/rails/storage"
                 files:
                   - config/litestream.yml:/etc/litestream.yml
                 cmd: replicate -config /etc/litestream.yml
@@ -63,13 +64,15 @@ module RailsMaker
   restore-db-cache: accessory exec litestream "restore -if-replica-exists -config /etc/litestream.yml /rails/storage/production_cache.sqlite3"
   restore-db-queue: accessory exec litestream "restore -if-replica-exists -config /etc/litestream.yml /rails/storage/production_queue.sqlite3"
   restore-db-cable: accessory exec litestream "restore -if-replica-exists -config /etc/litestream.yml /rails/storage/production_cable.sqlite3"
-  restore-db-ownership: server exec "sudo chown -R 1000:1000 /var/lib/docker/volumes/#{app_name.underscore}_storage/_data/"
+  restore-db-ownership: server exec "sudo chown -R 1000:1000 /var/lib/docker/volumes/#{options[:name].underscore}_storage/_data/"
           YAML
         end
       end
 
       def git_commit
         git add: '.', commit: %(-m 'Add Litestream configuration')
+
+        say 'Successfully added Litestream configuration', :green
       end
     end
   end

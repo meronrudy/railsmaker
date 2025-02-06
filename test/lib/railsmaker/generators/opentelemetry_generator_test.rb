@@ -13,7 +13,7 @@ class OpentelemetryGeneratorTest < Rails::Generators::TestCase
   end
 
   def test_generator_creates_gemfile_with_required_gems
-    run_generator %w[my-service]
+    run_generator ['--name=my-service']
     assert_file 'Gemfile' do |content|
       assert_match(/gem "opentelemetry-sdk", "~> 1.6.0"/, content)
       assert_match(/gem "opentelemetry-exporter-otlp", "~> 0.29.1"/, content)
@@ -24,7 +24,7 @@ class OpentelemetryGeneratorTest < Rails::Generators::TestCase
   end
 
   def test_generator_configures_opentelemetry_in_environment
-    run_generator %w[my-service]
+    run_generator ['--name=my-service']
     assert_file 'config/environment.rb' do |content|
       assert_match(%r{require 'opentelemetry/sdk'}, content)
       assert_match(/OpenTelemetry::SDK.configure do \|c\|/, content)
@@ -34,20 +34,20 @@ class OpentelemetryGeneratorTest < Rails::Generators::TestCase
 
   def test_generator_configures_opentelemetry_with_custom_service_name
     service_name = 'custom-service'
-    run_generator [service_name]
+    run_generator ["--name=#{service_name}"]
     assert_file 'config/deploy.yml' do |content|
       assert_match(/OTEL_SERVICE_NAME: #{service_name}/, content)
     end
   end
 
   def test_generator_creates_lograge_config
-    run_generator %w[my-service]
+    run_generator ['--name=my-service']
     assert_file 'config/initializers/lograge.rb'
   end
 
   def test_generator_adds_plausible_script_correctly
     service_name = 'my-service'
-    run_generator [service_name]
+    run_generator ["--name=#{service_name}"]
     assert_file 'config/deploy.yml' do |content|
       assert_match(%r{OTEL_EXPORTER_OTLP_ENDPOINT: http://host\.docker\.internal:4318}, content)
     end
@@ -55,12 +55,12 @@ class OpentelemetryGeneratorTest < Rails::Generators::TestCase
 
   def test_generator_creates_git_commit
     assert_generator_git_commit('Add OpenTelemetry')
-    run_generator %w[my-service]
+    run_generator ['--name=my-service']
   end
 
   def test_generator_handles_existing_configuration
-    run_generator %w[my-service]
-    run_generator %w[my-service]
+    run_generator ['--name=my-service']
+    run_generator ['--name=my-service']
     # Ensure no duplicate configurations
     assert_file 'config/deploy.yml' do |content|
       assert_equal content.scan(/OTEL_EXPORTER_OTLP_ENDPOINT:/).size, 1

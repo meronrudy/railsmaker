@@ -7,10 +7,6 @@ module GeneratorHelper
     prepare_destination
     copy_test_fixtures
 
-    RailsMaker::Generators::BaseGenerator.any_instance
-                                         .stubs(:options)
-                                         .returns(force: true)
-
     RailsMaker::Generators::BaseGenerator.any_instance.stubs(:git).returns(true)
     RailsMaker::Generators::BaseGenerator.any_instance.stubs(:rails_command).returns(true)
     RailsMaker::Generators::BaseGenerator.any_instance.stubs(:rake).returns(true)

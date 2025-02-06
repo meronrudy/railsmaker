@@ -15,7 +15,7 @@ class UiGeneratorTest < Rails::Generators::TestCase
     assert_generator_git_commit 'Add sample UI layer'
     RailsMaker::Generators::BaseGenerator.any_instance.expects(:rails_command).with('sitemap:install')
 
-    run_generator ['example.com', 'MyApp']
+    run_generator ['--domain=example.com', '--name=MyApp']
 
     assert_file 'Gemfile' do |content|
       assert_match(/gem "sitemap_generator", "6\.3\.0"/, content)
@@ -28,7 +28,7 @@ class UiGeneratorTest < Rails::Generators::TestCase
   end
 
   def test_ui_generator_copies_views_and_assets
-    run_generator ['example.com', 'MyApp']
+    run_generator ['--domain=example.com', '--name=MyApp']
 
     assert_directory 'app/views'
     assert_directory 'app/assets/images'
@@ -43,7 +43,7 @@ class UiGeneratorTest < Rails::Generators::TestCase
   end
 
   def test_ui_generator_adds_routes
-    run_generator ['example.com', 'MyApp']
+    run_generator ['--domain=example.com', '--name=MyApp']
 
     assert_file 'config/routes.rb' do |content|
       assert_match(/get "demo", to: "demo#index", as: :demo/, content)
@@ -55,8 +55,8 @@ class UiGeneratorTest < Rails::Generators::TestCase
   end
 
   def test_ui_generator_with_duplicate_files
-    run_generator ['example.com', 'MyApp']
-    run_generator ['example.com', 'MyApp']
+    run_generator ['--domain=example.com', '--name=MyApp']
+    run_generator ['--domain=example.com', '--name=MyApp']
     # Ensure no duplicate routes
     assert_file 'config/routes.rb' do |content|
       assert_equal content.scan(/get "demo", to: "demo#index", as: :demo/).size, 1
@@ -67,6 +67,6 @@ class UiGeneratorTest < Rails::Generators::TestCase
 
   def test_ui_generator_creates_git_commit
     assert_generator_git_commit('Add sample UI layer')
-    run_generator ['example.com', 'MyApp']
+    run_generator ['--domain=example.com', '--name=MyApp']
   end
 end

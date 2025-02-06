@@ -23,3 +23,6 @@
 /lib/bundler/man/
 
 Gemfile.lock
+bun.lock
+/node_modules/
+package.json

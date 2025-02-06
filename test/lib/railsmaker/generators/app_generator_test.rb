@@ -28,10 +28,10 @@ class AppGeneratorTest < Rails::Generators::TestCase
     copy_test_fixtures(app_name)
 
     run_generator [
-      app_name,
-      'my_docker_user',
-      '192.168.0.99',
-      'test.example.com'
+      '--name', app_name,
+      '--docker', 'my_docker_user',
+      '--ip', '192.168.0.99',
+      '--domain', 'test.example.com'
     ]
 
     assert_file "#{app_name}/Gemfile"
@@ -48,10 +48,10 @@ class AppGeneratorTest < Rails::Generators::TestCase
     copy_test_fixtures(app_name)
 
     run_generator [
-      app_name,
-      'my_docker_user',
-      '192.168.0.99',
-      'test.example.com',
+      '--name', app_name,
+      '--docker', 'my_docker_user',
+      '--ip', '192.168.0.99',
+      '--domain', 'test.example.com',
       '--skip-daisyui'
     ]
 

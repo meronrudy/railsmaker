@@ -5,7 +5,7 @@ module RailsMaker
     class OpentelemetryGenerator < BaseGenerator
       source_root File.expand_path('templates/opentelemetry', __dir__)
 
-      argument :service_name, desc: 'Name of the service for OpenTelemetry'
+      class_option :name, type: :string, required: true, desc: 'Name of the application'
 
       def add_kamal_config
         validations = [
@@ -31,7 +31,7 @@ module RailsMaker
           <<-YAML
     # OpenTelemetry env vars
     OTEL_EXPORTER: otlp
-    OTEL_SERVICE_NAME: #{service_name}
+    OTEL_SERVICE_NAME: #{options[:name]}
     OTEL_EXPORTER_OTLP_ENDPOINT: http://host.docker.internal:4318
           YAML
         end
@@ -61,7 +61,7 @@ module RailsMaker
           <<~RUBY
 
             OpenTelemetry::SDK.configure do |c|
-              c.use_all
+              c.use_all unless Rails.env.development? || Rails.env.test?
             end
 
           RUBY
@@ -74,6 +74,8 @@ module RailsMaker
 
       def git_commit
         git add: '.', commit: %(-m 'Add OpenTelemetry')
+
+        say 'Successfully added OpenTelemetry configuration', :green
       end
     end
   end

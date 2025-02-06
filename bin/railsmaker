@@ -5,68 +5,139 @@ require 'railsmaker'
 require 'thor'
 
 module RailsMaker
+  class RemoteCLI < Thor
+    include Thor::Actions
+
+    desc 'signoz', 'Manage SigNoz installation on a remote server'
+    method_option :server, type: :boolean, default: false, desc: 'Install SigNoz server'
+    method_option :opentelemetry, type: :boolean, default: false, desc: 'Install SigNoz OpenTelemetry client'
+    method_option :ssh_host, type: :string, required: true, desc: 'SSH host'
+    method_option :ssh_user, type: :string, required: true, desc: 'SSH user'
+    method_option :signoz_host, type: :string, required: true, desc: 'SigNoz host (for OpenTelemetry client)'
+    method_option :key_path, type: :string, default: '~/.ssh/id_rsa', desc: 'Path to SSH key'
+    method_option :override_hostname, type: :string, desc: 'Override hostname for OpenTelemetry'
+    method_option :force, type: :boolean, default: false, desc: 'Force installation even if already installed'
+    def signoz
+      if options[:server]
+        RailsMaker::Generators::SignozGenerator.new.invoke_all(options)
+      elsif options[:opentelemetry]
+        unless options[:signoz_host]
+          say 'Error: --signoz-host is required for OpenTelemetry installation', :red
+          exit 1
+        end
+        RailsMaker::Generators::SignozOpentelemetryGenerator.new.invoke_all(options)
+      else
+        say 'Please specify either --server or --opentelemetry', :red
+      end
+    end
+
+    desc 'plausible', 'Install Plausible Analytics on a remote server'
+    method_option :ssh_host, type: :string, required: true, desc: 'SSH host'
+    method_option :ssh_user, type: :string, required: true, desc: 'SSH user'
+    method_option :analytics_host, type: :string, required: true, desc: 'Analytics host'
+    method_option :key_path, type: :string, desc: 'Path to SSH key'
+    def plausible
+      RailsMaker::Generators::PlausibleGenerator.new.invoke_all(options)
+    end
+  end
+
   class CLI < Thor
     include Thor::Actions
 
-    register RailsMaker::Generators::AppGenerator,
-             'app:light',
-             'app:light APP_NAME DOCKER_USERNAME IP_ADDRESS DOMAIN [--skip-daisyui]',
-             'Generate a new Rails application with a KAMAL deployment'
+    desc 'new', 'Generate a new Rails application with integrated features'
+    method_option :name, type: :string, required: true, aliases: '-n', desc: 'Application name'
+    method_option :docker, type: :string, required: true, aliases: '-d', desc: 'Docker username'
+    method_option :ip, type: :string, required: true, aliases: '-i', desc: 'Server IP address'
+    method_option :domain, type: :string, required: true, aliases: '-D', desc: 'Domain name'
+    method_option :auth, type: :boolean, default: true, desc: 'Include authentication'
+    method_option :mailjet, type: :boolean, default: true, desc: 'Configure Mailjet for email'
+    method_option :bucketname, type: :string, desc: 'Enable litestream backups (provide BUCKETNAME)'
+    method_option :opentelemetry, type: :boolean, default: true, desc: 'Configure OpenTelemetry'
+    method_option :analytics, type: :string, desc: 'Set up Plausible Analytics (provide ANALYTICS_DOMAIN)'
+    method_option :sentry, type: :boolean, default: true, desc: 'Configure Sentry error tracking'
+    method_option :ui, type: :boolean, default: true, desc: 'Include UI assets'
+    method_option :wizard, type: :boolean, default: false, desc: 'Run interactive wizard mode'
+    def new
+      self.destination_root = File.expand_path(options[:name], Dir.pwd)
 
-    register RailsMaker::Generators::SignozGenerator,
-             'remote:signoz:server',
-             'remote:signoz:server SSH_HOST SSH_USER [--key-path=PATH]',
-             'Install SigNoz on a remote server'
+      if options[:wizard]
+        invoke :wizard
+        return
+      end
 
-    register RailsMaker::Generators::SignozOpentelemetryGenerator,
-             'remote:signoz:opentelemetry',
-             'remote:signoz:opentelemetry SSH_HOST SSH_USER SIGNOZ_HOST [--key-path=PATH] [--override-hostname=HOSTNAME]',
-             'Install SigNoz OpenTelemetry client on a remote server'
+      say "Generating new Rails application: #{options[:name]}", :yellow
+      generate_application(options)
+    end
 
-    register RailsMaker::Generators::PlausibleGenerator,
-             'remote:plausible:server',
-             'remote:plausible:server SSH_HOST SSH_USER ANALYTICS_HOST [--key-path=PATH]',
-             'Install Plausible Analytics on a remote server'
+    desc 'wizard', 'Launch an interactive wizard for generating a Rails application'
+    def wizard
+      say 'Welcome to the RailsMaker wizard!', :blue
 
-    register RailsMaker::Generators::AuthGenerator,
-             'app:auth',
-             'app:auth FROM_EMAIL HOSTNAME',
-             'Include authentication in the application'
+      # If options are already provided, use them as defaults
+      wizard_options = {
+        name: options[:name],
+        docker: options[:docker],
+        ip: options[:ip],
+        domain: options[:domain],
+        auth: options[:auth],
+        mailjet: options[:mailjet],
+        bucketname: options[:bucketname],
+        opentelemetry: options[:opentelemetry],
+        analytics: options[:analytics],
+        sentry: options[:sentry],
+        ui: options[:ui]
+      }
 
-    register RailsMaker::Generators::OpentelemetryGenerator,
-             'app:opentelemetry',
-             'app:opentelemetry SERVICE_NAME',
-             'Configure OpenTelemetry instrumentation for the application'
+      # Only ask for values that weren't provided via command line
+      wizard_options[:name] ||= ask('Application name:')
+      wizard_options[:docker] ||= ask('Docker username:')
+      wizard_options[:ip] ||= ask('Server IP address:')
+      wizard_options[:domain] ||= ask('Domain name:')
+      wizard_options[:auth] = yes?('Include authentication? (y/N)') if wizard_options[:auth].nil?
+      wizard_options[:mailjet] = yes?('Configure Mailjet for email? (y/N)') if wizard_options[:mailjet].nil?
+      wizard_options[:bucketname] ||= ask('Litestream bucketname: Provide BUCKET_NAME (leave blank to skip):')
+      if wizard_options[:opentelemetry].nil?
+        wizard_options[:opentelemetry] =
+          yes?('Configure OpenTelemetry for metrics? (y/N)')
+      end
+      wizard_options[:analytics] ||= ask('Plausible Analytics: Provide ANALYTICS_DOMAIN (leave blank to skip):')
+      wizard_options[:sentry] = yes?('Configure Sentry error tracking? (y/N)') if wizard_options[:sentry].nil?
+      wizard_options[:ui] = yes?('Include UI assets? (y/N)') if wizard_options[:ui].nil?
 
-    register RailsMaker::Generators::PlausibleInstrumentationGenerator,
-             'app:plausible',
-             'app:plausible APP_DOMAIN ANALYTICS_DOMAIN',
-             'Add Plausible Analytics tracking to the application'
+      # Clean up empty values
+      wizard_options[:bucketname] = nil if wizard_options[:bucketname] && wizard_options[:bucketname].empty?
+      wizard_options[:analytics] = nil if wizard_options[:analytics] && wizard_options[:analytics].empty?
 
-    register RailsMaker::Generators::SentryGenerator,
-             'app:sentry',
-             'app:sentry',
-             'Configure Sentry error tracking for the application'
+      self.destination_root = File.expand_path(wizard_options[:name], Dir.pwd)
+      say "Generating new Rails application: #{wizard_options[:name]}", :yellow
+      generate_application(wizard_options)
+    end
 
-    register RailsMaker::Generators::AppFullGenerator,
-             'app:full',
-             'app:full APP_NAME DOCKER_USERNAME IP_ADDRESS DOMAIN ANALYTICS_DOMAIN FROM_NAME FROM_EMAIL [--skip-daisyui]',
-             'Generate a new Rails application with all default integrations'
+    private
 
-    register RailsMaker::Generators::UiGenerator,
-             'app:ui',
-             'app:ui HOSTNAME APP_NAME',
-             'Include UI in the application'
+    def generate_application(opts)
+      generator_args = opts.flat_map do |key, value|
+        ["--#{key}", value.to_s]
+      end
 
-    register RailsMaker::Generators::MailjetGenerator,
-             'app:mailjet',
-             'app:mailjet FROM_NAME FROM_EMAIL HOSTNAME',
-             'Configure Mailjet for sending emails'
+      RailsMaker::Generators::AppGenerator.start(generator_args)
 
-    register RailsMaker::Generators::LitestreamGenerator,
-             'app:litestream',
-             'app:litestream BUCKET_NAME APP_NAME IP_ADDRESS',
-             'Configure Litestream database backups to S3'
+      if opts[:ui]
+        RailsMaker::Generators::AuthGenerator.start(generator_args) if opts[:auth]
+        RailsMaker::Generators::UiGenerator.start(generator_args)
+        RailsMaker::Generators::PlausibleInstrumentationGenerator.start(generator_args) if opts[:analytics]
+      end
+
+      RailsMaker::Generators::MailjetGenerator.start(generator_args) if opts[:mailjet]
+      RailsMaker::Generators::LitestreamGenerator.start(generator_args) if opts[:bucketname]
+      RailsMaker::Generators::OpentelemetryGenerator.start(generator_args) if opts[:opentelemetry]
+      RailsMaker::Generators::SentryGenerator.start(generator_args) if opts[:sentry]
+
+      say 'Successfully generated RailsMaker template 🎉', :green
+    end
+
+    desc 'remote', 'Manage remote services'
+    subcommand 'remote', RailsMaker::RemoteCLI
 
     def self.exit_on_failure?
       true

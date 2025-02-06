@@ -7,7 +7,7 @@ module RailsMaker
         super
         options[:script_name] = 'signoz'
         options[:check_path] = '~/signoz'
-        options[:title] = "Installing SigNoz on remote server #{ssh_user}@#{ssh_host}"
+        options[:title] = "Installing SigNoz on remote server #{options[:ssh_user]}@#{options[:ssh_host]}"
       end
     end
   end

@@ -1,59 +1,96 @@
-# Railsmaker
+[![Gem Version](https://img.shields.io/gem/v/railsmaker?color=blue&logo=rubygems)](https://rubygems.org/gems/railsmaker)
+[![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
 
-An opinionated Rails 8 application generator with modern defaults.
+# 💎 Railsmaker 
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Try_Now_-brightgreen?style=for-the-badge&logo=rocket&color=00cc99)](https://railsmaker.com) [![Support](https://img.shields.io/badge/Support-%F0%9F%8D%B8-yellow?style=for-the-badge)](https://buymeacoffee.com/sgerov)
 
-## Pre-requirements
+🔋 Turbocharged Rails 8 Starter Kit
 
-- **Bun**: we can't rely on `rails/propshaft` because tailwindcss-rails doesn't work when using Apple Silicon emulation for amd64.
-- **Rails 8**
+*Batteries included • Zero to production in 5 minutes • PWYW*
 
-## Installation
+✨ **Key Features**  
+- 💅 **UI**: TailwindCSS 4 + DaisyUI  
+- 🔐 **Auth**: Clearance + OmniAuth
+- 📊 **Monitoring**: SigNoz & Sentry integration  
+- 📈 **Analytics**: Self-hosted Plausible integration 
+- 📨 **Email**: Mailjet integration
+- 🚢 **Deploy**: Self-hosted anywhere, low maintenance
+- 💾 **Backups**: S3-compatible with Litestream backups  
 
-Install the gem locally:
+## ⚡ 60-Second Setup
 
-```
-gem build railsmaker.gemspec
-gem install railsmaker-0.0.1.gem
-```
+1. **Install & Create Project**:
+```bash
+gem install railsmaker
 
-## Usage
+# Interactive wizard
+railsmaker new --wizard
 
-This gem provides Rails generators for creating new applications and installing additional components.
-
-Sample installation:
-
-```
-# full app:
-railsmaker app:full my-app johndoe 192.168.1.100 my-app.example.com analytics.example.com https://sentry.dsn
-
-# light app:
-railsmaker app:light my-app johndoe 192.168.1.100 my-app.example.com
-```
-
-Add secrets:
-
-```
-VISUAL="cursor --wait" bin/rails credentials:edit
-
-secret_key_base: <secret
-google_oauth:
-  client_id: <client>
-  client_secret: <client_secret>
-sentry_dsn: <sentry_dsn>
+# or CLI:
+railsmaker new --name YOUR_APP_NAME \
+              --docker YOUR_DOCKER_ACCOUNT \
+              --ip YOUR_SERVER_IP \
+              --domain YOUR_DOMAIN \
+              --analytics YOUR_ANALYTICS_DOMAIN \
+              --bucketname YOUR_S3_BUCKET
 ```
 
-And you are ready to go!
-
-For further help:
-
-```
-railsmaker help
-
-railsmaker help app
-
-railsmaker help signoz
+2. **Configure Secrets**:
+```bash
+# Use sample credentials from config/credentials.example.yml
+EDITOR="vim" bin/rails credentials:edit
 ```
 
-## License
+3. **Add ENV variables**:
+```bash
+# Kamal Registry
+export KAMAL_REGISTRY_PASSWORD="your-registry-pw"
 
-MIT
+# Litestream Backups (S3-compatible)
+export LITESTREAM_ACCESS_KEY_ID="AKIA..."
+export LITESTREAM_SECRET_ACCESS_KEY="..."
+export LITESTREAM_BUCKET="your-bucket"
+export LITESTREAM_REGION="eu2"
+```
+
+4. **Deploy to Production**:
+```bash
+kamal setup
+```
+
+## 🚀 Production-Ready for quick iteration
+
+Quick iteration, zero-downtime deployments, and a modern stack that just works.
+
+### 🛠️ **Infrastructure**
+- ✅ **Auto-Backups**: Litestream → S3  
+- 📊 **Monitoring**: SigNoz & Sentry  
+- 🚢 **CI/CD**: Kamal deployments  
+- 🌐 **Multi-Env**: Dev/Staging/Prod  
+- 🔍 **Tracing**: OpenTelemetry  
+- 📜 **Logging**: Lograge structured
+
+### ⚡ **Developer Experience**
+- 🎨 **UI Kit**: Tailwind + DaisyUI  
+- 🔐 **Auth**: Clearance + OmniAuth  
+- 📈 **SEO**: Auto-sitemaps  
+- 📦 **Storage**: S3 + Litestream  
+- 📨 **Email**: Postmark templates  
+- 🛠️ **Zero-Config**: Batteries included
+
+### 🌟 **Modern Stack**
+- ✨ **Rails 8**: Ruby 3.2  
+- ⚡ **Turbo/Hotwire**: Fast SPAs  
+- 🔒 **Security**: CSRF protection  
+- 📊 **Analytics**: Plausible.io  
+- 🗃️ **Database**: SQLite scale-ready  
+- 🧩 **Components**: ViewComponent
+
+## 📈 PWYW model
+
+This project is **pay-what-you-want** - if it saves you time, consider:  
+
+[![Support](https://img.shields.io/badge/Support-%F0%9F%8D%B8-yellow?style=for-the-badge)](https://buymeacoffee.com/sgerov)
+
+*Railsmaker is MIT licensed. Made with ❤️ by developers for developers.*
+*Live demo available at [railsmaker.com](https://railsmaker.com)*

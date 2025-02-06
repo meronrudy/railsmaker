@@ -19,7 +19,7 @@ class PlausibleInstrumentationGeneratorTest < Rails::Generators::TestCase
   end
 
   def test_generator_adds_plausible_script_to_layout
-    run_generator [@app_domain, @analytics_domain]
+    run_generator ['--domain', @app_domain, '--analytics', @analytics_domain]
 
     expected_script = <<~HTML.indent(4)
       <%# Plausible Analytics %>

@@ -5,9 +5,14 @@ module RailsMaker
     class MailjetGenerator < BaseGenerator
       source_root File.expand_path('templates/mailjet', __dir__)
 
-      argument :from_name, desc: 'Name of the service for email sender'
-      argument :from_email, desc: 'Email address used for sending emails'
-      argument :host, desc: 'Host domain for the application'
+      class_option :name, type: :string, required: true, desc: 'Name of the service for email sender'
+      class_option :domain, type: :string, required: true, desc: 'Host domain for the application'
+
+      def initialize(*args)
+        super
+        @name = options[:name]
+        @domain = options[:domain]
+      end
 
       def add_gem
         gem_group :default do
@@ -51,7 +56,13 @@ module RailsMaker
 
       def git_commit
         git add: '.', commit: %(-m 'Add Mailjet configuration')
+
+        say 'Successfully added Mailjet configuration', :green
       end
+
+      private
+
+      attr_reader :name, :domain
     end
   end
 end

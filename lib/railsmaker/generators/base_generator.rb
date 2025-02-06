@@ -15,7 +15,7 @@ module RailsMaker
       def run(*args)
         options = args.extract_options!
         options = self.class.default_command_options.merge(options)
-        super(*args, options)
+        super(*args, options.merge(force: true)) # do not ask for confirmation on overrides
       end
     end
   end

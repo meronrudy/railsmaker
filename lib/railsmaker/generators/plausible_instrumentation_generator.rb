@@ -3,13 +3,13 @@
 module RailsMaker
   module Generators
     class PlausibleInstrumentationGenerator < BaseGenerator
-      argument :app_domain, desc: 'Domain of your application (e.g., app.example.com)'
-      argument :analytics_domain, desc: 'Domain where Plausible is hosted (e.g., analytics.example.com)'
+      class_option :domain, type: :string, required: true, desc: 'Domain of your application'
+      class_option :analytics, type: :string, required: true, desc: 'Domain where Plausible is hosted'
 
       def add_plausible_script
         content = <<~HTML.indent(4)
           <%# Plausible Analytics %>
-          <script defer data-domain="#{app_domain}" src="https://#{analytics_domain}/js/script.file-downloads.outbound-links.pageview-props.revenue.tagged-events.js"></script>
+          <script defer data-domain="#{options[:domain]}" src="https://#{options[:analytics]}/js/script.file-downloads.outbound-links.pageview-props.revenue.tagged-events.js"></script>
           <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
         HTML
 
@@ -20,6 +20,8 @@ module RailsMaker
 
       def git_commit
         git add: '.', commit: %(-m 'Add Plausible Analytics')
+
+        say 'Successfully added Plausible Analytics', :green
       end
     end
   end

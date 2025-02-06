@@ -4,8 +4,8 @@ require 'English'
 module RailsMaker
   module Generators
     class ServerCommandGenerator < BaseGenerator
-      argument :ssh_host
-      argument :ssh_user
+      class_option :ssh_host, type: :string, required: true, desc: 'SSH host'
+      class_option :ssh_user, type: :string, required: true, desc: 'SSH user'
       class_option :key_path, type: :string, default: '~/.ssh/id_rsa',
                               desc: 'Path to SSH private key'
       class_option :force, type: :boolean, default: false,
@@ -43,7 +43,7 @@ module RailsMaker
           '-o', 'StrictHostKeyChecking=accept-new', # Auto-accept new host keys
           '-o', 'ConnectTimeout=10',                # Fail fast on connection issues
           '-t',                                     # Force pseudo-terminal for better output
-          "#{ssh_user}@#{ssh_host}",
+          "#{options[:ssh_user]}@#{options[:ssh_host]}",
           "'#{ssh_command}'"
         ].join(' ')
 
@@ -73,7 +73,7 @@ module RailsMaker
       def installation_exists?(check_path)
         return false unless check_path
 
-        check_command = "ssh -i #{options[:key_path]} #{ssh_user}@#{ssh_host} '[ -d #{check_path} ]'"
+        check_command = "ssh -i #{options[:key_path]} #{options[:ssh_user]}@#{options[:ssh_host]} '[ -d #{check_path} ]'"
         system(check_command, out: File::NULL, err: File::NULL)
       end
 
@@ -84,9 +84,9 @@ module RailsMaker
         end
 
         say_status 'check', 'Testing SSH connection...', :blue
-        test_command = "ssh -i #{options[:key_path]} -o ConnectTimeout=5 #{ssh_user}@#{ssh_host} 'echo OK'"
+        test_command = "ssh -i #{options[:key_path]} -o ConnectTimeout=5 #{options[:ssh_user]}@#{options[:ssh_host]} 'echo OK'"
         unless system(test_command, out: File::NULL, err: File::NULL)
-          say_status 'error', "Could not connect to #{ssh_user}@#{ssh_host}", :red
+          say_status 'error', "Could not connect to #{options[:ssh_user]}@#{options[:ssh_host]}", :red
           say 'Please ensure:'
           say '  • The server is reachable'
           say '  • Your SSH key is valid'

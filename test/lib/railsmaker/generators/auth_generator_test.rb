@@ -21,7 +21,7 @@ class AuthGeneratorTest < Rails::Generators::TestCase
   end
 
   def test_generator_configures_authentication
-    run_generator %w[test@example.com example.com]
+    run_generator %w[--mailer_sender=test@example.com]
 
     assert_file 'Gemfile' do |content|
       assert_match(/gem "argon2", "2.3.0"/, content)
@@ -61,8 +61,8 @@ class AuthGeneratorTest < Rails::Generators::TestCase
     end
   end
 
-  def test_generator_with_custom_email_and_host
-    run_generator %w[custom@example.com customhost.com]
+  def test_generator_with_custom_email
+    run_generator %w[--mailer_sender=custom@example.com]
     assert_file 'config/initializers/clearance.rb' do |content|
       assert_match(/config.mailer_sender = Rails.application.credentials.dig\(:app, :mailer_sender\)/, content)
       assert_match(%r{config.redirect_url = "/demo"}, content)
@@ -79,11 +79,11 @@ class AuthGeneratorTest < Rails::Generators::TestCase
 
   def test_generator_creates_git_commit
     assert_generator_git_commit('Add authentication with Clearance and OmniAuth')
-    run_generator %w[test@example.com example.com]
+    run_generator %w[--mailer_sender=test@example.com]
   end
 
   def test_generator_creates_user_model_with_omniauth
-    run_generator %w[test@example.com example.com]
+    run_generator %w[--mailer_sender=test@example.com]
     assert_file 'app/models/user.rb' do |content|
       assert_match(/def self.from_omniauth\(auth\)/, content)
       assert_match(/user.email = auth.info.email/, content)
@@ -92,7 +92,7 @@ class AuthGeneratorTest < Rails::Generators::TestCase
   end
 
   def test_generator_creates_migration_with_indices
-    run_generator %w[test@example.com example.com]
+    run_generator %w[--mailer_sender=test@example.com]
     migration_file = Dir['db/migrate/*add_omniauth_to_users.rb'].first
     assert_file migration_file do |content|
       assert_match(/add_column :users, :provider, :string/, content)

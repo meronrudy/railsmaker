@@ -5,9 +5,6 @@ module RailsMaker
     class AuthGenerator < BaseGenerator
       source_root File.expand_path('templates/auth', __dir__)
 
-      argument :from_email, desc: 'Email address used for sending authentication emails'
-      argument :host, desc: 'Host domain for the application'
-
       def add_gems
         gem_group :default do
           gem 'argon2', '2.3.0' # TODO: delete this line, fixed version due to bug in 2.3.1
@@ -93,6 +90,8 @@ module RailsMaker
 
       def git_commit
         git add: '.', commit: %(-m 'Add authentication with Clearance and OmniAuth')
+
+        say 'Successfully added authentication with Clearance and OmniAuth', :green
       end
     end
   end
