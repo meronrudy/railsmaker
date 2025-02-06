@@ -85,7 +85,7 @@ module RailsMaker
         gem 'tailwindcss-rails', '~> 4.0.0.rc5'
 
         say('Installing gems')
-        run 'bundle install'
+        run 'bundle install --quiet'
 
         say('Setting up Tailwind')
         run 'bun add -d tailwindcss@4.0.0 @tailwindcss/cli@4.0.0'

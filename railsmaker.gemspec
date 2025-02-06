@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'sitemap_generator', '~> 6.3.0'
   s.add_runtime_dependency 'tailwindcss-rails', '~> 4.0.0.rc5'
   s.add_runtime_dependency 'thor', '~> 1.3.2'
+  s.add_runtime_dependency 'tzinfo-data', '~> 1.2025.1' # for stripped-down ubuntu installations
 
   s.license = 'MIT'
   s.required_ruby_version = '>= 3.2.0'

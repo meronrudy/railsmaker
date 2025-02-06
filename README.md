@@ -19,6 +19,18 @@
 
 ## ⚡ 60-Second Setup
 
+0. **Prerequisites**:
+
+- Ruby 3.x (`rbenv` or `rvm` recommended)
+- Bundler: `gem install bundler`
+- Bun: [Install guide](https://bun.sh)
+- Git
+- Dev tools:
+  - Ubuntu/Debian: `sudo apt install build-essential libyaml-dev`
+  - macOS: `xcode-select --install`
+
+> Tested on Ubuntu 22.04 and macOS 15.2.
+
 1. **Install & Create Project**:
 ```bash
 gem install railsmaker
@@ -38,6 +50,7 @@ railsmaker new --name YOUR_APP_NAME \
 2. **Configure Secrets**:
 ```bash
 # Use sample credentials from config/credentials.example.yml
+
 EDITOR="vim" bin/rails credentials:edit
 ```
 
