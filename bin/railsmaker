@@ -83,10 +83,26 @@ module RailsMaker
       }
 
       # Only ask for values that weren't provided via command line
-      wizard_options[:name] ||= ask('Application name:')
-      wizard_options[:docker] ||= ask('Docker username:')
-      wizard_options[:ip] ||= ask('Server IP address:')
-      wizard_options[:domain] ||= ask('Domain name:')
+      while wizard_options[:name].to_s.empty?
+        wizard_options[:name] = ask('Application name:')
+        say 'Application name is required', :red if wizard_options[:name].empty?
+      end
+
+      while wizard_options[:docker].to_s.empty?
+        wizard_options[:docker] = ask('Docker username:')
+        say 'Docker username is required', :red if wizard_options[:docker].empty?
+      end
+
+      while wizard_options[:ip].to_s.empty?
+        wizard_options[:ip] = ask('Server IP address:')
+        say 'Server IP address is required', :red if wizard_options[:ip].empty?
+      end
+
+      while wizard_options[:domain].to_s.empty?
+        wizard_options[:domain] = ask('Domain name:')
+        say 'Domain name is required', :red if wizard_options[:domain].empty?
+      end
+
       wizard_options[:auth] = yes?('Include authentication? (y/N)') if wizard_options[:auth].nil?
       wizard_options[:mailjet] = yes?('Configure Mailjet for email? (y/N)') if wizard_options[:mailjet].nil?
       wizard_options[:bucketname] ||= ask('Litestream bucketname: Provide BUCKET_NAME (leave blank to skip):')
