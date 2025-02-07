@@ -5,9 +5,53 @@ require 'railsmaker'
 require 'thor'
 
 module RailsMaker
-  class RemoteCLI < Thor
+  class BaseCLI < Thor
     include Thor::Actions
 
+    no_commands do
+      def colorize(str, color)
+        case color
+        when :green then "\e[32m#{str}\e[0m"
+        when :red then "\e[31m#{str}\e[0m"
+        when :blue then "\e[34m#{str}\e[0m"
+        when :gray then "\e[90m#{str}\e[0m"
+        else str
+        end
+      end
+
+      def status_indicator(value)
+        if value == true || (value.is_a?(String) && !value.empty?)
+          colorize('●', :green) + ' Enabled'
+        else
+          colorize('○', :red) + ' Disabled'
+        end
+      end
+
+      def print_summary(title, sections)
+        max_label_width = sections.values.flatten(1).map { |item| item[0].length }.max
+
+        say "\n#{colorize("═══ #{title} ═══", :blue)}\n\n"
+
+        sections.each do |section_title, items|
+          say colorize(section_title.upcase, :gray)
+          say colorize('─' * section_title.length, :gray)
+
+          items.each do |label, value, format = :default|
+            formatted_value = case format
+                              when :status then status_indicator(value)
+                              when :highlight then colorize(value, :blue)
+                              else value.to_s
+                              end
+
+            say "  #{label.ljust(max_label_width)}  #{formatted_value}"
+          end
+          say "\n"
+        end
+      end
+    end
+  end
+
+  class RemoteCLI < BaseCLI
     desc 'signoz', 'Manage SigNoz installation on a remote server'
     method_option :server, type: :boolean, default: false, desc: 'Install SigNoz server'
     method_option :opentelemetry, type: :boolean, default: false, desc: 'Install SigNoz OpenTelemetry client'
@@ -18,6 +62,8 @@ module RailsMaker
     method_option :override_hostname, type: :string, desc: 'Override hostname for OpenTelemetry'
     method_option :force, type: :boolean, default: false, desc: 'Force installation even if already installed'
     def signoz
+      print_remote_summary('SigNoz Installation', options)
+
       if options[:server]
         RailsMaker::Generators::SignozGenerator.new.invoke_all(options)
       elsif options[:opentelemetry]
@@ -35,15 +81,41 @@ module RailsMaker
     method_option :ssh_host, type: :string, required: true, desc: 'SSH host'
     method_option :ssh_user, type: :string, required: true, desc: 'SSH user'
     method_option :analytics_host, type: :string, required: true, desc: 'Analytics host'
-    method_option :key_path, type: :string, desc: 'Path to SSH key'
+    method_option :key_path, type: :string, default: '~/.ssh/id_rsa', desc: 'Path to SSH key'
     def plausible
+      print_remote_summary('Plausible Installation', options)
       RailsMaker::Generators::PlausibleGenerator.new.invoke_all(options)
+    end
+
+    private
+
+    def print_remote_summary(title, opts)
+      sections = {
+        'Connection Details' => [
+          ['SSH Host', opts[:ssh_host], :highlight],
+          ['SSH User', opts[:ssh_user], :highlight],
+          ['SSH Key path', opts[:key_path], :highlight]
+        ]
+      }
+
+      if opts[:signoz_host]
+        sections['Configuration'] = [
+          ['SigNoz Host', opts[:signoz_host], :highlight],
+          ['Override Hostname', opts[:override_hostname], :highlight]
+        ]
+      end
+
+      if opts[:analytics_host]
+        sections['Configuration'] = [
+          ['Analytics Host', opts[:analytics_host], :highlight]
+        ]
+      end
+
+      print_summary(title, sections)
     end
   end
 
-  class CLI < Thor
-    include Thor::Actions
-
+  class CLI < BaseCLI
     desc 'new', 'Generate a new Rails application with integrated features'
     method_option :name, type: :string, required: true, aliases: '-n', desc: 'Application name'
     method_option :docker, type: :string, required: true, aliases: '-d', desc: 'Docker username'
@@ -58,7 +130,6 @@ module RailsMaker
     method_option :ui, type: :boolean, default: true, desc: 'Include UI assets'
     def new
       self.destination_root = File.expand_path(options[:name], Dir.pwd)
-
       say "Generating new Rails application: #{options[:name]}", :yellow
       generate_application(options)
     end
@@ -66,8 +137,89 @@ module RailsMaker
     desc 'wizard', 'Launch an interactive wizard for generating a Rails application'
     def wizard
       say 'Welcome to the RailsMaker wizard!', :blue
+      wizard_options = collect_wizard_options
+      self.destination_root = File.expand_path(wizard_options[:name], Dir.pwd)
+      say "Generating new Rails application: #{wizard_options[:name]}", :yellow
+      generate_application(wizard_options)
+    end
 
-      # If options are already provided, use them as defaults
+    desc 'remote', 'Manage remote services'
+    subcommand 'remote', RailsMaker::RemoteCLI
+
+    def self.exit_on_failure?
+      true
+    end
+
+    private
+
+    def generate_application(opts)
+      print_app_summary(opts)
+      return unless yes?('Do you want to proceed with the installation? (y/N)')
+
+      generate_components(opts)
+      say 'Successfully generated RailsMaker template 🎉', :green
+    end
+
+    def print_app_summary(opts)
+      sections = {
+        'Application Settings' => [
+          ['Name:', opts[:name], :highlight],
+          ['Docker:', opts[:docker], :highlight],
+          ['IP:', opts[:ip], :highlight],
+          ['Domain:', opts[:domain], :highlight]
+        ],
+        'Features & Integrations' => [
+          ['Authentication', opts[:auth], :status],
+          ['Mailjet Email', opts[:mailjet], :status],
+          ['Litestream Backups', opts[:bucketname], :status],
+          ['OpenTelemetry', opts[:opentelemetry], :status],
+          ['Plausible Analytics', opts[:analytics], :status],
+          ['Sentry Error Tracking', opts[:sentry], :status],
+          ['UI Components', opts[:ui], :status]
+        ]
+      }
+
+      print_summary('Configuration Summary', sections)
+      print_warnings(opts)
+    end
+
+    def print_warnings(opts)
+      warnings = []
+      if !opts[:ui] && opts[:analytics]
+        warnings << "- Analytics was enabled but won't be installed because UI is disabled"
+      end
+      if !opts[:ui] && opts[:auth]
+        warnings << "- Authentication was enabled but won't be installed because UI is disabled"
+      end
+      warnings << "- No bucketname provided - Litestream backups won't be configured" if opts[:bucketname].to_s.empty?
+      if opts[:analytics].to_s.empty?
+        warnings << "- No analytics domain provided - Plausible Analytics won't be configured"
+      end
+
+      return unless warnings.any?
+
+      say "\nWarnings:", :yellow
+      warnings.each { |warning| say warning, :yellow }
+    end
+
+    def generate_components(opts)
+      generator_args = opts.flat_map { |key, value| ["--#{key}", value.to_s] }
+
+      RailsMaker::Generators::AppGenerator.start(generator_args)
+
+      if opts[:ui]
+        RailsMaker::Generators::AuthGenerator.start(generator_args) if opts[:auth]
+        RailsMaker::Generators::UiGenerator.start(generator_args)
+        RailsMaker::Generators::PlausibleInstrumentationGenerator.start(generator_args) if opts[:analytics]
+      end
+
+      RailsMaker::Generators::MailjetGenerator.start(generator_args) if opts[:mailjet]
+      RailsMaker::Generators::LitestreamGenerator.start(generator_args) if opts[:bucketname]
+      RailsMaker::Generators::OpentelemetryGenerator.start(generator_args) if opts[:opentelemetry]
+      RailsMaker::Generators::SentryGenerator.start(generator_args) if opts[:sentry]
+    end
+
+    def collect_wizard_options
       wizard_options = {
         name: options[:name],
         docker: options[:docker],
@@ -118,39 +270,7 @@ module RailsMaker
       wizard_options[:bucketname] = nil if wizard_options[:bucketname] && wizard_options[:bucketname].empty?
       wizard_options[:analytics] = nil if wizard_options[:analytics] && wizard_options[:analytics].empty?
 
-      self.destination_root = File.expand_path(wizard_options[:name], Dir.pwd)
-      say "Generating new Rails application: #{wizard_options[:name]}", :yellow
-      generate_application(wizard_options)
-    end
-
-    private
-
-    def generate_application(opts)
-      generator_args = opts.flat_map do |key, value|
-        ["--#{key}", value.to_s]
-      end
-
-      RailsMaker::Generators::AppGenerator.start(generator_args)
-
-      if opts[:ui]
-        RailsMaker::Generators::AuthGenerator.start(generator_args) if opts[:auth]
-        RailsMaker::Generators::UiGenerator.start(generator_args)
-        RailsMaker::Generators::PlausibleInstrumentationGenerator.start(generator_args) if opts[:analytics]
-      end
-
-      RailsMaker::Generators::MailjetGenerator.start(generator_args) if opts[:mailjet]
-      RailsMaker::Generators::LitestreamGenerator.start(generator_args) if opts[:bucketname]
-      RailsMaker::Generators::OpentelemetryGenerator.start(generator_args) if opts[:opentelemetry]
-      RailsMaker::Generators::SentryGenerator.start(generator_args) if opts[:sentry]
-
-      say 'Successfully generated RailsMaker template 🎉', :green
-    end
-
-    desc 'remote', 'Manage remote services'
-    subcommand 'remote', RailsMaker::RemoteCLI
-
-    def self.exit_on_failure?
-      true
+      wizard_options
     end
   end
 end
