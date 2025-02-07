@@ -56,14 +56,8 @@ module RailsMaker
     method_option :analytics, type: :string, desc: 'Set up Plausible Analytics (provide your ANALYTICS_DOMAIN)'
     method_option :sentry, type: :boolean, default: true, desc: 'Configure Sentry error tracking'
     method_option :ui, type: :boolean, default: true, desc: 'Include UI assets'
-    method_option :wizard, type: :boolean, default: false, desc: 'Run interactive wizard mode'
     def new
       self.destination_root = File.expand_path(options[:name], Dir.pwd)
-
-      if options[:wizard]
-        invoke :wizard
-        return
-      end
 
       say "Generating new Rails application: #{options[:name]}", :yellow
       generate_application(options)
