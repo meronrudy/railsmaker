@@ -48,43 +48,90 @@ module RailsMaker
           say "\n"
         end
       end
+
+      def to_generator_args(options)
+        options.flat_map { |key, value| ["--#{key}", value.to_s] }
+      end
     end
   end
 
   class RemoteCLI < BaseCLI
-    desc 'signoz', 'Manage SigNoz installation on a remote server'
-    method_option :server, type: :boolean, default: false, desc: 'Install SigNoz server'
-    method_option :opentelemetry, type: :boolean, default: false, desc: 'Install SigNoz OpenTelemetry client'
-    method_option :ssh_host, type: :string, required: true, desc: 'SSH host'
-    method_option :ssh_user, type: :string, required: true, desc: 'SSH user'
-    method_option :signoz_host, type: :string, required: true, desc: 'SigNoz host (for OpenTelemetry client)'
-    method_option :key_path, type: :string, default: '~/.ssh/id_rsa', desc: 'Path to SSH key'
-    method_option :override_hostname, type: :string, desc: 'Override hostname for OpenTelemetry'
-    method_option :force, type: :boolean, default: false, desc: 'Force installation even if already installed'
+    desc 'signoz SERVER', 'Install SigNoz observability server on a remote machine'
+    long_desc <<-LONGDESC
+      Installs SigNoz server on a remote machine. SigNoz is a full-stack open-source APM#{' '}
+      and observability tool.
+
+      Examples:
+        # Install using SSH key authentication
+        $ railsmaker remote signoz --ssh-host=example.com --ssh-user=deploy --key-path=~/.ssh/id_rsa
+
+        # Install using password authentication (will prompt for password)
+        $ railsmaker remote signoz --ssh-host=example.com --ssh-user=deploy
+
+        # Force reinstallation of existing instance
+        $ railsmaker remote signoz --ssh-host=example.com --ssh-user=deploy --force
+    LONGDESC
+    method_option :ssh_host, type: :string, required: true, desc: 'SSH host (e.g., 123.456.789.0)'
+    method_option :ssh_user, type: :string, default: 'root', desc: 'SSH user with sudo access'
+    method_option :key_path, type: :string, desc: 'Path to SSH key (if not provided, will use password auth)'
+    method_option :force, type: :boolean, default: false, desc: 'Force reinstallation if already installed'
     def signoz
       print_remote_summary('SigNoz Installation', options)
+      RailsMaker::Generators::SignozGenerator.start(to_generator_args(options))
+    end
 
-      if options[:server]
-        RailsMaker::Generators::SignozGenerator.new.invoke_all(options)
-      elsif options[:opentelemetry]
-        unless options[:signoz_host]
-          say 'Error: --signoz-host is required for OpenTelemetry installation', :red
-          exit 1
-        end
-        RailsMaker::Generators::SignozOpentelemetryGenerator.new.invoke_all(options)
-      else
-        say 'Please specify either --server or --opentelemetry', :red
-      end
+    desc 'signoz:opentelemetry', 'Install SigNoz OpenTelemetry collector on a remote machine'
+    long_desc <<-LONGDESC
+      Installs and configures the OpenTelemetry collector on a remote machine to send metrics,#{' '}
+      traces, and logs to your SigNoz server.
+
+      The collector will be configured to:
+        • Collect Docker container logs
+        • Forward metrics and traces
+        • Auto-discover running services
+
+      Examples:
+        # Basic installation
+        $ railsmaker remote signoz:opentelemetry --ssh-host=app.example.com --ssh-user=deploy \\
+            --signoz-host=signoz.example.com
+
+        # With custom hostname for better identification
+        $ railsmaker remote signoz:opentelemetry --ssh-host=app.example.com --ssh-user=deploy \\
+            --signoz-host=signoz.example.com --override-hostname=production-app-1
+    LONGDESC
+    method_option :ssh_host, type: :string, required: true, desc: 'SSH host where collector will be installed'
+    method_option :signoz_host, type: :string, required: true, desc: 'Host where SigNoz server is running'
+    method_option :ssh_user, type: :string, default: 'root', desc: 'SSH user with sudo access'
+    method_option :override_hostname, type: :string, desc: 'Custom hostname for better identification in SigNoz'
+    method_option :key_path, type: :string, desc: 'Path to SSH key (if not provided, will use password auth)'
+    method_option :force, type: :boolean, default: false, desc: 'Force reinstallation if already installed'
+    def signoz_opentelemetry
+      print_remote_summary('SigNoz OpenTelemetry Installation', options)
+      RailsMaker::Generators::SignozOpentelemetryGenerator.start(to_generator_args(options))
     end
 
     desc 'plausible', 'Install Plausible Analytics on a remote server'
-    method_option :ssh_host, type: :string, required: true, desc: 'SSH host'
-    method_option :ssh_user, type: :string, required: true, desc: 'SSH user'
-    method_option :analytics_host, type: :string, required: true, desc: 'Analytics host'
-    method_option :key_path, type: :string, default: '~/.ssh/id_rsa', desc: 'Path to SSH key'
+    long_desc <<-LONGDESC
+      Installs Plausible Analytics on a remote machine. Plausible is a lightweight,#{' '}
+      open-source alternative to Google Analytics.
+
+      Examples:
+        # Basic installation
+        $ railsmaker remote plausible --ssh-host=analytics.example.com --ssh-user=deploy \\
+            --analytics-host=plausible.example.com
+
+        # With custom SSH key
+        $ railsmaker remote plausible --ssh-host=analytics.example.com --ssh-user=deploy \\
+            --analytics-host=plausible.example.com --key-path=~/.ssh/analytics_key
+    LONGDESC
+    method_option :ssh_host, type: :string, required: true, desc: 'SSH host where Plausible will be installed'
+    method_option :analytics_host, type: :string, required: true, desc: 'Domain where Plausible will be accessible'
+    method_option :ssh_user, type: :string, default: 'root', desc: 'SSH user with sudo access'
+    method_option :key_path, type: :string, desc: 'Path to SSH key (if not provided, will use password auth)'
+    method_option :force, type: :boolean, default: false, desc: 'Force reinstallation if already installed'
     def plausible
       print_remote_summary('Plausible Installation', options)
-      RailsMaker::Generators::PlausibleGenerator.new.invoke_all(options)
+      RailsMaker::Generators::PlausibleGenerator.start(to_generator_args(options))
     end
 
     private
@@ -203,7 +250,7 @@ module RailsMaker
     end
 
     def generate_components(opts)
-      generator_args = opts.flat_map { |key, value| ["--#{key}", value.to_s] }
+      generator_args = to_generator_args(opts)
 
       RailsMaker::Generators::AppGenerator.start(generator_args)
 

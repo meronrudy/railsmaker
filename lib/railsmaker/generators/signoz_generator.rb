@@ -2,12 +2,21 @@
 
 module RailsMaker
   module Generators
-    class SignozGenerator < ShellScriptGenerator
-      def initialize(*args)
-        super
-        options[:script_name] = 'signoz'
-        options[:check_path] = '~/signoz'
-        options[:title] = "Installing SigNoz on remote server #{options[:ssh_user]}@#{options[:ssh_host]}"
+    class SignozGenerator < ServerCommandGenerator
+      source_root File.expand_path('templates/shell_scripts', __dir__)
+
+      private
+
+      def script_name
+        'signoz'
+      end
+
+      def check_path
+        '~/signoz'
+      end
+
+      def title
+        "Installing SigNoz on remote server #{options[:ssh_user]}@#{options[:ssh_host]}"
       end
     end
   end
