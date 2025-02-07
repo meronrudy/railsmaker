@@ -139,4 +139,11 @@ module RailsMaker
   end
 end
 
-RailsMaker::CLI.start
+begin
+  RailsMaker::CLI.start
+rescue StandardError => e
+  puts "\nError: #{e.message}"
+  puts e.backtrace if ENV['DEBUG']
+  puts "\nIf you need help, please create an issue at: https://github.com/sgerov/railsmaker/issues"
+  exit 1
+end
