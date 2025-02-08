@@ -165,6 +165,8 @@ module RailsMaker
   end
 
   class CLI < BaseCLI
+    map 'new:wizard' => :new_wizard
+
     desc 'new', 'Generate a new Rails application with integrated features'
     method_option :name, type: :string, required: true, aliases: '-n', desc: 'Application name'
     method_option :docker, type: :string, required: true, aliases: '-d', desc: 'Docker username'
@@ -181,13 +183,10 @@ module RailsMaker
       self.destination_root = File.expand_path(options[:name], Dir.pwd)
       say "Generating new Rails application: #{options[:name]}", :yellow
       generate_application(options)
-    rescue StandardError => e
-      cleanup_on_failure
-      raise # Re-raise the error for the main error handler
     end
 
-    desc 'wizard', 'Launch an interactive wizard for generating a Rails application'
-    def wizard
+    desc 'new:wizard', 'Launch an interactive wizard for generating a Rails application'
+    def new_wizard
       say 'Welcome to the RailsMaker wizard!', :blue
       wizard_options = collect_wizard_options
       self.destination_root = File.expand_path(wizard_options[:name], Dir.pwd)
@@ -206,6 +205,7 @@ module RailsMaker
 
     def cleanup_on_failure
       return unless File.directory?(destination_root)
+      return unless $!.to_s.include?('Failed to generate app')
 
       say_status 'cleanup', "Removing directory: #{destination_root}", :yellow
       FileUtils.rm_rf(destination_root)

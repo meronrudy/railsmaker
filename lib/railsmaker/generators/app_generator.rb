@@ -73,7 +73,7 @@ module RailsMaker
 
         route "root 'main#index'"
       rescue StandardError => e
-        say_status 'error', "Failed to generate app: #{e.message}, check #{destination_root}", :red
+        say_status 'error', "Failed to generate app: #{e.message} in #{destination_root}", :red
         raise BaseGeneratorError, e.message
       end
 
