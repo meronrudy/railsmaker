@@ -7,15 +7,18 @@ module RailsMaker
 
       class_option :domain, type: :string, required: true, desc: 'Host domain for the application'
       class_option :name, type: :string, required: true, desc: 'Name of the application'
+      class_option :analytics, type: :string, desc: 'Domain where Plausible is hosted'
+      class_option :sentry, type: :boolean, default: false, desc: 'Wether Sentry is enabled'
 
       attr_reader :domain, :name, :host, :app_name, :plausible_enabled, :sentry_enabled
 
       def initialize(*args)
         super
+
         @host = options[:domain]
         @app_name = options[:name]
         @plausible_enabled = options[:analytics].present?
-        @sentry_enabled = options[:sentry].present?
+        @sentry_enabled = options[:sentry]
       end
 
       def add_seo_capabilities
