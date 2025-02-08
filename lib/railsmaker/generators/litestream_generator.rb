@@ -64,6 +64,7 @@ module RailsMaker
                     - LITESTREAM_SECRET_ACCESS_KEY
                     - LITESTREAM_ENDPOINT
                     - LITESTREAM_REGION
+                    - LITESTREAM_BUCKET_NAME
           YAML
         end
 
