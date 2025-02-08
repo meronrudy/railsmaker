@@ -42,7 +42,7 @@
     <%%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
     <% if plausible_enabled %>
       <%# Plausible Analytics %>
-      <script defer data-domain="test-railsmaker.gerovlabs.com" src="https://analytics.gerovlabs.com/js/script.file-downloads.outbound-links.pageview-props.revenue.tagged-events.js"></script>
+      <script defer data-domain="example.com" src="https://analytics.example.com/js/script.file-downloads.outbound-links.pageview-props.revenue.tagged-events.js"></script>
       <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
     <% end %>
     <% if sentry_enabled %>
