@@ -38,7 +38,7 @@ sed -i 's/#   - /  - /' docker/generator/infra/docker-compose.yaml
 sed -i 's/#   - /  - /' docker/generator/infra/docker-compose.yaml
 
 echo "🚀 Starting SigNoz OpenTelemetry services..."
-docker compose -f docker/generator/infra/docker-compose.yaml up -d --remove-orphans 2>&1 | grep -E 'Status:|Created|Started|Error|Warning' || true
+docker compose -f docker/generator/infra/docker-compose.yaml up -d --remove-orphans --quiet-pull
 
 echo "✨ Verifying services..."
 if docker compose -f docker/generator/infra/docker-compose.yaml ps --status running | grep -q "otel-agent"; then

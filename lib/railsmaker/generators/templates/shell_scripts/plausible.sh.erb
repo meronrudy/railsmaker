@@ -40,7 +40,7 @@ services:
 EOF
 
 echo "🚀 Starting Plausible services... (it may take a while)"
-docker compose up -d 2>&1 | grep -E 'Status:|Created|Started|Error|Warning' || true
+docker compose up -d --quiet-pull
 
 echo "✨ Verifying services..."
 if docker compose ps --status running | grep -q "plausible"; then
