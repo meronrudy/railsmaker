@@ -56,6 +56,8 @@ module RailsMaker
   end
 
   class RemoteCLI < BaseCLI
+    map 'signoz:opentelemetry' => :signoz_opentelemetry
+
     desc 'signoz SERVER', 'Install SigNoz observability server on a remote machine'
     long_desc <<-LONGDESC
       Installs SigNoz server on a remote machine. SigNoz is a full-stack open-source APM#{' '}
@@ -97,12 +99,12 @@ module RailsMaker
 
         # With custom hostname for better identification
         $ railsmaker remote signoz:opentelemetry --ssh-host=app.example.com --ssh-user=deploy \\
-            --signoz-host=signoz.example.com --override-hostname=production-app-1
+            --signoz-host=signoz.example.com --hostname=production-app-1
     LONGDESC
     method_option :ssh_host, type: :string, required: true, desc: 'SSH host where collector will be installed'
-    method_option :signoz_host, type: :string, required: true, desc: 'Host where SigNoz server is running'
+    method_option :signoz_server_host, type: :string, required: true, desc: 'Host where SigNoz server is running'
     method_option :ssh_user, type: :string, default: 'root', desc: 'SSH user with sudo access'
-    method_option :override_hostname, type: :string, desc: 'Custom hostname for better identification in SigNoz'
+    method_option :hostname, type: :string, default: 'rails-apps-1', desc: 'Custom hostname identifier of the server'
     method_option :key_path, type: :string, desc: 'Path to SSH key (if not provided, will use password auth)'
     method_option :force, type: :boolean, default: false, desc: 'Force reinstallation if already installed'
     def signoz_opentelemetry
@@ -145,10 +147,10 @@ module RailsMaker
         ]
       }
 
-      if opts[:signoz_host]
+      if opts[:signoz_server_host]
         sections['Configuration'] = [
-          ['SigNoz Host', opts[:signoz_host], :highlight],
-          ['Override Hostname', opts[:override_hostname], :highlight]
+          ['SigNoz Host', opts[:signoz_server_host], :highlight],
+          ['Custom Hostname', opts[:hostname], :highlight]
         ]
       end
 

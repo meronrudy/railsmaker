@@ -19,11 +19,9 @@ if ! command -v git &> /dev/null; then
     exit 1
 fi
 
-git clone -b main https://github.com/SigNoz/signoz.git
+git clone -b main https://github.com/SigNoz/signoz.git --depth 1 --branch <%= signoz_version %>
 
 cd signoz/deploy/
-
-git checkout v0.71.0
 
 docker compose -f docker/docker-compose.yaml up -d --remove-orphans
 

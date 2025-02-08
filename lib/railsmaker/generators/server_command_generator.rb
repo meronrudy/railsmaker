@@ -3,6 +3,7 @@
 require 'English'
 require 'fileutils'
 require 'base64'
+require 'securerandom'
 
 module RailsMaker
   module Generators
@@ -22,23 +23,30 @@ module RailsMaker
             :yellow
         return unless yes?('Do you want to proceed? (y/N)')
 
-        # Generate all file contents first
+        # Generate random suffix for tmp files
+        random_suffix = SecureRandom.hex(8)
+
         remote_files_content = remote_files.map do |file|
-          template file[:template], "/tmp/#{file[:filename]}"
-          content = File.read("/tmp/#{file[:filename]}")
-          FileUtils.rm("/tmp/#{file[:filename]}")
-          [file[:filename], Base64.strict_encode64(content)]
+          tmp_filename = "#{file[:filename]}.#{random_suffix}"
+          template file[:template], "/tmp/#{tmp_filename}"
+          content = File.read("/tmp/#{tmp_filename}")
+          FileUtils.rm("/tmp/#{tmp_filename}")
+          [tmp_filename, Base64.strict_encode64(content)]
         end.to_h
 
         file_commands = remote_files_content.map do |filename, content|
           [
             "echo '#{content}' | base64 -d > /tmp/#{filename}",
-            filename == 'install_script.sh' ? 'chmod +x /tmp/install_script.sh' : nil
+            filename.end_with?("install_script.sh.#{random_suffix}") ? "chmod +x /tmp/#{filename}" : nil
           ]
         end.flatten.compact
 
         execute_remote_commands(
-          [*file_commands, *install_commands],
+          [
+            *file_commands,
+            "/tmp/install_script.sh.#{random_suffix}",
+            *remote_files_content.keys.map { |filename| "rm /tmp/#{filename}" }
+          ],
           title: title,
           check_path: check_path,
           force: options[:force]

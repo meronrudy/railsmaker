@@ -5,14 +5,16 @@ module RailsMaker
     class SignozOpentelemetryGenerator < ServerCommandGenerator
       source_root File.expand_path('templates/shell_scripts', __dir__)
 
-      class_option :signoz_host, type: :string, required: true, desc: 'Host where SigNoz is running'
-      class_option :override_hostname, type: :string, desc: 'Override the server hostname'
+      class_option :signoz_server_host, type: :string, required: true, desc: 'Host where SigNoz is running'
+      class_option :hostname, type: :string, desc: 'Override the server hostname'
+      class_option :signoz_version, type: :string, default: 'v0.71.0',
+                                    desc: 'Version of SigNoz to install'
 
       def initialize(*args)
         super
-
-        @signoz_host = options[:signoz_host]
-        @override_hostname = options[:override_hostname]
+        @signoz_server_host = options[:signoz_server_host]
+        @hostname = options[:hostname]
+        @signoz_version = options[:signoz_version]
       end
 
       private
@@ -22,23 +24,14 @@ module RailsMaker
       end
 
       def check_path
-        '/etc/otelcol-contrib/config.yaml'
+        '~/signoz-opentelemetry'
       end
 
       def title
         "Installing SigNoz OpenTelemetry client on remote server #{options[:ssh_user]}@#{options[:ssh_host]}"
       end
 
-      def config_files
-        [
-          {
-            template: 'otelcol_config.yaml.erb',
-            filename: 'otelcol_config.yaml'
-          }
-        ]
-      end
-
-      attr_reader :signoz_host, :override_hostname
+      attr_reader :signoz_server_host, :hostname, :signoz_version
     end
   end
 end
