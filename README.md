@@ -62,10 +62,9 @@ export KAMAL_REGISTRY_PASSWORD="your-registry-pw"
 # Litestream Backups (S3-compatible)
 export LITESTREAM_ACCESS_KEY_ID="AKIA..."
 export LITESTREAM_SECRET_ACCESS_KEY="..."
-export LITESTREAM_BUCKET="your-bucket"
+export LITESTREAM_ENDPOINT="your-bucket-endpoint"
 export LITESTREAM_REGION="eu2"
 ```
-
 4. **Deploy to Production**:
 ```bash
 kamal setup

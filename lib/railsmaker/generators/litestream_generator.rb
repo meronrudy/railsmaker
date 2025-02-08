@@ -9,6 +9,15 @@ module RailsMaker
       class_option :name, type: :string, required: true, desc: 'Application name for volume and bucket naming'
       class_option :ip, type: :string, required: true, desc: 'Server IP address'
 
+      def check_required_env_vars
+        super(%w[
+          LITESTREAM_ACCESS_KEY_ID
+          LITESTREAM_SECRET_ACCESS_KEY
+          LITESTREAM_ENDPOINT
+          LITESTREAM_REGION
+        ])
+      end
+
       def create_litestream_config
         template 'litestream.yml.erb', 'config/litestream.yml'
       end
@@ -20,7 +29,7 @@ module RailsMaker
             # Litestream credentials for S3-compatible storage
             LITESTREAM_ACCESS_KEY_ID=$LITESTREAM_ACCESS_KEY_ID
             LITESTREAM_SECRET_ACCESS_KEY=$LITESTREAM_SECRET_ACCESS_KEY
-            LITESTREAM_BUCKET=$LITESTREAM_BUCKET
+            LITESTREAM_ENDPOINT=$LITESTREAM_ENDPOINT
             LITESTREAM_REGION=$LITESTREAM_REGION
             LITESTREAM_BUCKET_NAME=#{options[:bucketname]}
           YAML

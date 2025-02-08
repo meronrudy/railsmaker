@@ -16,7 +16,7 @@ class LitestreamGeneratorTest < Rails::Generators::TestCase
     assert_file 'config/litestream.yml' do |content|
       assert_match(/access-key-id: \${LITESTREAM_ACCESS_KEY_ID}/, content)
       assert_match(/secret-access-key: \${LITESTREAM_SECRET_ACCESS_KEY}/, content)
-      assert_match(/endpoint: \${LITESTREAM_BUCKET}/, content)
+      assert_match(/endpoint: \${LITESTREAM_ENDPOINT}/, content)
       assert_match(/region: \${LITESTREAM_REGION}/, content)
     end
   end
@@ -27,7 +27,7 @@ class LitestreamGeneratorTest < Rails::Generators::TestCase
     assert_file '.kamal/secrets' do |content|
       assert_match(/LITESTREAM_ACCESS_KEY_ID=/, content)
       assert_match(/LITESTREAM_SECRET_ACCESS_KEY=/, content)
-      assert_match(/LITESTREAM_BUCKET=/, content)
+      assert_match(/LITESTREAM_ENDPOINT=/, content)
       assert_match(/LITESTREAM_REGION=/, content)
       assert_match(/LITESTREAM_BUCKET_NAME=MyApp/, content)
     end

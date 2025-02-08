@@ -181,6 +181,9 @@ module RailsMaker
       self.destination_root = File.expand_path(options[:name], Dir.pwd)
       say "Generating new Rails application: #{options[:name]}", :yellow
       generate_application(options)
+    rescue StandardError => e
+      cleanup_on_failure
+      raise # Re-raise the error for the main error handler
     end
 
     desc 'wizard', 'Launch an interactive wizard for generating a Rails application'
@@ -201,12 +204,24 @@ module RailsMaker
 
     private
 
+    def cleanup_on_failure
+      return unless File.directory?(destination_root)
+
+      say_status 'cleanup', "Removing directory: #{destination_root}", :yellow
+      FileUtils.rm_rf(destination_root)
+    end
+
     def generate_application(opts)
       print_app_summary(opts)
       return unless yes?('Do you want to proceed with the installation? (y/N)')
 
-      generate_components(opts)
-      say 'Successfully generated RailsMaker template 🎉', :green
+      begin
+        generate_components(opts)
+        say 'Successfully generated RailsMaker template 🎉', :green
+      rescue StandardError => e
+        cleanup_on_failure
+        raise
+      end
     end
 
     def print_app_summary(opts)
@@ -237,12 +252,9 @@ module RailsMaker
       if !opts[:ui] && opts[:analytics]
         warnings << "- Analytics was enabled but won't be installed because UI is disabled"
       end
+
       if !opts[:ui] && opts[:auth]
         warnings << "- Authentication was enabled but won't be installed because UI is disabled"
-      end
-      warnings << "- No bucketname provided - Litestream backups won't be configured" if opts[:bucketname].to_s.empty?
-      if opts[:analytics].to_s.empty?
-        warnings << "- No analytics domain provided - Plausible Analytics won't be configured"
       end
 
       return unless warnings.any?
@@ -315,7 +327,6 @@ module RailsMaker
       wizard_options[:sentry] = yes?('Configure Sentry error tracking? (y/N)') if wizard_options[:sentry].nil?
       wizard_options[:ui] = yes?('Include UI assets? (y/N)') if wizard_options[:ui].nil?
 
-      # Clean up empty values
       wizard_options[:bucketname] = nil if wizard_options[:bucketname] && wizard_options[:bucketname].empty?
       wizard_options[:analytics] = nil if wizard_options[:analytics] && wizard_options[:analytics].empty?
 

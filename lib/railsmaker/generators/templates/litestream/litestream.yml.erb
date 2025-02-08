@@ -7,26 +7,26 @@ dbs:
       - type: s3
         bucket: ${LITESTREAM_BUCKET_NAME}
         path: db_backup/production
-        endpoint: ${LITESTREAM_BUCKET}
+        endpoint: ${LITESTREAM_ENDPOINT}
         region: ${LITESTREAM_REGION}
   - path: /rails/storage/production_cache.sqlite3
     replicas:
       - type: s3
         bucket: ${LITESTREAM_BUCKET_NAME}
         path: db_backup/production_cache
-        endpoint: ${LITESTREAM_BUCKET}
+        endpoint: ${LITESTREAM_ENDPOINT}
         region: ${LITESTREAM_REGION}
   - path: /rails/storage/production_queue.sqlite3
     replicas:
       - type: s3
         bucket: ${LITESTREAM_BUCKET_NAME}
         path: db_backup/production_queue
-        endpoint: ${LITESTREAM_BUCKET}
+        endpoint: ${LITESTREAM_ENDPOINT}
         region: ${LITESTREAM_REGION}
   - path: /rails/storage/production_cable.sqlite3
     replicas:
       - type: s3
         bucket: ${LITESTREAM_BUCKET_NAME}
         path: db_backup/production_cable
-        endpoint: ${LITESTREAM_BUCKET}
+        endpoint: ${LITESTREAM_ENDPOINT}
         region: ${LITESTREAM_REGION}

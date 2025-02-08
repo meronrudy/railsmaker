@@ -118,7 +118,7 @@ module RailsMaker
       def execute_remote_commands(commands, options = {})
         if options[:key_path] && !File.exist?(File.expand_path(options[:key_path]))
           say_status 'error', "SSH key not found: #{options[:key_path]}", :red
-          exit 1
+          raise BaseGeneratorError, 'SSH key not found'
         end
 
         title = options[:title] || 'Executing remote commands'
@@ -141,7 +141,7 @@ module RailsMaker
             echo "→ Executing: #{cmd}"
             if ! #{cmd}; then
               echo "✗ Command failed: #{cmd}"
-              exit 1
+              raise BaseGeneratorError, "Command failed: #{cmd}"
             fi
           SHELL
         end
