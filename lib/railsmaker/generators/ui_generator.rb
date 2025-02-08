@@ -8,12 +8,14 @@ module RailsMaker
       class_option :domain, type: :string, required: true, desc: 'Host domain for the application'
       class_option :name, type: :string, required: true, desc: 'Name of the application'
 
-      attr_reader :domain, :name, :host, :app_name
+      attr_reader :domain, :name, :host, :app_name, :plausible_enabled, :sentry_enabled
 
       def initialize(*args)
         super
         @host = options[:domain]
         @app_name = options[:name]
+        @plausible_enabled = options[:analytics].present?
+        @sentry_enabled = options[:sentry].present?
       end
 
       def add_seo_capabilities
@@ -34,6 +36,7 @@ module RailsMaker
         directory 'app/javascript', 'app/javascript', force: true
         directory 'public', 'public', force: true
 
+        template 'app/views/layouts/application.html.erb', 'app/views/layouts/application.html.erb', force: true
         template 'config/sitemap.rb', 'config/sitemap.rb', force: true
         template 'public/robots.txt', 'public/robots.txt', force: true
         template 'app/views/shared/_structured_data.html.erb', 'app/views/shared/_structured_data.html.erb', force: true
