@@ -19,10 +19,20 @@ if ! command -v git &> /dev/null; then
     exit 1
 fi
 
+echo "📝 Cloning SigNoz repository..."
 git clone -b main https://github.com/SigNoz/signoz.git --depth 1 --branch <%= signoz_version %>
 
 cd signoz/deploy/
 
-docker compose -f docker/docker-compose.yaml up -d --remove-orphans
+echo "🚀 Starting SigNoz services..."
+docker compose -f docker/docker-compose.yaml up -d --remove-orphans 2>&1 | grep -E 'Status:|Created|Started|Error|Warning' || true
+
+echo "✨ Verifying services..."
+if docker compose -f docker/docker-compose.yaml ps --status running | grep -q "query-service"; then
+    echo "✅ SigNoz server is running successfully!"
+else
+    echo "❌ Error: SigNoz server failed to start. Please check the logs with 'docker compose logs'"
+    exit 1
+fi
 
 docker compose -f docker/generator/infra/docker-compose.yaml up -d --remove-orphans
