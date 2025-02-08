@@ -142,8 +142,7 @@ module RailsMaker
       sections = {
         'Connection Details' => [
           ['SSH Host', opts[:ssh_host], :highlight],
-          ['SSH User', opts[:ssh_user], :highlight],
-          ['SSH Key path', opts[:key_path], :highlight]
+          ['SSH User', opts[:ssh_user], :highlight]
         ]
       }
 
