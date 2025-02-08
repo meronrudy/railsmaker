@@ -24,7 +24,7 @@ git clone -b main https://github.com/SigNoz/signoz.git --depth 1 --branch <%= si
 
 cd signoz/deploy/
 
-echo "🚀 Starting SigNoz services..."
+echo "🚀 Starting SigNoz services... (it may take a while)"
 docker compose -f docker/docker-compose.yaml up -d --remove-orphans 2>&1 | grep -E 'Status:|Created|Started|Error|Warning' || true
 
 echo "✨ Verifying services..."
