@@ -1,10 +1,11 @@
 [![Gem Version](https://img.shields.io/gem/v/railsmaker?color=blue&logo=rubygems)](https://rubygems.org/gems/railsmaker)
  [![Support](https://img.shields.io/badge/Support-%F0%9F%8D%B8-yellow)](https://buymeacoffee.com/sgerov)
 [![Live Demo](https://img.shields.io/badge/Live_Demo-Try_Now_-brightgreen?logo=rocket&color=00cc99)](https://railsmaker.com)
+[![Live Demo Repo](https://img.shields.io/badge/Live_Demo_Repo-View_Code-blue?logo=github)](https://github.com/sgerov/railsmaker-sample)
 
 # 📦 Railsmaker - a bootstrapping stack
 
-Ship your MVP in hours, not weeks • Built for rapid growth • Zero config needed • Save $120+/month and 20+ dev hours
+Ship your MVP in hours, not weeks • Zero config needed • Save $120+/month and 20+ dev hours
 
 ## ⚡ Why Railsmaker?
 - **Ship Faster**: From zero to production in 15 minutes
