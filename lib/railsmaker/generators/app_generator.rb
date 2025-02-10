@@ -11,8 +11,6 @@ module RailsMaker
       class_option :domain, type: :string, required: true, desc: 'Domain name'
       class_option :ui, type: :boolean, default: false, desc: 'Include UI assets?'
 
-      REQUIRED_RAILS_VERSION = '8.0.1'
-
       def check_required_env_vars
         super(%w[
           KAMAL_REGISTRY_PASSWORD
@@ -20,20 +18,6 @@ module RailsMaker
       end
 
       def generate_app
-        begin
-          rails_version = Gem::Version.new(Rails.version)
-          required_version = Gem::Version.new(REQUIRED_RAILS_VERSION)
-
-          unless rails_version == required_version
-            say_status 'error',
-                       "Rails version #{rails_version} detected. RailsMaker requires Rails #{REQUIRED_RAILS_VERSION}", :red
-            raise BaseGeneratorError, 'Wrong rails version'
-          end
-        rescue NameError
-          say_status 'error', 'Rails is not installed. Please install Rails 8.0.1 first', :red
-          raise BaseGeneratorError, 'Rails is not installed'
-        end
-
         self.destination_root = File.expand_path(options[:name], current_dir)
 
         if !in_minitest? && File.directory?(destination_root)
