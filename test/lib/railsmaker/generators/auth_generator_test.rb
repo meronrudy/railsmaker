@@ -24,7 +24,6 @@ class AuthGeneratorTest < Rails::Generators::TestCase
     run_generator %w[--mailer_sender=test@example.com]
 
     assert_file 'Gemfile' do |content|
-      assert_match(/gem "argon2", "2.3.0"/, content)
       assert_match(/gem "clearance", "~> 2.9.3"/, content)
       assert_match(/gem "omniauth", "~> 2.1.2"/, content)
       assert_match(/gem "omniauth-google-oauth2", "~> 1.2.1"/, content)

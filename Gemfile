@@ -5,7 +5,6 @@ source 'https://rubygems.org'
 gemspec
 
 # dev tools
-gem 'argon2', '2.3.0'
 gem 'debug'
 gem 'git'
 gem 'minitest'
