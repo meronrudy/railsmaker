@@ -2,18 +2,19 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "<%= app_name %>",
+  "name": "RailsMaker",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Any",
   "description": "<%%= meta_description %>",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
   "author": {
     "@type": "Organization",
-    "name": "<%= app_name %>"
-  }
+    "name": "RailsMaker",
+    "url": "https://railsmaker.com",
+    "logo": "<%%= asset_url('og-image.webp') %>"
+  },
+  "datePublished": "2025-02-09",
+  "dateModified": "<%%= Time.current.iso8601 %>",
+  "softwareVersion": "0.0.1",
+  "downloadUrl": "https://github.com/sgerov/railsmaker"
 }
-</script> 
+</script>

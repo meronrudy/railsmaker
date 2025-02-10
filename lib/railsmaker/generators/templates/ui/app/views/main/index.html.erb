@@ -2,10 +2,10 @@
   <!-- Hero Section with Logo -->
   <div class="hero bg-base-100 min-h-screen">
     <div class="hero-content flex-col xl:flex-row-reverse gap-8 max-w-7xl px-4 py-24 xl:py-0">
-      <div class="relative w-full xl:w-auto max-w-2xl mx-auto">
-        <iframe class="w-full rounded-lg shadow-lg" height="300" src="https://www.youtube-nocookie.com/embed/EM5ESYiRwWo?si=cPOSIOCpRCasB022&amp;controls=1" title="Build your app in 15 minutes" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      <div class="relative w-full xl:w-2/5 max-w-2xl lg:max-w-4xl xl:max-w-none mx-auto order-last xl:order-first">
+        <iframe class="w-full rounded-lg shadow-lg h-[300px]" src="https://www.youtube-nocookie.com/embed/Gzj723LkRJY?si=O-2h0IPtCp_D8TIP&amp;controls=1" title="Build your app in 15 minutes" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
       </div>
-      <div class="w-full xl:w-auto text-center xl:text-left">
+      <div class="w-full xl:w-3/5 text-center xl:text-left order-first xl:order-last">
         <div class="flex items-center justify-center xl:justify-start gap-4 mb-8">
           <div class="p-3 bg-primary rounded-lg">
             <svg xmlns="http://www.w3.org/2000/svg" class="size-8 text-base-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -20,16 +20,17 @@
         </div>
         <h1 class="text-4xl xl:text-5xl font-bold">
           Ship this app
-          <span class="relative inline-block mt-2 md:mt-0">
+          <span class="relative inline-block mt-4 md:mt-0">
             <span class="relative bg-base-100 px-4 py-1 rounded border-2 border-secondary text-secondary">in 15 minutes</span>
           </span>
         </h1>
         <p class="py-6 text-lg xl:text-xl">
-          A fully self-hosted modern Rails template with authentication, analytics and observability.
+          A modern <strong>all-in-one</strong> Rails template — perfect for 
+          indie hackers craving full control, low operational hassle and quick iteration.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center xl:justify-start">
           <%= link_to sign_in_path, class: "btn btn-primary gap-2" do %>
-            See more
+            Demo
             <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M14 5l7 7m0 0l-7 7m7-7H3"/>
             </svg>
@@ -64,18 +65,27 @@
         </div>
       </div>
     </div>
+    <!-- Add the bouncing arrow -->
+    <div class="hidden md:block fixed md:absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce transition-opacity duration-300 opacity-100"
+         data-controller="scroll-fade"
+         data-scroll-fade-offset-value="100">
+      <svg xmlns="http://www.w3.org/2000/svg" class="size-8 opacity-50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M7 13l5 5 5-5"/>
+        <path d="M7 6l5 5 5-5"/>
+      </svg>
+    </div>
   </div>
 
   <!-- Feature Grid -->
   <div class="py-16 lg:py-24 px-4 bg-base-200">
     <div class="text-center max-w-3xl mx-auto mb-16">
-      <h2 class="text-3xl lg:text-4xl font-bold mb-4">Built for quick iteration</h2>
-      <p class="text-lg opacity-75">Everything you need to ship production-ready apps, following Rails conventions</p>
+      <h2 class="text-3xl lg:text-4xl font-bold mb-4">Everything you need for quick iteration</h2>
+      <p class="text-lg opacity-75">A production-ready Rails stack that respects conventions and puts you in control</p>
     </div>
 
     <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       <!-- Development -->
-      <div class="card bg-base-100 shadow-xl">
+      <div class="card bg-base-100 shadow-xl md:col-span-1">
         <div class="card-body">
           <div class="flex items-center gap-3 mb-6">
             <div class="p-2 bg-primary/10 rounded-lg">
@@ -83,33 +93,33 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
             </div>
-            <h3 class="text-xl font-bold">Quick and <span class="underline underline-offset-4 decoration-accent">cheap</span></h3>
+            <h3 class="text-xl font-bold">Quick Setup</h3>
           </div>
           <ul class="space-y-3">
             <li class="flex items-start gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-success flex-shrink-0 mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="20 6 9 17 4 12"></polyline>
               </svg>
-              <span>Self-hosted with no operational overhead</span>
+              <span>Adjustable template generated in minutes</span>
             </li>
             <li class="flex items-start gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-success flex-shrink-0 mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="20 6 9 17 4 12"></polyline>
               </svg>
-              <span>Automated setup</span>
+              <span>Server-side scripts included</span>
             </li>
             <li class="flex items-start gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-success flex-shrink-0 mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="20 6 9 17 4 12"></polyline>
               </svg>
-              <span>Deploy in minutes with Kamal</span>
+              <span>Tested on Mac M4 & Ubuntu 24.04</span>
             </li>
           </ul>
         </div>
       </div>
 
-      <!-- Frontend -->
-      <div class="card bg-base-100 shadow-xl">
+      <!-- Core Features -->
+      <div class="card bg-base-100 shadow-xl md:col-span-1">
         <div class="card-body">
           <div class="flex items-center gap-3 mb-6">
             <div class="p-2 bg-primary/10 rounded-lg">
@@ -117,33 +127,33 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
               </svg>
             </div>
-            <h3 class="text-xl font-bold">Sensible defaults</h3>
+            <h3 class="text-xl font-bold">Modern Stack</h3>
           </div>
           <ul class="space-y-3">
             <li class="flex items-start gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-success flex-shrink-0 mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="20 6 9 17 4 12"></polyline>
               </svg>
-              <span>Tailwind CSS 4 and DaisyUI 5</span>
+              <span>Rails 8 with Tailwind 4 & DaisyUI 5</span>
             </li>
             <li class="flex items-start gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-success flex-shrink-0 mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="20 6 9 17 4 12"></polyline>
               </svg>
-              <span>Clearance and Omniauth setup</span>
+              <span>SQLite with S3 backups</span>
             </li>
             <li class="flex items-start gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-success flex-shrink-0 mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="20 6 9 17 4 12"></polyline>
               </svg>
-              <span>Mailjet integration</span>
+              <span>SEO-ready and mobile-first</span>
             </li>
           </ul>
         </div>
       </div>
 
-      <!-- Production Ready -->
-      <div class="card bg-base-100 shadow-xl">
+      <!-- Infrastructure -->
+      <div class="card bg-base-100 shadow-xl md:col-span-2 lg:col-span-1">
         <div class="card-body">
           <div class="flex items-center gap-3 mb-6">
             <div class="p-2 bg-primary/10 rounded-lg">
@@ -151,32 +161,32 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
               </svg>
             </div>
-            <h3 class="text-xl font-bold">Production-ready</h3>
+            <h3 class="text-xl font-bold">No overhead</h3>
           </div>
           <ul class="space-y-3">
             <li class="flex items-start gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-success flex-shrink-0 mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="20 6 9 17 4 12"></polyline>
               </svg>
-              <span>DB backups in S3</span>
+              <span>Multiple apps per server with Thruster</span>
             </li>
             <li class="flex items-start gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-success flex-shrink-0 mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="20 6 9 17 4 12"></polyline>
               </svg>
-              <span>SEO-ready</span>
+              <span>Authentication and OAuth2</span>
             </li>
             <li class="flex items-start gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-success flex-shrink-0 mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="20 6 9 17 4 12"></polyline>
               </svg>
-              <span>O11y via SigNoz and Sentry</span>
+              <span>6000 free emails/mo with Mailjet</span>
             </li>
           </ul>
         </div>
       </div>
 
-      <!-- Analytics & Monitoring Showcase -->
+      <!-- Monitoring & Analytics -->
       <div class="card bg-base-100 shadow-xl col-span-full">
         <div class="card-body">
           <div class="flex items-center gap-3 mb-6">
@@ -185,7 +195,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
             </div>
-            <h3 class="text-xl font-bold">Integrated Analytics & O11y</h3>
+            <h3 class="text-xl font-bold">Complete Observability Suite</h3>
           </div>
 
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -212,36 +222,36 @@
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
             <div class="space-y-2">
-              <h4 class="font-bold">Plausible Analytics</h4>
+              <h4 class="font-bold">Self-hosted</h4>
               <ul class="space-y-3">
                 <li class="flex items-start gap-2">
                   <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-success flex-shrink-0 mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <polyline points="20 6 9 17 4 12"></polyline>
                   </svg>
-                  <span>Privacy-focused web analytics</span>
+                  <span>Metrics, traces and structured logs with SigNoz</span>
                 </li>
                 <li class="flex items-start gap-2">
                   <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-success flex-shrink-0 mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <polyline points="20 6 9 17 4 12"></polyline>
                   </svg>
-                  <span>GDPR, CCPA & PECR compliant</span>
+                  <span>Plausible analytics</span>
                 </li>
               </ul>
             </div>
             <div class="space-y-2">
-              <h4 class="font-bold">Monitoring</h4>
+              <h4 class="font-bold">3rd Party</h4>
               <ul class="space-y-3">
                 <li class="flex items-start gap-2">
                   <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-success flex-shrink-0 mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <polyline points="20 6 9 17 4 12"></polyline>
                   </svg>
-                  <span>Full observability with OpenTelemetry</span>
+                  <span>Error tracking with Sentry</span>
                 </li>
                 <li class="flex items-start gap-2">
                   <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-success flex-shrink-0 mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <polyline points="20 6 9 17 4 12"></polyline>
                   </svg>
-                  <span>Sentry integration for error management</span>
+                  <span>Free alerting with the Opsgenie integration</span>
                 </li>
               </ul>
             </div>
@@ -254,34 +264,26 @@
   <!-- Social Proof Section -->
   <div class="bg-base-100 py-16">
     <div class="max-w-7xl mx-auto px-4">
-      <!-- GitHub Stats -->
       <div class="flex flex-wrap justify-center gap-8">
-        <div class="stats shadow">
+        <div class="stats stats-vertical sm:stats-horizontal shadow">
           <div class="stat">
-            <div class="stat-title">License</div>
-            <div class="stat-value text-primary">MIT License</div>
-            <div class="stat-desc">PWYW model</div>
+            <div class="stat-title">Setup Time</div>
+            <div class="stat-value text-primary">15min</div>
+            <div class="stat-desc">From zero to prod</div>
           </div>
+          
           <div class="stat">
-            <div class="stat-title">Latest Release</div>
-            <div class="stat-value">v0.0.1</div>
-            <div class="stat-desc">Beta</div>
+            <div class="stat-title">Servers Costs</div>
+            <div class="stat-value">$5/mo</div>
+            <div class="stat-desc">All-inclusive</div>
           </div>
+
           <div class="stat">
-            <div class="stat-title">Dependencies</div>
-            <div class="stat-value text-secondary">Minimal</div>
-            <div class="stat-desc">Rails defaults first</div>
+            <div class="stat-title">Features</div>
+            <div class="stat-value text-secondary">20+</div>
+            <div class="stat-desc">Production-ready</div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="mt-16 text-center">
-      <div class="inline-flex items-center gap-2 text-lg font-medium">
-        <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-success" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        <span class="underline underline-offset-4 decoration-accent"><%= link_to "PWYW model", "https://en.wikipedia.org/wiki/Pay_what_you_want", target: "_blank" %></span>
       </div>
     </div>
   </div>
@@ -289,11 +291,14 @@
   <!-- CTA Section -->
   <div class="py-24 bg-base-300">
     <div class="max-w-3xl mx-auto text-center px-4">
-      <h2 class="text-3xl lg:text-4xl font-bold mb-6">Ready to ship your next Rails app?</h2>
+      <h2 class="text-3xl lg:text-4xl font-bold mb-6">Launch in one command 🚀</h2>
       <div class="mockup-code w-full text-left">
-        <pre data-prefix="$"><code>railsmaker app:full YOUR_APP REGISTRY_USER IP URL ANALYTICS_URL FROM_EMAIL</code></pre>
-        <pre data-prefix=">" class="text-success"><code>App successfully created!</code></pre>
-        <pre data-prefix="$"><code>kamal deploy</code></pre>
+        <pre data-prefix="$"><code>gem install railsmaker</code></pre>
+        <pre data-prefix=">" class="text-success"><code>1 gem installed</code></pre>
+        <pre data-prefix="$"><code>railsmaker new:wizard</code></pre>
+        <pre data-prefix=">" class="text-success"><code>Successfully generated RailsMaker template 🎉</code></pre>
+        <pre data-prefix="$"><code>kamal setup</code></pre>
+        <pre data-prefix=">" class="text-success"><code>Deployed 🚀</code></pre>
       </div>
       <div class="flex flex-col sm:flex-row gap-4 justify-center mt-16">
         <a href="https://buymeacoffee.com/sgerov" class="btn btn-secondary btn-lg gap-2" target="_blank">

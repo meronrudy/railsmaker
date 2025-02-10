@@ -9,12 +9,12 @@
         </svg>
       </div>
       <span class="font-bold">
-        Rails<span class="text-primary border-b-2 border-primary">Maker</span>
+        Rails<span class="text-primary border-primary">Maker</span>
       </span>
     <% end %>
   </div>
 
-  <div class="navbar-center hidden lg:flex">
+  <div class="navbar-center hidden md:flex">
     <ul class="menu menu-horizontal px-1 gap-2 z-50">
       <li>
         <%= link_to demo_path, 
@@ -82,7 +82,7 @@
                 </div>
               </div>
             </div>
-            <button class="btn btn-primary btn-sm w-full mt-4">View all notifications</button>
+            <button class="btn btn-disabled btn-sm w-full mt-4">View all notifications</button>
           </div>
         </ul>
       </div>
@@ -100,7 +100,7 @@
           <li class="menu-title px-4 py-2">
             <span class="font-medium">Account</span>
           </li>
-          <li>
+          <li class="menu-disabled">
             <a class="flex gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M20 7h-3a2 2 0 0 1-2-2V2"></path>
