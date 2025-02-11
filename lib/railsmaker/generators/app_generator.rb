@@ -134,6 +134,9 @@ module RailsMaker
       def setup_kamal
         say('Configuring Kamal')
 
+        inject_into_file 'config/deploy.yml', after: 'service: railsmaker' do
+          "\ndeploy_timeout: 60 # to avoid timeout on first deploy"
+        end
         gsub_file 'config/deploy.yml', 'your-user', options[:docker]
         gsub_file 'config/deploy.yml', "web:\n    - 192.168.0.1", "web:\n    hosts:\n      - #{options[:ip]}"
         gsub_file 'config/deploy.yml', 'app.example.com', options[:domain]
