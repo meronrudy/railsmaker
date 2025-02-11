@@ -33,13 +33,27 @@ Welcome to the **RailsMaker** tutorial! In this guide, you’ll learn how to:
 
 Before diving into commands, ensure you have:
 
-1. **RailsMaker** installed: `gem install railsmaker`
-1. **A Domain Name**  
-2. **2 Servers** (Ubuntu recommended):  
+1. **Local Tools**:
+    - Ruby 3.x (via `rbenv` or `rvm`)
+    - Bundler: `gem install bundler`
+    - Bun: [Install guide](https://bun.sh)
+    - Git
+    - Build essentials:
+        - Ubuntu/Debian: `sudo apt install build-essential libyaml-dev`
+        - macOS: `xcode-select --install`
+    - Docker
+
+2. **RailsMaker** installed: `gem install railsmaker`
+
+3. **A Domain Name**
+
+4. **2 Servers** (Ubuntu recommended):
     - Server A for your Rails App (min 2GB RAM)  
     - Server B for Metrics/Analytics (min 4GB RAM)
-3. *(Optional)* **S3 Bucket** for DB backups  
-4. *(Optional)* Signed up for:  
+
+5. *(Optional)* **S3 Bucket** for DB backups
+
+6. *(Optional)* Signed up for:
     - **Google Cloud** (OAuth2 sign in)
     - **Sentry** (error tracking)
     - **Mailjet** (email service)
