@@ -111,6 +111,8 @@ railsmaker remote plausible \
 
 > **Note**: All services are tested on Ubuntu 24.04 and macOS 15.2.
 
+**For a more detailed guide, check out [10 Steps To Prod](./10-STEPS-TO-PROD.md).**
+
 ### Environment Requirements
 
 - **SigNoz Server**: 2 CPU, 4GB RAM minimum
@@ -119,7 +121,40 @@ railsmaker remote plausible \
 
 You can decide how to split the services between your servers (e.g. SigNoz & Plausible on a separate server from the app or apps).
 
-For a more detailed guide, check out [10 Steps To Prod](./10-STEPS-TO-PROD.md).
+### Database Recovery
+
+In case of DB failure, follow these steps to recover your data:
+
+1. Stop the application:
+```bash
+kamal app stop
+```
+
+2. Remove existing database files:
+```bash
+kamal app exec /bin/sh -i
+rm -rf ./storage/*
+exit
+```
+
+3. Recover files and set proper ownership to files:
+```bash
+kamal restore-db-app
+kamal restore-db-cache
+kamal restore-db-queue
+kamal restore-db-cable
+kamal restore-db-ownership
+```
+
+4. Restart Litestream to initiate recovery:
+```bash
+kamal accessory reboot litestream
+```
+
+5. Start the application:
+```bash
+kamal app boot
+```
 
 ### Cloudflare DNS
 
