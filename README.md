@@ -2,6 +2,7 @@
  [![Support](https://img.shields.io/badge/Support-%F0%9F%8D%B8-yellow)](https://buymeacoffee.com/sgerov)
 [![Live Demo](https://img.shields.io/badge/Live_Demo-Try_Now_-brightgreen?logo=rocket&color=00cc99)](https://railsmaker.com)
 [![Live Demo Repo](https://img.shields.io/badge/Live_Demo_Repo-View_Code-blue?logo=github)](https://github.com/sgerov/railsmaker-sample)
+[![Guide](https://img.shields.io/badge/Guide-10_Steps_To_Prod-orange?logo=book)](./10-STEPS-TO-PROD.md)
 
 # 📦 Railsmaker - a bootstrapping stack
 
@@ -118,7 +119,7 @@ railsmaker remote plausible \
 
 You can decide how to split the services between your servers (e.g. SigNoz & Plausible on a separate server from the app or apps).
 
-For detailed configuration options, use the generator help command.
+For a more detailed guide, check out [10 Steps To Prod](./10-STEPS-TO-PROD.md).
 
 ### Cloudflare DNS
 
