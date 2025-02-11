@@ -1,36 +1,36 @@
 [![Gem Version](https://img.shields.io/gem/v/railsmaker?color=blue&logo=rubygems)](https://rubygems.org/gems/railsmaker)
- [![Support](https://img.shields.io/badge/Support-%F0%9F%8D%B8-yellow)](https://buymeacoffee.com/sgerov)
+[![Support](https://img.shields.io/badge/Support-%F0%9F%8D%B8-yellow)](https://buymeacoffee.com/sgerov)
 [![Live Demo](https://img.shields.io/badge/Live_Demo-Try_Now_-brightgreen?logo=rocket&color=00cc99)](https://railsmaker.com)
 [![Live Demo Repo](https://img.shields.io/badge/Live_Demo_Repo-View_Code-blue?logo=github)](https://github.com/sgerov/railsmaker-sample)
 [![Guide](https://img.shields.io/badge/Guide-10_Steps_To_Prod-orange?logo=book)](./10-STEPS-TO-PROD.md)
 
-# 📦 Railsmaker - a bootstrapping stack
+# 📦 Railsmaker
 
 Ship your MVP in hours, not weeks • Zero config needed • Save $120+/month and 20+ dev hours
 
 ## ⚡ Why Railsmaker?
 - **Ship Faster**: From zero to production in 15 minutes
 - **Growth Ready**: Built-in analytics, SEO, and monitoring
-- **Own Your Data**: Self-hosted analytics, full control
-- **Cost Efficient**: Start for under $10/month
+- **Own Your Data**: Fully self-hosted, full control, full flexibility
+- **Cost Efficient**: You decide how much you want to spend
 - **DX Focused**: Modern stack, zero configuration
 
-## ✨ Features & Stack
+## ✨ Features
 
-### Growth & Analytics
+#### Growth & Analytics
 - **Privacy-focused**: Self-hosted Plausible and Signoz
 - **SEO**: Auto-optimized meta-tags & sitemaps
 - **Performance**: Lightning-fast ~50ms page loads
 - **Mobile First**: Instant responsive layouts
 
-### Developer Experience
+#### Developer Experience
 - **UI**: Latest TailwindCSS 4 + DaisyUI 5
 - **Auth**: Battle-tested Clearance + OmniAuth
 - **Storage**: SQLite + Litestream
 - **Email**: Production-ready Mailjet integration
 - **Modern Stack**: Rails 8, Ruby 3.2, Hotwire magic
 
-### Infrastructure
+#### Infrastructure
 - **Monitoring**: Full SigNoz & Sentry integration
 - **Deploy**: One-command Kamal deployments
 - **Observability**: Enterprise-grade OpenTelemetry + Lograge
@@ -48,7 +48,7 @@ Ship your MVP in hours, not weeks • Zero config needed • Save $120+/month an
   - macOS: `xcode-select --install`
 - Docker (for analytics & monitoring)
 
-### 1. Installing the Application
+### 1. Bootstrapping your app
 
 #### A. Set Required Environment Variables
 

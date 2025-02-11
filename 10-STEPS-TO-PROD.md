@@ -33,15 +33,17 @@ Welcome to the **RailsMaker** tutorial! In this guide, you’ll learn how to:
 
 Before diving into commands, ensure you have:
 
+1. **RailsMaker** installed: `gem install railsmaker`
 1. **A Domain Name**  
 2. **2 Servers** (Ubuntu recommended):  
     - Server A for your Rails App (min 2GB RAM)  
     - Server B for Metrics/Analytics (min 4GB RAM)
 3. *(Optional)* **S3 Bucket** for DB backups  
 4. *(Optional)* Signed up for:  
-    - **Sentry** (error tracking)  
-    - **Mailjet** (email service)  
-    - **Cloudflare** (DNS/CDN)  
+    - **Google Cloud** (OAuth2 sign in)
+    - **Sentry** (error tracking)
+    - **Mailjet** (email service)
+    - **Cloudflare** (DNS/CDN)
     - **OpsGenie** (alerts)
 
 > **Note**: You can skip the optional services if you don’t need them
@@ -49,8 +51,6 @@ Before diving into commands, ensure you have:
 ## 3. Setting Environment Variables
 
 Next, you’ll need to **export** certain environment variables on your local machine (where you’ll run deployment commands).
-
-- 🔒 Credentials (API keys, secrets) for Sentry, Mailjet, etc.  
 
 Example (bash/zsh):
 
