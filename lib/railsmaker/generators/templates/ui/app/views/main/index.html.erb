@@ -19,23 +19,23 @@
           </span>
         </div>
         <h1 class="text-4xl xl:text-5xl font-bold">
-          Ship this app
+          Ship Rails apps
           <span class="relative inline-block mt-4 md:mt-0">
-            <span class="relative bg-base-100 px-4 py-1 rounded border-2 border-secondary text-secondary">in 15 minutes</span>
+            <span class="relative bg-base-100 px-4 py-1 rounded border-2 border-secondary text-secondary">quickly</span>
           </span>
         </h1>
         <p class="py-6 text-lg xl:text-xl">
-          A modern <strong>all-in-one</strong> Rails template — perfect for 
-          indie hackers craving full control, low operational hassle and quick iteration.
-          <span class="block mt-2">Save <span class="text-success font-semibold">$120+ per month</span> in infrastructure costs and <span class="text-success font-semibold">20+ hours</span> of development time.</span>
+          An <strong>opinionated Rails 8</strong> generator — perfect for 
+          indie hackers craving full control, low operational hassle and quick iteration
+          <span class="block mt-2"><span class="text-success font-semibold">Self-host</span> your app and save <span class="text-success font-semibold">20+ hours</span> of setup</span>
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center xl:justify-start">
-          <%= link_to sign_in_path, class: "btn btn-primary gap-2" do %>
-            Demo
+          <a href="https://github.com/sgerov/railsmaker" class="btn btn-outline gap-2" target="_blank">
             <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+              <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
             </svg>
-          <% end %>
+            View on GitHub
+          </a>
           <a href="https://buymeacoffee.com/sgerov" target="_blank" class="btn btn-secondary gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
@@ -80,8 +80,8 @@
   <!-- Feature Grid -->
   <div class="py-16 lg:py-24 px-4 bg-base-200">
     <div class="text-center max-w-3xl mx-auto mb-16">
-      <h2 class="text-3xl lg:text-4xl font-bold mb-4">Everything you need for quick iteration</h2>
-      <p class="text-lg opacity-75">A production-ready Rails stack that respects conventions and puts you in control</p>
+      <h2 class="text-3xl lg:text-4xl font-bold mb-4">Sensible defaults</h2>
+      <p class="text-lg opacity-75">A minimal <strong>self-hosted</strong> Rails stack prepared for quick iteration</p>
     </div>
 
     <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -101,19 +101,19 @@
               <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-success flex-shrink-0 mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="20 6 9 17 4 12"></polyline>
               </svg>
-              <span>Adjustable template generated in minutes</span>
+              <span>Scaffolds a <strong>Rails 8</strong> app — ready to be deployed</span>
             </li>
             <li class="flex items-start gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-success flex-shrink-0 mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="20 6 9 17 4 12"></polyline>
               </svg>
-              <span>Server-side scripts included</span>
+              <span>Authentication with <strong>Clearance</strong> and <strong>OmniAuth</strong></span>
             </li>
             <li class="flex items-start gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-success flex-shrink-0 mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="20 6 9 17 4 12"></polyline>
               </svg>
-              <span>Tested on Mac M4 & Ubuntu 24.04</span>
+              <span><strong>OpenTelemetry</strong> collector setup</span>
             </li>
           </ul>
         </div>
@@ -128,26 +128,26 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
               </svg>
             </div>
-            <h3 class="text-xl font-bold">Modern Stack</h3>
+            <h3 class="text-xl font-bold">Opinionated defaults</h3>
           </div>
           <ul class="space-y-3">
             <li class="flex items-start gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-success flex-shrink-0 mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="20 6 9 17 4 12"></polyline>
               </svg>
-              <span>Rails 8 with Tailwind 4 & DaisyUI 5</span>
+              <span><strong>Tailwind 4</strong> and <strong>DaisyUI 5</strong> for a modern look</span>
             </li>
             <li class="flex items-start gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-success flex-shrink-0 mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="20 6 9 17 4 12"></polyline>
               </svg>
-              <span>SQLite with S3 backups</span>
+              <span><strong>SQLite</strong> with S3 backups through <strong>Litestream</strong></span>
             </li>
             <li class="flex items-start gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-success flex-shrink-0 mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="20 6 9 17 4 12"></polyline>
               </svg>
-              <span>SEO-ready and mobile-first</span>
+              <span><strong>Bun</strong> for your JS bundles</span>
             </li>
           </ul>
         </div>
@@ -162,28 +162,45 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
               </svg>
             </div>
-            <h3 class="text-xl font-bold">No overhead</h3>
+            <h3 class="text-xl font-bold">3rd party services</h3>
           </div>
           <ul class="space-y-3">
             <li class="flex items-start gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-success flex-shrink-0 mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="20 6 9 17 4 12"></polyline>
               </svg>
-              <span>Multiple apps per server with Thruster</span>
+              <span>Self-hosted <strong>Signoz</strong> and <strong>Plausible CE</strong> setup</span>
             </li>
             <li class="flex items-start gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-success flex-shrink-0 mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="20 6 9 17 4 12"></polyline>
               </svg>
-              <span>Authentication and OAuth2</span>
+              <span>Error tracking with <strong>Sentry</strong></span>
             </li>
             <li class="flex items-start gap-2">
               <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-success flex-shrink-0 mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="20 6 9 17 4 12"></polyline>
               </svg>
-              <span>6000 free emails/mo with Mailjet</span>
+              <span><strong>Mailjet</strong> for emails (6k/mo for free)</span>
             </li>
           </ul>
+        </div>
+      </div>
+
+      <!-- Demo Section -->
+      <div class="col-span-full bg-gradient-to-r from-primary/10 to-secondary/10 rounded-xl p-12">
+        <div class="flex flex-col items-center text-center">
+          <div class="max-w-xl">
+            <a href="<%= sign_in_path %>" class="btn btn-primary btn-wide gap-2">
+              Launch mockup app
+              <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+            <span class="block text-xs mt-3 text-base-content/60">
+              Note: The generator only creates a minimal UI like the demo above — so you can build your site on top of it
+            </span>
+          </div>
         </div>
       </div>
 
@@ -196,7 +213,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
               </svg>
             </div>
-            <h3 class="text-xl font-bold">Complete Observability Suite</h3>
+            <h3 class="text-xl font-bold">Self-hosted O11y and Analytics</h3>
           </div>
 
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -220,69 +237,31 @@
               </div>
             </div>
           </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-            <div class="space-y-2">
-              <h4 class="font-bold">Self-hosted</h4>
-              <ul class="space-y-3">
-                <li class="flex items-start gap-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-success flex-shrink-0 mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                  <span>Metrics, traces and structured logs with SigNoz</span>
-                </li>
-                <li class="flex items-start gap-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-success flex-shrink-0 mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                  <span>Plausible analytics</span>
-                </li>
-              </ul>
-            </div>
-            <div class="space-y-2">
-              <h4 class="font-bold">3rd Party</h4>
-              <ul class="space-y-3">
-                <li class="flex items-start gap-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-success flex-shrink-0 mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                  <span>Error tracking with Sentry</span>
-                </li>
-                <li class="flex items-start gap-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="size-5 text-success flex-shrink-0 mt-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                  </svg>
-                  <span>Free alerting with the Opsgenie integration</span>
-                </li>
-              </ul>
-            </div>
-          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Social Proof Section -->
   <div class="bg-base-100 py-16">
     <div class="max-w-7xl mx-auto px-4">
       <div class="flex flex-wrap justify-center gap-8">
         <div class="stats stats-vertical sm:stats-horizontal shadow">
           <div class="stat">
-            <div class="stat-title">Setup Time</div>
-            <div class="stat-value text-primary">15min</div>
-            <div class="stat-desc">From zero to prod</div>
+            <div class="stat-title">Time</div>
+            <div class="stat-value text-primary">< 1h</div>
+            <div class="stat-desc">The first run</div>
           </div>
           
           <div class="stat">
-            <div class="stat-title">Servers Costs</div>
-            <div class="stat-value">from $5/mo</div>
-            <div class="stat-desc">Depends on your provider</div>
+            <div class="stat-title">Dependencies</div>
+            <div class="stat-value">14</div>
+            <div class="stat-desc">Non-rails gems</div>
           </div>
 
           <div class="stat">
             <div class="stat-title">Features</div>
             <div class="stat-value text-secondary">20+</div>
-            <div class="stat-desc">Production-ready</div>
+            <div class="stat-desc">You might need</div>
           </div>
         </div>
       </div>
@@ -292,14 +271,19 @@
   <!-- CTA Section -->
   <div class="py-24 bg-base-300">
     <div class="max-w-3xl mx-auto text-center px-4">
-      <h2 class="text-3xl lg:text-4xl font-bold mb-6">Launch in one command 🚀</h2>
+      <h2 class="text-3xl lg:text-4xl font-bold mb-6">Spin up your app now 🚀</h2>
       <div class="mockup-code w-full text-left">
         <pre data-prefix="$"><code>gem install railsmaker-core</code></pre>
         <pre data-prefix=">" class="text-success"><code>1 gem installed</code></pre>
-        <pre data-prefix="$"><code>railsmaker new:wizard</code></pre>
+        <pre data-prefix="$"><code>railsmaker new --name sample-app \
+          --docker dockerusernme \
+          --ip 123.123.123.123 \
+          --domain example.com \
+          --analytics analytics.example.com \
+          --bucketname example-s3-bucket-name</code></pre>
         <pre data-prefix=">" class="text-success"><code>Successfully generated RailsMaker template 🎉</code></pre>
         <pre data-prefix="$"><code>kamal setup</code></pre>
-        <pre data-prefix=">" class="text-success"><code>Deployed 🚀</code></pre>
+        <pre data-prefix=">" class="text-success"><code>Deployed at 123.123.123.123 🚀</code></pre>
       </div>
       <div class="flex flex-col sm:flex-row gap-4 justify-center mt-16">
         <a href="https://buymeacoffee.com/sgerov" class="btn btn-secondary btn-lg gap-2" target="_blank">

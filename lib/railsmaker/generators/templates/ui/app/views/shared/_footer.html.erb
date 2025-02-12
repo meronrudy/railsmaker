@@ -2,7 +2,7 @@
   <div class="container mx-auto px-4 py-8">
     <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
       <!-- Logo & Description -->
-      <div class="md:col-span-3">
+      <div class="col-span-full">
         <div class="flex items-center gap-2 mb-4">
           <%= link_to root_path, class: 'flex items-center gap-2 group' do %>
           <span class="font-bold text-lg">
@@ -11,8 +11,8 @@
           <% end %>
         </div>
         <p class="text-base-content/70 mb-4">
-          Launch your next Rails project in minutes, not weeks. Complete with authentication, 
-          modern UI components, and production-ready infrastructure meant for quick (and cheap) iteration.
+          Launch your next idea in hours, not weeks. Self-host your app with sensible defaults including authentication, 
+          modern UI components, and production-ready infrastructure meant for quick iteration.
         </p>
         <div class="flex gap-4">
           <%= link_to "https://www.linkedin.com/in/savagerov/", class: "btn btn-ghost btn-sm", target: "_blank" do %>
@@ -26,15 +26,6 @@
             </svg>
           <% end %>
         </div>
-      </div>
-
-      <!-- Company -->
-      <div>
-        <h3 class="font-bold mb-4">Company</h3>
-        <ul class="space-y-2">
-          <li><%= link_to "Privacy Policy", privacy_path, class: "link link-hover text-base-content/70" %></li>
-          <li><%= link_to "Terms & Conditions", terms_path, class: "link link-hover text-base-content/70" %></li>
-        </ul>
       </div>
     </div>
 
