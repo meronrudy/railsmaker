@@ -156,9 +156,33 @@ kamal accessory reboot litestream
 kamal app boot
 ```
 
+### Managing Docker Services
+
+After deploying services with `railsmaker remote` commands, you can manage them using standard Docker commands:
+
+```bash
+# Navigate to the service directory
+cd ~/SERVICE_DIRECTORY
+
+# Common commands for all services
+docker compose ps          # List containers
+docker compose logs -f     # View logs
+docker compose restart     # Restart all containers
+docker compose down        # Stop all containers
+docker compose up -d       # Start all containers
+```
+
+Service directories:
+- Plausible Analytics: `~/plausible-ce`
+- SigNoz Server: `~/signoz/deploy/docker`
+- SigNoz Server Collector: `~/signoz/deploy/docker/generator/infra`
+- OpenTelemetry Collector (other servers): `~/signoz-opentelemetry/deploy/docker/generator/infra`
+
+> **Note**: Replace `~` with the absolute path if using sudo or running commands as another user.
+
 ### Cloudflare DNS
 
-If you are relying on Cloudflare, make sure you set-up SSL/TLS to Full.
+If you are relying on Cloudflare, make sure you set-up SSL/TLS to Full for your application.
 
 ## Support
 
