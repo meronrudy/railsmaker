@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 Gem::Specification.new do |s|
-  s.name        = 'railsmaker'
+  s.name        = 'railsmaker-core'
   s.version     = '0.0.1'
   s.executables = ['railsmaker']
   s.summary     = 'Rails 8 app generator with Tailwind, DaisyUI, and Kamal'

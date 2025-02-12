@@ -43,7 +43,7 @@ Before diving into commands, ensure you have:
         - macOS: `xcode-select --install`
     - Docker
 
-2. **RailsMaker** installed: `gem install railsmaker`
+2. **RailsMaker** installed: `gem install railsmaker-core`
 
 3. **A Domain Name**
 

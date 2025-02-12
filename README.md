@@ -1,4 +1,4 @@
-[![Gem Version](https://img.shields.io/gem/v/railsmaker?color=blue&logo=rubygems)](https://rubygems.org/gems/railsmaker)
+[![Gem Version](https://img.shields.io/gem/v/railsmaker-core?color=blue&logo=rubygems)](https://rubygems.org/gems/railsmaker-core)
 [![Support](https://img.shields.io/badge/Support-%F0%9F%8D%B8-yellow)](https://buymeacoffee.com/sgerov)
 [![Live Demo](https://img.shields.io/badge/Live_Demo-Try_Now_-brightgreen?logo=rocket&color=00cc99)](https://railsmaker.com)
 [![Live Demo Repo](https://img.shields.io/badge/Live_Demo_Repo-View_Code-blue?logo=github)](https://github.com/sgerov/railsmaker-sample)
@@ -66,7 +66,7 @@ export LITESTREAM_REGION="eu2"
 #### B. Install and Deploy
 
 ```bash
-gem install railsmaker
+gem install railsmaker-core
 
 # Interactive wizard (2 minutes)
 railsmaker new:wizard
