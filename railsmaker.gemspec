@@ -38,5 +38,5 @@ Gem::Specification.new do |s|
 
   s.license = 'MIT'
   s.required_ruby_version = '>= 3.2.0'
-  s.homepage = 'https://github.com/sgerov/railsmaker'
+  s.homepage = 'https://railsmaker.com'
 end
