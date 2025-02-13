@@ -23,6 +23,7 @@ require 'railsmaker/generators/auth_generator'
 require 'railsmaker/generators/ui_generator'
 require 'railsmaker/generators/mailjet_generator'
 require 'railsmaker/generators/litestream_generator'
+require 'railsmaker/generators/registry_generator'
 
 module RailsMaker
   VERSION = '0.0.1'
