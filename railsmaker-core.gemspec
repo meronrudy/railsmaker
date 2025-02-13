@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
+require_relative 'lib/railsmaker/version'
+
 Gem::Specification.new do |s|
   s.name        = 'railsmaker-core'
-  s.version     = '0.0.1'
+  s.version     = RailsMaker::VERSION
   s.executables = ['railsmaker']
   s.summary     = 'Rails 8 app generator with Tailwind, DaisyUI, and Kamal'
   s.description = 'A comprehensive Rails 8 application generator that sets up a modern stack including Tailwind CSS, DaisyUI, Kamal deployment, monitoring, authentication, S3 backups,and more.'
