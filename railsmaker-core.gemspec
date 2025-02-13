@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
+require_relative 'lib/railsmaker/version'
+
 Gem::Specification.new do |s|
   s.name        = 'railsmaker-core'
-  s.version     = '0.0.1'
+  s.version     = RailsMaker::VERSION
   s.executables = ['railsmaker']
   s.summary     = 'Rails 8 app generator with Tailwind, DaisyUI, and Kamal'
   s.description = 'A comprehensive Rails 8 application generator that sets up a modern stack including Tailwind CSS, DaisyUI, Kamal deployment, monitoring, authentication, S3 backups,and more.'
@@ -10,11 +12,12 @@ Gem::Specification.new do |s|
     'homepage_uri' => 'https://railsmaker.com',
     'source_code_uri' => 'https://github.com/sgerov/railsmaker',
     'bug_tracker_uri' => 'https://github.com/sgerov/railsmaker/issues',
-    'documentation_uri' => 'https://github.com/sgerov/railsmaker/blob/main/10-STEPS-TO-PROD.md'
+    'documentation_uri' => 'https://github.com/sgerov/railsmaker/blob/main/10-STEPS-TO-PROD.md',
+    'changelog_uri' => 'https://github.com/sgerov/railsmaker/blob/main/CHANGELOG.md'
   }
   s.authors     = ['Sava Gerov']
   s.email       = ['sava@gerov.es']
-  s.files       = Dir['lib/**/*', 'exe/*', 'README.md']
+  s.files       = Dir['lib/**/*', 'exe/*', 'README.md', 'CHANGELOG.md']
 
   # Runtime dependencies
   s.add_runtime_dependency 'clearance', '2.9.3'

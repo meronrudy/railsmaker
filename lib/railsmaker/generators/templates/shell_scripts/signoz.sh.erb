@@ -19,6 +19,12 @@ if ! command -v git &> /dev/null; then
     exit 1
 fi
 
+# Source port checking functions
+. /tmp/<%= @port_check_filename %>
+
+# Check required ports
+check_required_ports "80 443 3301 4317 4318"
+
 echo "📝 Cloning SigNoz repository..."
 git clone -b main https://github.com/SigNoz/signoz.git --depth 1 --branch <%= signoz_version %>
 

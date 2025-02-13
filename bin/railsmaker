@@ -65,13 +65,13 @@ module RailsMaker
 
       Examples:
         # Install using SSH key authentication
-        $ railsmaker remote signoz --ssh-host=example.com --ssh-user=deploy --key-path=~/.ssh/id_rsa
+        $ railsmaker remote signoz --ssh-host=192.168.1.30 --ssh-user=deploy --key-path=~/.ssh/id_rsa
 
         # Install using password authentication (will prompt for password)
-        $ railsmaker remote signoz --ssh-host=example.com --ssh-user=deploy
+        $ railsmaker remote signoz --ssh-host=192.168.1.30 --ssh-user=deploy
 
         # Force reinstallation of existing instance
-        $ railsmaker remote signoz --ssh-host=example.com --ssh-user=deploy --force
+        $ railsmaker remote signoz --ssh-host=192.168.1.30 --ssh-user=deploy --force
     LONGDESC
     method_option :ssh_host, type: :string, required: true, desc: 'SSH host (e.g., 123.456.789.0)'
     method_option :ssh_user, type: :string, default: 'root', desc: 'SSH user with sudo access'
@@ -94,12 +94,12 @@ module RailsMaker
 
       Examples:
         # Basic installation
-        $ railsmaker remote signoz:opentelemetry --ssh-host=app.example.com --ssh-user=deploy \\
-            --signoz-host=signoz.example.com
+        $ railsmaker remote signoz:opentelemetry --ssh-host=192.168.1.40 --ssh-user=deploy \
+            --signoz-server-host=192.168.1.30
 
         # With custom hostname for better identification
-        $ railsmaker remote signoz:opentelemetry --ssh-host=app.example.com --ssh-user=deploy \\
-            --signoz-host=signoz.example.com --hostname=production-app-1
+        $ railsmaker remote signoz:opentelemetry --ssh-host=192.168.1.40 --ssh-user=deploy \
+            --signoz-server-host=192.168.1.30 --hostname=production-app-1
     LONGDESC
     method_option :ssh_host, type: :string, required: true, desc: 'SSH host where collector will be installed'
     method_option :signoz_server_host, type: :string, required: true, desc: 'Host where SigNoz server is running'
@@ -119,11 +119,11 @@ module RailsMaker
 
       Examples:
         # Basic installation
-        $ railsmaker remote plausible --ssh-host=analytics.example.com --ssh-user=deploy \\
+        $ railsmaker remote plausible --ssh-host=192.168.1.20 --ssh-user=deploy \
             --analytics-host=plausible.example.com
 
         # With custom SSH key
-        $ railsmaker remote plausible --ssh-host=analytics.example.com --ssh-user=deploy \\
+        $ railsmaker remote plausible --ssh-host=192.168.1.20 --ssh-user=deploy \
             --analytics-host=plausible.example.com --key-path=~/.ssh/analytics_key
     LONGDESC
     method_option :ssh_host, type: :string, required: true, desc: 'SSH host where Plausible will be installed'
@@ -134,6 +134,33 @@ module RailsMaker
     def plausible
       print_remote_summary('Plausible Installation', options)
       RailsMaker::Generators::PlausibleGenerator.start(to_generator_args(options))
+    end
+
+    desc 'registry', 'Install private Docker Registry on a remote server'
+    long_desc <<-LONGDESC
+      Installs and configures a private Docker Registry with authentication and HTTPS#{' '}
+      (via Caddy) on a remote machine.
+
+      Examples:
+        # Basic installation
+        $ railsmaker remote registry --ssh-host=192.168.1.10 --ssh-user=deploy \
+            --registry-host=registry.example.com --registry-username=admin --registry-password=secret
+
+        # With custom SSH key
+        $ railsmaker remote registry --ssh-host=192.168.1.10 --ssh-user=deploy \
+            --registry-host=registry.example.com --registry-username=admin \
+            --registry-password=secret --key-path=~/.ssh/registry_key
+    LONGDESC
+    method_option :ssh_host, type: :string, required: true, desc: 'SSH host where Registry will be installed'
+    method_option :registry_host, type: :string, required: true, desc: 'Domain where Registry will be accessible'
+    method_option :registry_username, type: :string, required: true, desc: 'Username for Registry authentication'
+    method_option :registry_password, type: :string, required: true, desc: 'Password for Registry authentication'
+    method_option :ssh_user, type: :string, default: 'root', desc: 'SSH user with sudo access'
+    method_option :key_path, type: :string, desc: 'Path to SSH key (if not provided, will use password auth)'
+    method_option :force, type: :boolean, default: false, desc: 'Force reinstallation if already installed'
+    def registry
+      print_remote_summary('Docker Registry Installation', options)
+      RailsMaker::Generators::RegistryGenerator.start(to_generator_args(options))
     end
 
     private

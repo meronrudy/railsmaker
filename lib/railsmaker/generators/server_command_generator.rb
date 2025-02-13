@@ -26,6 +26,9 @@ module RailsMaker
         # Generate random suffix for tmp files
         random_suffix = SecureRandom.hex(8)
 
+        # Store the port check filename for use in templates
+        @port_check_filename = "port_check.sh.#{random_suffix}"
+
         remote_files_content = remote_files.map do |file|
           tmp_filename = "#{file[:filename]}.#{random_suffix}"
           template file[:template], "/tmp/#{tmp_filename}"
@@ -74,6 +77,10 @@ module RailsMaker
       def remote_files
         [
           *config_files,
+          {
+            template: '_port_check.sh',
+            filename: 'port_check.sh'
+          },
           {
             template: "#{script_name}.sh.erb",
             filename: 'install_script.sh'

@@ -18,7 +18,7 @@ Ship your MVP in hours, not weeks • Zero config needed • Save $120+/month an
 ## ✨ Features
 
 #### Growth & Analytics
-- **Privacy-focused**: Self-hosted Plausible and Signoz
+- **Privacy-focused**: Self-hosted Plausible, Signoz, and Docker Registry
 - **SEO**: Auto-optimized meta-tags & sitemaps
 - **Performance**: Lightning-fast ~50ms page loads
 - **Mobile First**: Instant responsive layouts
@@ -32,7 +32,7 @@ Ship your MVP in hours, not weeks • Zero config needed • Save $120+/month an
 
 #### Infrastructure
 - **Monitoring**: Full SigNoz & Sentry integration
-- **Deploy**: One-command Kamal deployments
+- **Deploy**: One-command Kamal deployments, self-hosted Registry support
 - **Observability**: Enterprise-grade OpenTelemetry + Lograge
 - **Scale-ready**: Global CDN support, multi-environment
 
@@ -103,10 +103,33 @@ railsmaker remote plausible \
   --analytics-host=plausible.example.com
 ```
 
+### 4. Setting up Private Docker Registry (Optional)
+```bash
+railsmaker remote registry \
+  --ssh-host=192.168.1.10 \
+  --ssh-user=deploy \
+  --registry-host=registry.example.com \
+  --registry-username=admin \
+  --registry-password=secret
+```
+
+After setting up your registry:
+1. Create an A record for `registry.example.com` pointing to your server
+2. Update your Kamal config to use your private registry:
+```yaml
+# config/deploy.yml
+registry:
+  server: registry.example.com
+  username: admin
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+```
+
 ### Verification
 
 - SigNoz Dashboard: `https://monitor.example.com:3301`
 - Plausible Analytics: `https://analytics.example.com`
+- Docker Registry: `https://registry.example.com`
 - Your App: `https://app.example.com`
 
 > **Note**: All services are tested on Ubuntu 24.04 and macOS 15.2.
@@ -182,7 +205,7 @@ Service directories:
 
 ### Cloudflare DNS
 
-If you are relying on Cloudflare, make sure you set-up SSL/TLS to Full for your application.
+If you are relying on Cloudflare, make sure you set-up SSL/TLS to Full for your application and analytics.
 
 ## Support
 

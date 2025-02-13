@@ -19,6 +19,12 @@ if ! command -v git &> /dev/null; then
     exit 1
 fi
 
+# Source port checking functions
+. /tmp/<%= @port_check_filename %>
+
+# Check required ports
+check_required_ports "80 443"
+
 echo "📝 Cloning Plausible repository..."
 git clone -b v2.1.4 --single-branch https://github.com/plausible/community-edition plausible-ce
 cd plausible-ce

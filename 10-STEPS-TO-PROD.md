@@ -11,6 +11,7 @@ A guide for deploying a Rails application with observability, analytics, DaisyUI
    - [4.1. Install Docker & Add SSH Key](#41-install-docker--add-ssh-key)
    - [4.2. Metrics, tracing and logs (Signoz)](#42-metrics-tracing-and-logs-signoz)
    - [4.3. Analytics (Plausible)](#43-analytics-plausible)
+   - [4.4. Private Docker Registry](#44-private-docker-registry)
 5. [Generate the Rails app](#5-generate-the-rails-app)
 6. [Add Rails Credentials](#6-add-rails-credentials)
 7. [Deployment](#7-deployment)
@@ -20,14 +21,14 @@ A guide for deploying a Rails application with observability, analytics, DaisyUI
 
 ## 1. Introduction
 
-Welcome to the **RailsMaker** tutorial! In this guide, you’ll learn how to:
+Welcome to the **RailsMaker** tutorial! In this guide, you'll learn how to:
 
 - Deploy a Rails app on two cloud servers (one for the Rails app, one for analytics/metrics).
 - Integrate **analytics** (via Plausible) and **metrics/traces/logs** (via Signoz and OpenTelemetry).
 - Configure DNS, environment variables, and secure secrets.
 - Verify that everything is working end-to-end.
 
-> **Goal**: By the end, you’ll have a live Rails app with observability tools in place, DB backups, and more.
+> **Goal**: By the end, you'll have a live Rails app with observability tools in place, DB backups, and more.
 
 ## 2. Pre-requisites
 
@@ -60,11 +61,11 @@ Before diving into commands, ensure you have:
     - **Cloudflare** (DNS/CDN)
     - **OpsGenie** (alerts)
 
-> **Note**: You can skip the optional services if you don’t need them
+> **Note**: You can skip the optional services if you don't need them
 
 ## 3. Setting Environment Variables
 
-Next, you’ll need to **export** certain environment variables on your local machine (where you’ll run deployment commands).
+Next, you'll need to **export** certain environment variables on your local machine (where you'll run deployment commands).
 
 Example (bash/zsh):
 
@@ -80,7 +81,7 @@ Example (bash/zsh):
 
 ## 4. Remote Servers Setup
 
-Now, let’s prepare your servers. We’ll assume you have SSH access (user + password or existing SSH key) to each VPS.
+Now, let's prepare your servers. We'll assume you have SSH access (user + password or existing SSH key) to each VPS.
 
 ### 4.1. Install Docker & Add SSH Key
 
@@ -120,6 +121,39 @@ railsmaker remote plausible \
 
 > Make sure `--analytics-host` is the domain/subdomain you plan to use for your analytics dashboard
 
+### 4.4. Private Docker Registry
+
+To set up your own private Docker registry with authentication and HTTPS:
+
+```bash
+railsmaker remote registry \
+    --ssh-host=REGISTRY_SERVER_IP \
+    --registry-host=registry.example.com \
+    --registry-username=admin \
+    --registry-password=your_secure_password
+```
+
+After installation:
+1. Configure DNS:
+   - Add an A record for `registry.example.com` pointing to your server
+
+2. Update your Kamal deployment config:
+   ```yaml
+   # config/deploy.yml
+   registry:
+     server: registry.example.com
+     username: admin
+     password:
+       - KAMAL_REGISTRY_PASSWORD
+   ```
+
+3. Set the registry password in your environment:
+   ```bash
+   export KAMAL_REGISTRY_PASSWORD=your_secure_password
+   ```
+
+> **Note**: Using your own registry can significantly speed up deployments and provide more control over your container images.
+
 ## 5. Generate the Rails app
 
 First, use `railsmaker` to generate the Rails app:
@@ -134,7 +168,7 @@ railsmaker new --name railsmaker-sample \
 ```
 > **Important**: You can skip integrations, see `railsmaker new --help` to see all available options and skip unwanted integrations
 
- Alternatively, you can use the wizard to enter the details interactively:
+Alternatively, you can use the wizard to enter the details interactively:
 
 ```bash
 railsmaker new:wizard
@@ -166,7 +200,7 @@ See the `credentials.example.yml` file for reference of all possible credentials
 
 ## 7. Deployment
 
-You’re almost there. Now run:
+You're almost there. Now run:
 
 ```bash
     kamal setup
@@ -194,7 +228,7 @@ This configures your Rails app to send traces/spans/logs to Signoz through a sid
 
 1. Log into your DNS provider (e.g., Cloudflare or your registrar).  
 2. Create **A records** pointing your domain (e.g. `myapp.com`) and subdomain (e.g. `analytics.myapp.com`) to the correct server IPs.  
-3. If using Cloudflare’s proxy, ensure it's set to "Full".
+3. If using Cloudflare's proxy, ensure it's set to "Full" for the app and analytics domains.
 
 ## 10. Verification & Testing
 
@@ -203,14 +237,14 @@ This configures your Rails app to send traces/spans/logs to Signoz through a sid
    - Confirm the Rails app is live.
 2. **Check Analytics**  
    - Go to your Plausible dashboard (e.g., `https://analytics.myapp.com`).  
-   - See if it’s tracking page views or real-time visitors.
+   - See if it's tracking page views or real-time visitors.
 3. **Review Metrics**  
    - Access Signoz at `http://METRICS_SERVER_IP:3301` (or your chosen domain).  
    - Check for application traces, metrics, or logs to ensure all data is flowing.
 
 ## Congrats!
 
-You’ve deployed a Rails application with analytics and metrics using RailsMaker in just a few steps. 
+You've deployed a Rails application with analytics and metrics using RailsMaker in just a few steps. 
 
 Now you are ready to start bringing your ideas to life with a solid foundation!
 
