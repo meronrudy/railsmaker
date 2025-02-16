@@ -115,7 +115,7 @@ railsmaker remote registry \
 
 After setting up your registry:
 1. Create an A record for `registry.example.com` pointing to your server
-2. Update your Kamal config to use your private registry:
+2. Update your Kamal config to use your private registry (unless you already used `-r` option):
 ```yaml
 # config/deploy.yml
 registry:

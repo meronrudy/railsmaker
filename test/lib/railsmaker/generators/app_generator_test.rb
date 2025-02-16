@@ -63,4 +63,22 @@ class AppGeneratorTest < Rails::Generators::TestCase
       assert_no_match(/daisyui/, content)
     end
   end
+
+  def test_generates_app_with_custom_registry
+    app_name = 'my_test_app'
+    copy_test_fixtures(app_name)
+
+    run_generator [
+      '--name', app_name,
+      '--docker', 'my_docker_user',
+      '--ip', '192.168.0.99',
+      '--domain', 'test.example.com',
+      '--registry_url', 'registry.myapp.com'
+    ]
+
+    assert_file "#{app_name}/config/deploy.yml" do |content|
+      assert_match(/server: registry\.myapp\.com/, content)
+      assert_match(/username: my_docker_user/, content)
+    end
+  end
 end

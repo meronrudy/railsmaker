@@ -10,6 +10,7 @@ module RailsMaker
       class_option :ip, type: :string, required: true, desc: 'Server IP address'
       class_option :domain, type: :string, required: true, desc: 'Domain name'
       class_option :ui, type: :boolean, default: false, desc: 'Include UI assets?'
+      class_option :registry_url, type: :string, desc: 'Custom Docker registry URL (e.g., registry.digitalocean.com)'
 
       def check_required_env_vars
         super(%w[
@@ -143,6 +144,11 @@ module RailsMaker
         inject_into_file 'config/deploy.yml', after: 'ssl: true' do
           "\n  forward_headers: true"
         end
+
+        return unless options[:registry_url]
+
+        uncomment_lines 'config/deploy.yml', 'server: registry.digitalocean.com'
+        gsub_file 'config/deploy.yml', 'registry.digitalocean.com / ghcr.io / ...', options[:registry_url]
       end
 
       def current_dir

@@ -205,6 +205,7 @@ module RailsMaker
     method_option :analytics, type: :string, desc: 'Set up Plausible Analytics (provide your ANALYTICS_DOMAIN)'
     method_option :sentry, type: :boolean, default: true, desc: 'Configure Sentry error tracking'
     method_option :ui, type: :boolean, default: true, desc: 'Include UI assets'
+    method_option :registry_url, type: :string, aliases: '-r', desc: 'Custom Docker registry URL'
     def new
       self.destination_root = File.expand_path(options[:name], Dir.pwd)
       say "Generating new Rails application: #{options[:name]}", :yellow
@@ -256,7 +257,8 @@ module RailsMaker
           ['Name:', opts[:name], :highlight],
           ['Docker:', opts[:docker], :highlight],
           ['IP:', opts[:ip], :highlight],
-          ['Domain:', opts[:domain], :highlight]
+          ['Domain:', opts[:domain], :highlight],
+          ['Registry:', opts[:registry_url] || 'Docker Hub', :highlight]
         ],
         'Features & Integrations' => [
           ['Authentication', opts[:auth], :status],
@@ -318,7 +320,8 @@ module RailsMaker
         opentelemetry: options[:opentelemetry],
         analytics: options[:analytics],
         sentry: options[:sentry],
-        ui: options[:ui]
+        ui: options[:ui],
+        registry_url: options[:registry_url]
       }
 
       # Only ask for values that weren't provided via command line
@@ -355,6 +358,10 @@ module RailsMaker
 
       wizard_options[:bucketname] = nil if wizard_options[:bucketname] && wizard_options[:bucketname].empty?
       wizard_options[:analytics] = nil if wizard_options[:analytics] && wizard_options[:analytics].empty?
+
+      # Add registry URL prompt if not provided
+      wizard_options[:registry_url] ||= ask('Docker registry URL (leave blank for Docker Hub):')
+      wizard_options[:registry_url] = nil if wizard_options[:registry_url].empty?
 
       wizard_options
     end
