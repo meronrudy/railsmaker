@@ -3,10 +3,11 @@
 [![Live Demo](https://img.shields.io/badge/Live_Demo-Try_Now_-brightgreen?logo=rocket&color=00cc99)](https://railsmaker.com)
 [![Live Demo Repo](https://img.shields.io/badge/Live_Demo_Repo-View_Code-blue?logo=github)](https://github.com/sgerov/railsmaker-sample)
 [![Guide](https://img.shields.io/badge/Guide-10_Steps_To_Prod-orange?logo=book)](./10-STEPS-TO-PROD.md)
+[![DaisyUI Templates](https://img.shields.io/badge/DaisyUI_Templates-70+_Templates-purple?logo=tailwindcss)](https://daisyuitemplates.com/)
 
 # 📦 Railsmaker
 
-Ship your MVP in hours, not weeks • Zero config needed • Save $120+/month and 20+ dev hours
+Ship your MVP in hours, not weeks • Zero config needed • Save 20+ dev hours
 
 ## ⚡ Why Railsmaker?
 - **Ship Faster**: From zero to production in 15 minutes
