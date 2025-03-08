@@ -72,17 +72,17 @@ module RailsMaker
 
       def setup_frontend
         say('Adding Tailwind CSS')
-        gem 'tailwindcss-rails', '~> 4.0.0.rc5'
+        gem 'tailwindcss-rails', '~> 4.2.0'
 
         say('Installing gems')
         run 'bundle install --quiet'
 
         say('Setting up Tailwind')
-        run 'bun add -d tailwindcss@4.0.0 @tailwindcss/cli@4.0.0'
+        run 'bun add -d tailwindcss@4.0.12 @tailwindcss/cli@4.0.12'
         rails_command 'tailwindcss:install'
 
         say('Installing DaisyUI')
-        run 'bun add -d daisyui@5.0.0-beta.2'
+        run 'bun add -d daisyui@5.0.0'
 
         validate_gsub_strings([
                                 {
